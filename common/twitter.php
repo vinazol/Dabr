@@ -407,8 +407,8 @@ function twitter_get_media($status) {
 	if(setting_fetch('hide_inline') || stripos($status->text, 'NSFW') !== false) {
 		return;
 	}
-	// echo "<br> status <pre>" . var_export($status,true). "</pre>";
-	//	If there are multiple images
+
+	//	If there are multiple images - or videos / gifs
 	if ($status->extended_entities) {
 		$media_html = "<span class=\"embed\">";
 
@@ -420,17 +420,33 @@ function twitter_get_media($status) {
 				$image = $media->media_url;
 			}
 
-			$link = $media->url;
+			if ($media->type == "video" || $media->type == "animated_gif") {
+				
+				$media_html .= "<video controls>";
+	
+				//	Array is reversed in the hope that the highest resolution video is at the end
+				foreach (array_reverse($media->video_info->variants) as $vid) {
+					$video_url = $vid->url;
+					$video_type = $vid->content_type;
+					$media_html .= "<source src=\"{$video_url}\" type=\"{$video_type}\">";
+				}
 
-			$width = $media->sizes->small->w;
-			$height = $media->sizes->small->h;
+				$media_html .= "Your browser does not support the <code>video</code> element.
+					</video>";
+			} else {
+				$link = $media->url;
 
-			$media_html .= "<a href=\"" . image_proxy($image) . ":large\" target=\"" . get_target() . "\" class=\"action\" >
-			                  <img src=\"{$image}:small\" width=\"{$width}\" height=\"{$height}\" class=\"embedded\" >
-			               </a>";
+				$width = $media->sizes->small->w;
+				$height = $media->sizes->small->h;
+
+				$media_html .= "<a href=\"" . image_proxy($image) . ":large\" target=\"" . get_target() . "\" class=\"action\" >
+				                  <img src=\"{$image}:small\" width=\"{$width}\" height=\"{$height}\" class=\"embedded\" >
+				               </a>";
+			}
 		}
 		$media_html .= "</span>";
-		return $media_html ;//. "<br/>";
+
+		return $media_html;
 
 	} else if($status->entities->media) {
 
@@ -454,7 +470,7 @@ function twitter_get_media($status) {
 			$media_html .= "</a></span>";
 		}
 
-		return $media_html ;//. "<br/>";
+		return $media_html;
 	}
 }
 
