@@ -31,22 +31,22 @@ fieldset {
 	max-width:30em;
 }
 	
-	#twitterbird {
-		color: #00acee;
-	}
-	textarea {
-		width: 100%;
-		border-radius: 0.5em;
-		max-width: 39.5em;
-	}
-	.fileinputs {
-		float: right;
-		direction: rtl;
-		margin-right: 1em;
-	}
-	#geo {
-		float:right;
-	}
+#twitterbird {
+	color: #00acee;
+}
+textarea {
+	width: 100%;
+	border-radius: 0.5em;
+	max-width: 39.5em;
+}
+.fileinputs {
+	float: right;
+	direction: rtl;
+	margin-right: 1em;
+}
+#geo {
+	float:right;
+}
 
 .profile,.bottom {
 	padding: 0.5em;
@@ -163,7 +163,7 @@ small,small a{
 }
 .embedded {
 	/*max-width:80%;*/
-	max-width:30em;
+	max-width:100%;
 	height:auto;
 	margin-top: 0.25em;
 }
