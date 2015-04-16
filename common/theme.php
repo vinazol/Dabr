@@ -312,15 +312,28 @@ function theme_status($status) {
 function theme_retweet($status)
 {
 	$text = "RT @{$status->user->screen_name}: {$status->text}";
+	$screen_name = $status->user->screen_name;
+	$id = $status->id_str;
 	$length = function_exists('mb_strlen') ? mb_strlen($text,'UTF-8') : strlen($text);
 	$from = substr($_SERVER['HTTP_REFERER'], strlen(BASE_URL));
 
 	if($status->user->protected == 0)
 	{
-		$content.="<p>Twitter's new style retweet:</p>
+		$content.="<p>Twitter retweet:</p>
 					<form action='twitter-retweet/{$status->id_str}' method='post'>
 						<input type='hidden' name='from' value='$from' />
 						<input type='submit' value='Twitter Retweet' />
+					</form>
+					<hr />";
+
+		$content .= "<p>Comment on Tweet:</p>
+					<form action='update' method='post'>
+						<input type='hidden' name='from' value='{$from}' />
+						<input type='hidden' name='in_reply_to_id' value='{$status->id_str}' />
+						<textarea name='status' style='width:90%; max-width: 400px;' rows='5' id='status'>&nbsp;\nhttps://twitter.com/{$screen_name}/status/{$id}</textarea>
+						<br/>
+						<input type='submit' value='Comment' />
+						<span id='remaining'>" . (140 - $length) ."</span>
 					</form>
 					<hr />";
 	}
@@ -335,7 +348,7 @@ function theme_retweet($status)
 						<input type='hidden' name='in_reply_to_id' value='{$status->id_str}' />
 						<textarea name='status' style='width:90%; max-width: 400px;' rows='5' id='status'>{$text}</textarea>
 						<br/>
-						<input type='submit' value='Retweet' />
+						<input type='submit' value='Quote' />
 						<span id='remaining'>" . (140 - $length) ."</span>
 					</form>";
 	$content .= js_counter("status");
