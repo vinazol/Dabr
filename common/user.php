@@ -12,7 +12,8 @@ function user_oauth() {
 		// get the request token
 		$reply = $cb->oauth_requestToken(array(
 			// 'oauth_callback' => 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
-			'oauth_callback' => SERVER_NAME . $_SERVER['REQUEST_URI']
+			//	Trim the first slash
+			'oauth_callback' => SERVER_NAME . ltrim($_SERVER['REQUEST_URI'],'/')
 		));
 
 		// store the token
