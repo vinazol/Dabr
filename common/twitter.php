@@ -422,13 +422,13 @@ function twitter_get_media($status) {
 
 			if ($media->type == "video" || $media->type == "animated_gif") {
 				
-				$media_html .= "<video controls loop class=\"embedded\" poster=\"$image\">";
+				$media_html .= "<video controls loop class=\"embedded\" poster=\"" . image_proxy($image) . "\">";
 	
 				//	Array is reversed in the hope that the highest resolution video is at the end
 				foreach (array_reverse($media->video_info->variants) as $vid) {
 					$video_url = $vid->url;
 					$video_type = $vid->content_type;
-					$media_html .= "<source src=\"{$video_url}\" type=\"{$video_type}\">";
+					$media_html .= "<source src=\"" . image_proxy($video_url) . "\" type=\"{$video_type}\">";
 				}
 
 				$media_html .= "Your browser does not support the video element.
