@@ -2,10 +2,8 @@
 
 function user_oauth() {
 	
-	//require_once ('codebird.php');
+	\Codebird\Codebird::setConsumerKey(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET);
 	$cb = \Codebird\Codebird::getInstance();
-	// Flag forces twitter_process() to use OAuth signing
-	// $GLOBALS['user']['type'] = 'oauth';
 
 	//	If there's no OAuth Token, take the user to Twiter's sign in page
 	if (! isset($_SESSION['oauth_token'])) {

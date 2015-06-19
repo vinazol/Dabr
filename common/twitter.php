@@ -376,6 +376,10 @@ function get_codebird() { //$url, $post_data = false) {
 	list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
 
 	//	Create our CodeBird
+	// $cb = \Codebird\Codebird::getInstance();
+	// $cb->setToken($oauth_token, $oauth_token_secret);
+
+	\Codebird\Codebird::setConsumerKey(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET); // static, see 'Using multiple Codebird instances'
 	$cb = \Codebird\Codebird::getInstance();
 	$cb->setToken($oauth_token, $oauth_token_secret);
 

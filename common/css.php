@@ -160,6 +160,7 @@ small,small a{
 	display: block;
 	overflow-x: auto;
 	clear: both;
+	max-width: 480px;
 }
 .embedded {
 	/*max-width:80%;*/
