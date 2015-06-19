@@ -86,6 +86,7 @@ function oembed_embed_thumbnails(&$feed)
 			{
 				$thumb = "";
 				$title = "";
+				$embedHTML = "";
 				
 				if ($oembeds[$index]->thumbnail_url) {
 					//	Direct links to files
@@ -97,7 +98,18 @@ function oembed_embed_thumbnails(&$feed)
 					$title = $oembeds[$index]->title;
 				}
 
-				if ($thumb) 
+				if ($oembeds[$index]->html) {
+					//	Direct links to files
+					$embedHTML = $oembeds[$index]->html;
+				}
+
+				if  ($embedHTML) 	{	//	Embed an HTML fragment
+					$html = $embedHTML;
+					foreach ($matched_urls[$url] as $statusId) 
+					{
+						$feed[$statusId]->text = $feed[$statusId]->text . '<br />' . '<span class="embed">' . $html . '</span>';
+					}
+				} elseif ($thumb) 
 				{	//	Embed the thumbnail
 					$html = theme('external_link', urldecode($url), "<img src=\"" . image_proxy($thumb, "") . "\"" .
 					                                                " title=\"{$title}\" alt=\"{$title}\" class=\"embedded\" />");
