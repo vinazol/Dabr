@@ -265,7 +265,7 @@ function theme_status_form($text = '', $in_reply_to_id = null) {
                 </div>
                 <span class="icons" style="float:right;">'.$camera.'</span>
                 <div class="fileinputs">
-					<input type="file" accept="image/*" name="image" class="file" />
+					<input type="file" accept="image/*,video/mp4" name="image" class="file" />
 				</div>
             </fieldset>
             <script type="text/javascript">

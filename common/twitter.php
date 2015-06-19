@@ -996,29 +996,89 @@ function twitter_update() {
 
 	//	Upload the image (if there is one) first
 	if ($_FILES['image']['tmp_name']) {
-		// these files to upload. You can also just upload 1 image!
-		$media_files = array(
-			$_FILES['image']['tmp_name']
-		);
 
-		// will hold the uploaded IDs
-		$media_ids = array();
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 
-		foreach ($media_files as $file) {
-			// upload all media files
-			$reply = $cb->media_upload(array(
-				'media' => $file
-			));
-			twitter_api_status($reply);
-			// and collect their IDs
-			$media_ids[] = $reply->media_id_string;
+		if (finfo_file($finfo, $_FILES['image']['tmp_name']) == "video/mp4") {	//	For Videos
+			$file       = $_FILES['image']['tmp_name'];
+			$size_bytes = filesize($file);
+			$fp         = fopen($file, 'r');
+
+			// INIT the upload
+
+			$reply = $cb->media_upload([
+			    'command'     => 'INIT',
+			    'media_type'  => 'video/mp4',
+			    'total_bytes' => $size_bytes
+			]);
+
+			$media_id = $reply->media_id_string;
+
+			// APPEND data to the upload
+
+			$segment_id = 0;
+
+			while (! feof($fp)) {
+			    $chunk = fread($fp, 1048576); // 1MB per chunk for this sample
+
+			    $reply = $cb->media_upload([
+			        'command'       => 'APPEND',
+			        'media_id'      => $media_id,
+			        'segment_index' => $segment_id,
+			        'media'         => $chunk
+			    ]);
+
+			    $segment_id++;
+			}
+
+			fclose($fp);
+
+			// FINALIZE the upload
+
+			$reply = $cb->media_upload([
+			    'command'       => 'FINALIZE',
+			    'media_id'      => $media_id
+			]);
+
+			// var_dump($reply);
+
+			if ($reply->httpstatus < 200 || $reply->httpstatus > 299) {
+			    die();
+			}
+
+			// Now use the media_id in a tweet
+			$api_options['media_ids'] = $media_id;
+
+			// $reply = $cb->statuses_update([
+			//     'status'    => 'Twitter now accepts video uploads.',
+			//     'media_ids' => $media_id
+			// ]);
+		} else {	//	Just Images
+		
+			// these files to upload. You can also just upload 1 image!
+			$media_files = array(
+				$_FILES['image']['tmp_name']
+			);
+
+			// will hold the uploaded IDs
+			$media_ids = array();
+
+			foreach ($media_files as $file) {
+				// upload all media files
+				$reply = $cb->media_upload(array(
+					'media' => $file
+				));
+				twitter_api_status($reply);
+				// and collect their IDs
+				$media_ids[] = $reply->media_id_string;
+			}
+
+			// convert media ids to string list
+			$media_ids = implode(',', $media_ids);
+
+			// send tweet with these medias
+			$api_options['media_ids'] = $media_ids;
 		}
-
-		// convert media ids to string list
-		$media_ids = implode(',', $media_ids);
-
-		// send tweet with these medias
-		$api_options['media_ids'] = $media_ids;
 	}
 
 	//	POSTing adds slashes, let's get rid of them.
