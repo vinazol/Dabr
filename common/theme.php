@@ -361,7 +361,7 @@ function theme_user_header($user) {
 	$following = $friendship->relationship->target->following;
 	$name = theme('full_name', $user);
 	$full_avatar = theme_get_full_avatar($user);
-	$link = twitter_parse_tags($user->url, $user->entities->url);
+	$link = twitter_parse_tags($user->url, $user->entities->url, "me");
 	//Some locations have a prefix which should be removed (UberTwitter and iPhone)
 	$cleanLocation = urlencode(str_replace(array("iPhone: ","ÜT: "),"",$user->location));
 	$raw_date_joined = strtotime($user->created_at);

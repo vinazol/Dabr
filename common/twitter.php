@@ -478,7 +478,7 @@ function twitter_get_media($status) {
 	}
 }
 
-function twitter_parse_tags($input, $entities = false) {
+function twitter_parse_tags($input, $entities = false, $rel = false) {
 	$out = $input;
 
 	//Linebreaks.  Some clients insert \n for formatting.
@@ -513,7 +513,13 @@ function twitter_parse_tags($input, $entities = false) {
 					$link = $url;
 				}
 
-				$link_html = '<a href="' . $link . '" target="' . get_target() . '">' . $display_url . '</a>';
+				if ($rel) {
+					$rel = " rel='{$rel}'";
+				} else {
+					$rel = '';
+				}
+
+				$link_html = '<a href="' . $link . '" target="' . get_target() . '"' . $rel .'>' . $display_url . '</a>';
 				$url = $urls->url;
 
 				// Replace all URLs *UNLESS* they have already been linked (for example to an image)
