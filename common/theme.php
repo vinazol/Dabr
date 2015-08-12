@@ -215,7 +215,7 @@ function theme_directs_form($to) {
 
 		if (friendship_exists($to) != 1)
 		{
-			$html_to = "<em>Warning</em> <b>" . $to . "</b> is not following you. You cannot send them a Direct Message :-(<br/>";
+			$html_to = "<em>Warning</em> <b>" . $to . "</b> is not following you. You might not be able to send them a Direct Message :-(<br/>";
 		}
 		$html_to .= "Sending direct message to <b>$to</b><input name='to' value='$to' type='hidden'>";
 	} else {
@@ -223,10 +223,9 @@ function theme_directs_form($to) {
 	}
 	$content = "<form action='messages/send' method='post'>$html_to
 	                <br>
-	                <textarea name='message' style='width:90%; max-width: 400px;' rows='3' id='message'></textarea>
+	                <textarea name='message' style='width:90%; max-width: 400px;' rows='10' maxlength='10000' id='message'></textarea>
 	                <br>
 	                <input type='submit' value='Send' />
-	                <span id='remaining'>140</span>
 	            </form>";
 	$content .= js_counter("message");
 	return $content;

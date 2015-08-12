@@ -1171,7 +1171,7 @@ function twitter_retweets_page() {
 function twitter_directs_page($query) {
 
 	$cb = get_codebird();
-	$api_options = array("count" => setting_fetch('perPage', 20));
+	$api_options = array("count" => setting_fetch('perPage', 20), "full_text" => true);
 
 	$action = strtolower(trim($query[1]));
 	switch ($action) {
