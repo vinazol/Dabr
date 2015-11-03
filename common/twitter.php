@@ -91,7 +91,7 @@ menu_register(array(
 	'favourites' => array(
 		'security' => true,
 		'callback' =>  'twitter_favourites_page',
-		'display' => '★'
+		'display' => '♥'
 	),
 	'followers' => array(
 		'security' => true,

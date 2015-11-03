@@ -763,9 +763,9 @@ function theme_action_icons($status) {
 		}
 
 		if ($status->favorited == '1') {
-			$actions[] = theme('action_icon', "unfavourite/{$status->id}", '<span style="color:#FFFF00;">★</span>', 'Unfavourite') . $favourite_count;
+			$actions[] = theme('action_icon', "unfavourite/{$status->id}", '<span style="color:#FF0000;">♥</span>', 'Unfavourite') . $favourite_count;
 		} else {
-			$actions[] = theme('action_icon', "favourite/{$status->id}", '☆', 'Favourite') . $favourite_count;
+			$actions[] = theme('action_icon', "favourite/{$status->id}", '♡', 'Favourite') . $favourite_count;
 		}
 		
 		$retweet_count = "";
