@@ -26,6 +26,10 @@ body{
 	color:#{$c->body_text};
 }
 
+.embedded-tweet{
+	 border : 0.1em solid #{$c->menu_background};
+}
+
 fieldset {
 	border-radius:1em;
 	max-width:30em;

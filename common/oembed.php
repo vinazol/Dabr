@@ -73,9 +73,6 @@ function oembed_embed_thumbnails(&$feed)
 		$embedly_json = url_fetch($url);
 		$oembeds = json_decode($embedly_json);
 
-		//	Only include the Twitter Widget JS once
-		$twitter_js_once = 0;
-
 		if($oembeds->type != 'error') 
 		{
 			//	Single statuses don't come back in an array
@@ -89,6 +86,7 @@ function oembed_embed_thumbnails(&$feed)
 			{
 				$thumb = "";
 				$title = "";
+				$html  = "";
 				$embedHTML = "";
 				
 				if ($oembeds[$index]->thumbnail_url) {
@@ -109,20 +107,21 @@ function oembed_embed_thumbnails(&$feed)
 				if  ($embedHTML) 	{	//	Embed an HTML fragment
 					$html = $embedHTML;
 
-					//	Remove duplicated Twitter Javascript
+					//	Remove embedded Tweets
 					
 					if (strstr($html,"//platform.twitter.com/widgets.js") != FALSE)
 					{
-						if ($twitter_js_once > 0) {
-							$html = str_replace('<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>', '', $html);
-						}
-						$twitter_js_once++;
+						$html = "";
 					}
-
+					
 					foreach ($matched_urls[$url] as $statusId) 
 					{
-						$feed[$statusId]->text = $feed[$statusId]->text . '<br />' . '<span class="embed">' . $html . '</span>';
+						if ($html != "")
+						{
+							$feed[$statusId]->text = $feed[$statusId]->text . '<br />' . '<span class="embed">' . $html . '</span>';
+						}
 					}
+				
 				} elseif ($thumb) 
 				{	//	Embed the thumbnail
 					$html = theme('external_link', urldecode($url), "<img src=\"" . image_proxy($thumb, "") . "\"" .
@@ -138,7 +137,6 @@ function oembed_embed_thumbnails(&$feed)
 						$feed[$statusId]->text = $feed[$statusId]->text . '<br />' . '<span class="embed">' . $html . '</span>';
 					}
 				}
-
 			}
 		}
 	}

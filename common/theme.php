@@ -483,6 +483,7 @@ function theme_timeline($feed, $paginate = true) {
 	foreach ($feed as &$status)	{
 		$status->text = twitter_parse_tags($status->text, $status->entities);
 	}
+
 	unset($status);
 	
 	// Only embed images if user hasn't hidden them
@@ -524,9 +525,21 @@ function theme_timeline($feed, $paginate = true) {
 		$text = $status->text;
 		if ("yes" != setting_fetch('hide_inline')) {
 			$media = twitter_get_media($status);
+
+			if ($media != "")
+			{
+				$media = "<br />{$media}"; 
+			}
 		}
 		$link = theme('status_time_link', $status, !$status->is_direct);
 		$actions = theme('action_icons', $status);
+
+		//	Add an Quoted Tweet
+		if ($status->quoted_status != null) {
+			$quoted = "<blockquote class='embedded-tweet'>" . theme('status', $status->quoted_status) . "</blockquote>";
+		} else {
+			$quoted = "";
+		}
 
 		if ("yes" != setting_fetch('hide_avatars')) {
 			$avatar = theme('avatar', theme_get_avatar($status->from));
@@ -546,7 +559,7 @@ function theme_timeline($feed, $paginate = true) {
 		if ($status->source) {
 			$source .= " Via ".
 			           str_replace('rel="nofollow"', 'target="' . get_target() . '"', 
-			           	preg_replace('/&(?![a-z][a-z0-9]*;|#[0-9]+;|#x[0-9a-f]+;)/i', '&amp;', $status->source)) . 
+			           preg_replace('/&(?![a-z][a-z0-9]*;|#[0-9]+;|#x[0-9a-f]+;)/i', '&amp;', $status->source)) . 
 			           "."; 
 		}
 
@@ -558,7 +571,8 @@ function theme_timeline($feed, $paginate = true) {
 		        {$retweeted}
 		        <br />
 		        {$text}
-		        <br />{$media}
+		        {$media}
+		        {$quoted}
 		        {$actions} 
 		        <span class='from'>{$source}</span>";
 

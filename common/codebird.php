@@ -133,6 +133,11 @@ class Codebird
     protected $_connectionTimeout = 3000;
 
     /**
+     * Remote media download timeout
+     */
+    protected $_remoteDownloadTimeout = 5000;
+
+    /**
      * Proxy
      */
     protected $_proxy = [];
@@ -263,6 +268,18 @@ class Codebird
     public function setConnectionTimeout($timeout)
     {
         $this->_connectionTimeout = (int) $timeout;
+    }
+
+    /**
+     * Sets remote media download timeout in milliseconds
+     *
+     * @param int $timeout Remote media timeout in milliseconds
+     *
+     * @return void
+     */
+    public function setRemoteDownloadTimeout($timeout)
+    {
+        $this->_remoteDownloadTimeout = (int) $timeout;
     }
 
     /**
@@ -513,9 +530,6 @@ class Codebird
         if (is_array($params[0])) {
             // given parameters are array
             $apiparams = $params[0];
-            if (! is_array($apiparams)) {
-                $apiparams = [];
-            }
             return $apiparams;
         }
 
@@ -571,8 +585,9 @@ class Codebird
         // replace AA by URL parameters
         $method_template = $method;
         $match           = [];
-        if (preg_match('/[A-Z_]{2,}/', $method, $match)) {
+        if (preg_match_all('/[A-Z_]{2,}/', $method, $match)) {
             foreach ($match as $param) {
+                $param = $param[0];
                 $param_l = strtolower($param);
                 $method_template = str_replace($param, ':' . $param_l, $method_template);
                 if (! isset($apiparams[$param_l])) {
@@ -736,7 +751,7 @@ class Codebird
     protected function getNoCurlInitialization($url, $contextOptions, $hostname = '')
     {
         $httpOptions = [];
-        
+
         $httpOptions['header'] = [
             'User-Agent: codebird-php/' . $this->getVersion() . ' +https://github.com/jublonet/codebird-php'
         ];
@@ -763,6 +778,9 @@ class Codebird
             $contextOptions,
             ['http' => $httpOptions]
         );
+
+        // concatenate $options['http']['header']
+        $options['http']['header'] = implode("\r\n", $options['http']['header']);
 
         // silent the file_get_contents function
         $content = @file_get_contents($url, false, stream_context_create($options));
@@ -1105,7 +1123,7 @@ class Codebird
         }
         return substr(md5(microtime(true)), 0, $length);
     }
-    
+
     /**
      * Signature helper
      *
@@ -1291,8 +1309,12 @@ class Codebird
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
                         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                         // use hardcoded download timeouts for now
-                        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000);
-                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 2000);
+                        curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->_remoteDownloadTimeout);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->_remoteDownloadTimeout / 2);
+                        // find files that have been redirected
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                        // process compressed images
+                        curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate,sdch');
                         $result = curl_exec($ch);
                         if ($result !== false) {
                             $value = $result;
@@ -1302,7 +1324,7 @@ class Codebird
                             'http' => [
                                 'method'           => 'GET',
                                 'protocol_version' => '1.1',
-                                'timeout'          => 5000
+                                'timeout'          => $this->_remoteDownloadTimeout
                             ],
                             'ssl' => [
                                 'verify_peer'  => false
@@ -1318,7 +1340,7 @@ class Codebird
 
             $request .= "\r\n\r\n" . $value . "\r\n";
         }
-        
+
         return $request;
     }
 
@@ -1400,7 +1422,7 @@ class Codebird
                 return $key;
             }
         }
-        
+
         return false;
     }
 
@@ -1835,7 +1857,7 @@ class Codebird
             $chunk = '';
             do {
                 $chunk .= fread($ch, $chunk_length);
-                $chunk_length -= strlen($chunk); 
+                $chunk_length -= strlen($chunk);
             } while($chunk_length > 0);
 
             if(0 === $message_length) {
@@ -1879,7 +1901,7 @@ class Codebird
 
         return;
     }
-    
+
     /**
      * Calls streaming callback with received message
      *
@@ -1889,7 +1911,7 @@ class Codebird
      */
     protected function _deliverStreamingMessage($message)
     {
-        return call_user_func($this->_streaming_callback, $message);    
+        return call_user_func($this->_streaming_callback, $message);
     }
 
     /**

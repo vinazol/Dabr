@@ -636,7 +636,8 @@ function twitter_status_page($query) {
 		//	Show a link to the original tweet
 		$screen_name = $status->from->screen_name;
 		$content .= '<p>
-		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() . '">View original tweet on Twitter</a> | ';
+		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() . 
+		                '">View original tweet on Twitter</a> | ';
 
 		//	Translate the tweet
 		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) . '" target="'. get_target() . '">Translate this tweet</a>
