@@ -27,14 +27,18 @@ body{
 }
 
 .embedded-tweet{
-	 border : 0.1em solid #{$c->menu_background};
+	border : 0.1em solid #{$c->menu_background};
+	margin-left: 0.5em;
+	width: -moz-min-content;
+	width: -webkit-min-content;
+	width: min-content;
 }
 
 fieldset {
 	border-radius:1em;
 	max-width:30em;
 }
-	
+
 #twitterbird {
 	color: #00acee;
 }
@@ -121,7 +125,6 @@ small,small a{
 }
 
 .menu-text{
-	
 	background:#{$c->menu_background};
 	font-family:sans-serif;
 }
