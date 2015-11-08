@@ -708,14 +708,61 @@ function theme_search_results($feed) {
 	return $content;
 }
 
-function theme_search_form($query) {
-	$query = stripslashes(htmlentities($query,ENT_QUOTES,"UTF-8"));
-	return '
+function theme_search_form($search_query, $saved) {
+	$query = stripslashes(htmlentities($search_query,ENT_QUOTES,"UTF-8"));
+
+	//	The basic search box
+	$search_form_html = '
 	<form action="search" method="get">
 	    <span class="icons">🔍</span>
 	    <input type="search" name="query" value="'. $query .'" />
 		<input type="submit" value="Search" />
 	</form>';
+
+	//	A button for saving a new search
+	$new_saved_search_html = "";
+	if ($query !== "") {
+		$new_saved_search_html .= '
+			<form action="search/bookmark" method="post">
+				<input type="hidden" name="query" value="'.$query.'" />
+				<input type="submit" value="Save \''.$query.'\' as new search" />
+			</form>';
+	}
+
+	//	A list of all the saved searches
+	$saved_searches_html = "<div>Saved Searches: ";
+
+	//	If there are no saved searches, don't display any.
+	$show_saved_searches = false;
+
+	foreach ($saved as &$saved_search)	{
+		$saved_display = $saved_search->name;
+		$saved_query = urlencode($saved_search->query);
+		$saved_id = $saved_search->id_str;
+		$saved_searches_html .= "<a href='search?query={$saved_query}'>{$saved_display}</a> "; 
+
+		//	Add a delete icon
+		$saved_searches_html .= theme('action_icon', "confirm/deleteSavedSearch/{$saved_id}", '🗑', '[Delete]');
+		$saved_searches_html .= " | ";
+
+		// Remove the Save New Search button if the term was already found
+		if ($query == $saved_search->query)
+		{
+			$new_saved_search_html = "";
+		}
+
+		//	If there are saved searches
+		$show_saved_searches = true;	
+	}
+
+	if ($show_saved_searches)
+	{
+		$saved_searches_html .= "</div>";
+	} else {
+		$saved_searches_html = "";
+	}
+
+	return $search_form_html . $new_saved_search_html . $saved_searches_html;
 }
 
 function theme_external_link($url, $content = null) {

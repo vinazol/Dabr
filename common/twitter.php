@@ -113,6 +113,11 @@ menu_register(array(
 		'security' => true,
 		'callback' => 'twitter_deleteDM_page',
 	),
+	'deleteSavedSearch' => array(
+		'hidden' => true,
+		'security' => true,
+		'callback' => 'twitter_delete_saved_search_page',
+	),
 	'retweet' => array(
 		'hidden' => true,
 		'security' => true,
@@ -726,6 +731,21 @@ function twitter_deleteDM_page($query) {
 	}
 }
 
+function twitter_delete_saved_search_page($query) {
+	//Deletes a saved search
+	twitter_ensure_post_action();
+
+	$id = (string) $query[1];
+	if (is_numeric($id)) {
+		$cb = get_codebird();
+		$api_options = array("id" => $id);
+		$response = $cb->savedSearches_destroy_ID($api_options);
+		twitter_api_status($response);
+
+		twitter_refresh('search/');
+	}
+}
+
 function twitter_ensure_post_action() {
 	// This function is used to make sure the user submitted their action as an HTTP POST request
 	// It slightly increases security for actions such as Delete, Block and Spam
@@ -834,6 +854,19 @@ function twitter_confirmation_page($query)
 			                <li>Message: {$status->text}</li>
 			                <li>There is <strong>no way to undo this action</strong>.</li>
 			                <li>The DM will be deleted from both the sender's outbox <em>and</em> receiver's inbox.</li>
+			            </ul>";
+			break;
+
+		case 'deleteSavedSearch':
+			$cb = get_codebird();
+			$api_options = array("id" => $target);
+
+			$search = $cb->savedSearches_show_ID($api_options);
+			@twitter_api_status($search);
+			$content = '<p>Are you really sure you want to delete this Saved Search?</p>';
+			$content .= "<ul>
+			                <li>Search: {$search->query}</li>
+			                <li>There is <strong>no way to undo this action</strong>.</li>
 			            </ul>";
 			break;
 
@@ -1228,31 +1261,55 @@ function twitter_directs_page($query) {
 
 
 function twitter_search_page() {
+	$cb = get_codebird();
+		
+	//	Save a search
+	if (isset($_POST['query'])) {
+		$query = $_POST['query'];
+		$api_options = array('query' => html_entity_decode($query));
+		$cb->savedSearches_create($api_options);
+		twitter_refresh("search?query={$query}");
+	}
+
+	//	What was searched for. e.g. `/search?query=hello`
 	$search_query = $_GET['query'];
 
 	// Geolocation parameters
 	list($lat, $long) = explode(',', $_GET['location']);
 	$loc = $_GET['location'];
 	$radius = $_GET['radius'];
-	//echo "the lat = $lat, and long = $long, and $loc";
-	$content = theme('search_form', $search_query);
-	if (isset($_POST['query'])) {
-		$duration = time() + (3600 * 24 * 365);
-		setcookie('search_favourite', $_POST['query'], $duration, '/');
-		twitter_refresh('search');
+
+	//	Get Saved Searches
+	$saved_searches = $cb->savedSearches_list();
+	twitter_api_status($saved_searches);
+
+	//	Sort the searches by the time they were created
+	$sorted_saved_searches = array();
+	foreach ($saved_searches as &$saved_search) {
+		$time = strtotime($saved_search->created_at);
+		$sorted_saved_searches[$time] = $saved_search;
 	}
-	if (!isset($search_query) && array_key_exists('search_favourite', $_COOKIE)) {
-		$search_query = $_COOKIE['search_favourite'];
+	ksort($sorted_saved_searches);
+
+	//	Generate the search form
+	$content = theme('search_form', $search_query, $sorted_saved_searches);
+	
+	//	Use the first Saved Search as the default search term, if no search term was entered.
+	if (!isset($search_query)) {
+		$first = true;
+		foreach ( $sorted_saved_searches as $saved_search )
+		{
+			if ( $first )
+			{
+				$search_query = $saved_search->query;
+				$first = false;
+			}
 		}
+	}
+
+	//	Generate a timeline of tweets
 	if ($search_query) {
 		$tl = twitter_search($search_query, $lat, $long, $radius);
-		if ($search_query !== $_COOKIE['search_favourite']) {
-			//	Should probably be in theme.php ... TODO
-			$content .= '<form action="search/bookmark" method="post">
-			                <input type="hidden" name="query" value="'.$search_query.'" />
-			                <input type="submit" value="Save as default search" />
-			            </form>';
-		}
 		$content .= theme('timeline', $tl);
 	}
 	theme('page', 'Search', $content);
