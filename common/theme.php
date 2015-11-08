@@ -288,7 +288,7 @@ function theme_status_form($text = '', $in_reply_to_id = null) {
                     document.getElementById("lblGeo").innerHTML = msg;
                 }
                 function geoSuccess(position) {
-                    geoStatus("Tweet my <a href=\'http://maps.google.co.uk/m?q=" + position.coords.latitude + "," + position.coords.longitude + "\' target=\'blank\'>location</a>");
+                    geoStatus("Tweet my <a href=\'https://maps.google.co.uk/m?q=" + position.coords.latitude + "," + position.coords.longitude + "\' target=\'blank\'>location</a>");
                     chkbox.value = position.coords.latitude + "," + position.coords.longitude;
                 }
             </script>
