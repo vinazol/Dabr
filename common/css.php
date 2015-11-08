@@ -29,9 +29,11 @@ body{
 .embedded-tweet{
 	border : 0.1em solid #{$c->menu_background};
 	margin-left: 0.5em;
+	/*
 	width: -moz-min-content;
 	width: -webkit-min-content;
 	width: min-content;
+	*/
 }
 
 fieldset {
@@ -174,6 +176,17 @@ small,small a{
 	max-width:100%;
 	height:auto;
 	margin-top: 0.25em;
+}
+.media{
+	left: 0px;
+	display: block;
+	overflow-x: auto;
+	clear: both;
+	max-width:100%;
+}
+.media img{
+	max-width:95%;
+	height:auto;
 }
 
 .date{

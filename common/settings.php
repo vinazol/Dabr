@@ -36,6 +36,7 @@ function cookie_monster() {
 		'utc_offset',
 		'search_favourite',
 		'perPage',
+		'imageSize',
 		'USER_AUTH',
 	);
 	$duration = time() - 3600;
@@ -81,6 +82,7 @@ function settings_page($args) {
 		$settings['show_oembed']  = $_POST['show_oembed'];
 		$settings['hide_avatars'] = $_POST['hide_avatars'];
 		$settings['menu_icons']   = $_POST['menu_icons'];
+		$settings['image_size']   = $_POST['image_size'];
 		$settings['utc_offset']   = (float)$_POST['utc_offset'];
 		
 		setcookie_year('settings', base64_encode(serialize($settings)));
@@ -97,6 +99,14 @@ function settings_page($args) {
 		'100' 	=> '100 Tweets Per Page (Slow)',
 		'150' 	=> '150 Tweets Per Page (Very Slow)',
 		'200' 	=> '200 Tweets Per Page (Extremely Slow)',
+	);
+
+	$image_size = array(
+		'thumb'	=>  'Thumbnail (150*150)',
+		'small'	=>  'Small (340*340)',
+		'medium'=>  'Medium (600*600)',
+		'large'	=>  'Large (1024*1024)',
+		'orig'	=>  'Original (8000*8000)'
 	);
 
 	$colour_schemes = array();
@@ -130,6 +140,14 @@ function settings_page($args) {
                         <br />
                         <select name="perPage">';
 	$content .=             theme('options', $perPage, setting_fetch('perPage', 20));
+	$content .=         '</select>
+	                    <br/>
+	                </p>';
+
+	$content .=     '<p>Image size:
+                        <br />
+                        <select name="image_size">';
+	$content .=             theme('options', $image_size, setting_fetch('image_size', "medium"));
 	$content .=         '</select>
 	                    <br/>
 	                </p>';

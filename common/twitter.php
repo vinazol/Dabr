@@ -412,9 +412,12 @@ function twitter_get_media($status) {
 		return;
 	}
 
+	//	Get the inline image size
+	$image_size = setting_fetch('image_size', "medium");
+
 	//	If there are multiple images - or videos / gifs
 	if ($status->extended_entities) {
-		$media_html = "<span class=\"embed\">";
+		$media_html = "<span class=\"media\">";
 
 		foreach($status->extended_entities->media as $media) {
 
@@ -440,11 +443,11 @@ function twitter_get_media($status) {
 			} else {
 				$link = $media->url;
 
-				$width = $media->sizes->small->w;
-				$height = $media->sizes->small->h;
+				$width = $media->sizes->$image_size->w;
+				$height = $media->sizes->$image_size->h;
 
-				$media_html .= "<a href=\"" . image_proxy($image) . ":large\" target=\"" . get_target() . "\" class=\"action\" >
-				                  <img src=\"" . image_proxy($image) . ":small\" width=\"{$width}\" height=\"{$height}\" class=\"embedded\" >
+				$media_html .= "<a href=\"" . image_proxy($image) . ":orig\" target=\"" . get_target() . "\" class=\"action\">
+				                  <img src=\"" . image_proxy($image) . ":{$image_size}\" width=\"{$width}\" height=\"{$height}\">
 				               </a>";
 			}
 		}
@@ -466,11 +469,11 @@ function twitter_get_media($status) {
 
 			$link = $media->url;
 
-			$width = $media->sizes->small->w;
-			$height = $media->sizes->small->h;
+			$width = $media->sizes->$image_size->w;
+			$height = $media->sizes->$image_size->h;
 
-			$media_html .= "<span class=\"embed\"><a href=\"" . image_proxy($image) . ":large\" target=\"" . get_target() . "\" >";
-			$media_html .= 	"<img src=\"" . image_proxy($image) . ":small\" width=\"{$width}\" height=\"{$height}\" class=\"embedded\" >";
+			$media_html .= "<span class=\"media\"><a href=\"" . image_proxy($image) . ":orig\" target=\"" . get_target() . "\">";
+			$media_html .=     "<img src=\"" . image_proxy($image) . ":{$image_size}\" width=\"{$width}\" height=\"{$height}\">";
 			$media_html .= "</a></span>";
 		}
 
