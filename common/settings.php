@@ -15,6 +15,7 @@ $GLOBALS['colour_schemes'] = array(
 	4 => 'Night Mode|    d5d,   000,            ddd,      B7A3A3,222,   111,   202,     101,      909,            222,      000',
 	5 => '#red|          d12,   ddd,            111,      555,   fff,   eee,   ffa,     dd9,      c12,            fff,      fff',
 	6 => 'Mellow Yellow| 0049DA,FFFFCC,         333300,   333300,F5EFC0,EDE8B1,CCFF99,  99FF99,   FFFFCC,         003300,   003300',
+	7 => 'Work Safe|     fff,fff,               000,      555    ,fff,  eee,   fff,     eee,      555,            fff,      fff',
 	//   'Name|          links, body_background,body_text,small, odd,   even,  replyodd,replyeven,menu_background,menu_text,menu_link',
 );
 
