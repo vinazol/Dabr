@@ -2,7 +2,7 @@
 
 /*
 Assembled in css.php
-Syntax is 
+Syntax is
          'Name|          links, body_background,body_text,small, odd,   even,  replyodd,replyeven,menu_background,menu_text,menu_link',
 */
 
@@ -85,11 +85,11 @@ function settings_page($args) {
 		$settings['menu_icons']   = $_POST['menu_icons'];
 		$settings['image_size']   = $_POST['image_size'];
 		$settings['utc_offset']   = (float)$_POST['utc_offset'];
-		
+
 		setcookie_year('settings', base64_encode(serialize($settings)));
 		twitter_refresh('');
 	}
-	
+
 	$perPage = array(
 		  '5'	=>   '5 Tweets Per Page',
 		 '10'	=>  '10 Tweets Per Page',
@@ -105,7 +105,7 @@ function settings_page($args) {
 	$image_size = array(
 		'thumb'	=>  'Thumbnail (150*150)',
 		'small'	=>  'Small (340*340)',
-		'medium'=>  'Medium (600*600)',
+		'medium' =>  'Medium (600*600)',
 		'large'	=>  'Large (1024*1024)',
 		'orig'	=>  'Original (8000*8000)'
 	);
@@ -115,9 +115,9 @@ function settings_page($args) {
 		list($name) = explode('|', $info);
 		$colour_schemes[$id] = $name;
 	}
-	
+
 	$utc_offset = setting_fetch('utc_offset', 0);
-/* returning 401 as it calls http://api.twitter.com/1/users/show.json?screen_name= (no username???)	
+/* returning 401 as it calls http://api.twitter.com/1/users/show.json?screen_name= (no username???)
 	if (!$utc_offset) {
 		$user = twitter_user_info();
 		$utc_offset = $user->utc_offset;
@@ -135,8 +135,8 @@ function settings_page($args) {
 	$content .= theme('options', $colour_schemes, setting_fetch('colours', 0));
 	$content .=         '</select>
 	                </p>';
-	
-	
+
+
 	$content .=     '<p>Tweets Per Page:
                         <br />
                         <select name="perPage">';
@@ -155,49 +155,49 @@ function settings_page($args) {
 
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="gwt" value="on" '. (setting_fetch('gwt') == 'on' ? ' checked="checked" ' : '') .' /> 
+	                    <input type="checkbox" name="gwt" value="on" '. (setting_fetch('gwt') == 'on' ? ' checked="checked" ' : '') .' />
 	                    Use Google Web Transcoder (GWT) for external links. Suitable for older phones and people with less bandwidth.
 	                </label>
 	            </p>';
 
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' /> 
+	                    <input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' />
 	                    Show the timestamp ' . twitter_date('H:i') . ' instead of 25 sec ago
 	                </label>
 	            </p>';
-	
+
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' /> 
+	                    <input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' />
 	                    Hide Twitter photos.
 	                </label>
 	            </p>';
-	
+
 	//	Hide oembeds by default. Keep things fast & save API calls.
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="show_oembed" value="yes" '. (setting_fetch('show_oembed') == yes ? ' checked="checked" ' : '') .' /> 
+	                    <input type="checkbox" name="show_oembed" value="yes" '. (setting_fetch('show_oembed') == yes ? ' checked="checked" ' : '') .' />
 	                    Show link previews (YouTube, Instagram, Blogs, etc).
 	                </label>
 	            </p>';
 
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="hide_avatars" value="yes" '. (setting_fetch('hide_avatars') == 'yes' ? ' checked="checked" ' : '') .' /> 
+	                    <input type="checkbox" name="hide_avatars" value="yes" '. (setting_fetch('hide_avatars') == 'yes' ? ' checked="checked" ' : '') .' />
 	                    Hide users\' profile images.
 	                </label>
 	            </p>';
 
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="menu_icons" value="yes" '. (setting_fetch('menu_icons') == 'yes' ? ' checked="checked" ' : '') .' /> 
+	                    <input type="checkbox" name="menu_icons" value="yes" '. (setting_fetch('menu_icons') == 'yes' ? ' checked="checked" ' : '') .' />
 	                    Show Menu icons like <span class="icons">🏠⌖</span>.
 	                </label>
 	            </p>';
 
 	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />It is worth adjusting this value if the time appears to be wrong.</label></p>';
-	
+
 	$content .= '<p><input type="submit" value="Save" /></p></form>';
 
 	$content .= '<hr /><p>Visit <a href="reset">Reset</a> if things go horribly wrong - it will log you out and clear all settings.</p>';

@@ -433,9 +433,9 @@ function twitter_get_media($status) {
 			}
 
 			if ($media->type == "video" || $media->type == "animated_gif") {
-				
+
 				$media_html .= "<video controls loop class=\"embedded\" poster=\"" . image_proxy($image) . "\">";
-	
+
 				//	Array is reversed in the hope that the highest resolution video is at the end
 				foreach (array_reverse($media->video_info->variants) as $vid) {
 					$video_url = $vid->url;
@@ -644,7 +644,7 @@ function twitter_status_page($query) {
 		//	Show a link to the original tweet
 		$screen_name = $status->from->screen_name;
 		$content .= '<p>
-		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() . 
+		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() .
 		                '">View original tweet on Twitter</a> | ';
 
 		//	Translate the tweet
@@ -1097,7 +1097,7 @@ function twitter_update() {
 			//     'media_ids' => $media_id
 			// ]);
 		} else {	//	Just Images
-		
+
 			// these files to upload. You can also just upload 1 image!
 			$media_files = array(
 				$_FILES['image']['tmp_name']
@@ -1225,9 +1225,98 @@ function twitter_directs_page($query) {
 
 		case 'send':
 			twitter_ensure_post_action();
+
+			//	Upload the image (if there is one) first
+			if ($_FILES['image']['tmp_name']) {
+
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+				if (finfo_file($finfo, $_FILES['image']['tmp_name']) == "video/mp4") {	//	For Videos
+					$file       = $_FILES['image']['tmp_name'];
+					$size_bytes = filesize($file);
+					$fp         = fopen($file, 'r');
+
+					// INIT the upload
+
+					$reply = $cb->media_upload([
+					    'command'     => 'INIT',
+					    'media_type'  => 'video/mp4',
+					    'total_bytes' => $size_bytes
+					]);
+
+					$media_id = $reply->media_id_string;
+
+					// APPEND data to the upload
+
+					$segment_id = 0;
+
+					while (! feof($fp)) {
+					    $chunk = fread($fp, 1048576); // 1MB per chunk for this sample
+
+					    $reply = $cb->media_upload([
+					        'command'       => 'APPEND',
+					        'media_id'      => $media_id,
+					        'segment_index' => $segment_id,
+					        'media'         => $chunk
+					    ]);
+
+					    $segment_id++;
+					}
+
+					fclose($fp);
+
+					// FINALIZE the upload
+
+					$reply = $cb->media_upload([
+					    'command'       => 'FINALIZE',
+					    'media_id'      => $media_id
+					]);
+
+					// var_dump($reply);
+
+					if ($reply->httpstatus < 200 || $reply->httpstatus > 299) {
+					    die();
+					}
+
+					// Now use the media_id in a tweet
+					$api_options['media_ids'] = $media_id;
+
+					// $reply = $cb->statuses_update([
+					//     'status'    => 'Twitter now accepts video uploads.',
+					//     'media_ids' => $media_id
+					// ]);
+				} else {	//	Just Images
+
+					// these files to upload. You can also just upload 1 image!
+					$media_files = array(
+						$_FILES['image']['tmp_name']
+					);
+
+					// will hold the uploaded IDs
+					$media_ids = array();
+
+					foreach ($media_files as $file) {
+						// upload all media files
+						$reply = $cb->media_upload(array(
+							'media' => $file
+						));
+						twitter_api_status($reply);
+						// and collect their IDs
+						$media_ids[] = $reply->media_id_string;
+					}
+
+					// convert media ids to string list
+					$media_ids = implode(',', $media_ids);
+
+					// send tweet with these medias
+					$api_options['media_ids'] = $media_ids;
+				}
+			}
+
 			$to = trim(stripslashes(str_replace('@','',$_POST['to'])));
 			$message = trim(stripslashes($_POST['message']));
-			$api_options = array('screen_name' => $to, 'text' => $message);
+			$api_options["screen_name"] = $to;
+			$api_options["text"] = $message;
 			@twitter_api_status($cb->directMessages_new($api_options));
 			twitter_refresh('messages/sent');
 
@@ -1262,7 +1351,7 @@ function twitter_directs_page($query) {
 
 function twitter_search_page() {
 	$cb = get_codebird();
-		
+
 	//	Save a search
 	if (isset($_POST['query'])) {
 		$query = $_POST['query'];
@@ -1293,7 +1382,7 @@ function twitter_search_page() {
 
 	//	Generate the search form
 	$content = theme('search_form', $search_query, $sorted_saved_searches);
-	
+
 	//	Use the first Saved Search as the default search term, if no search term was entered.
 	if (!isset($search_query)) {
 		$first = true;

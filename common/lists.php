@@ -20,7 +20,7 @@ function twitter_lists_tweets($user, $list) {
 	$cb = get_codebird();
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
 	$max_id = $_GET['max_id'];
-	
+
 	if (!is_numeric($max_id)) {
 		$max_id = -1;
 	}
@@ -40,7 +40,7 @@ function twitter_lists_user_lists($user) {
 	$cb = get_codebird();
 	$api_options = array("screen_name" => $user);
 	$cursor = $_GET['cursor'];
-	
+
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}
@@ -59,7 +59,7 @@ function twitter_lists_user_memberships($user) {
 	$cb = get_codebird();
 	$api_options = array("screen_name" => $user);
 	$cursor = $_GET['cursor'];
-	
+
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}
@@ -79,7 +79,7 @@ function twitter_lists_list_members($user, $list) {
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
 	$api_options["count"] = setting_fetch('perPage', 20);
 	$cursor = $_GET['cursor'];
-	
+
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}
@@ -97,7 +97,7 @@ function twitter_lists_list_subscribers($user, $list) {
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
 	$api_options["count"] = setting_fetch('perPage', 20);
 	$cursor = $_GET['cursor'];
-	
+
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}
@@ -164,7 +164,7 @@ function lists_controller($query) {
 	}
 
 	//	Error to be shown for any incomplete pages (breaks above)
-	return theme('error', 'List page not found');
+	return theme('error', _(LIST_PAGE_NOT_FOUND));
 }
 
 
@@ -174,7 +174,10 @@ function lists_controller($query) {
 function lists_lists_page($user) {
  	// Show a user's lists
  	$lists = twitter_lists_user_lists($user);
- 	$content = "<p><a href='lists/{$user}/memberships'>Lists following {$user}</a> | <strong>Lists {$user} follows</strong></p>";
+ 	$content = "<p>
+						<a href='lists/{$user}/memberships'>".sprintf(_(LIST_FOLLOWING),$user)."</a> | ".
+						"<strong>".sprintf(_(LIST_USER_FOLLOWS),$user)."</strong>".
+					"</p>";
  	$content .= theme('lists', $lists);
  	theme('page', "{$user}'s lists", $content);
 }
@@ -182,7 +185,10 @@ function lists_lists_page($user) {
 function lists_membership_page($user) {
 	// Show lists a user belongs to
 	$lists = twitter_lists_user_memberships($user);
-	$content = "<p><strong>Lists following {$user}</strong> | <a href='lists/{$user}'>Lists {$user} follows</a></p>";
+	$content = "<p>
+						<strong>".sprintf(_(LIST_USER_FOLLOWS),$user)."</strong> | ".
+						"<a href='lists/{$user}'>".sprintf(_(LIST_USER_FOLLOWS),$user)."</a>".
+					"</p>";
 	$content .= theme('lists', $lists);
 	theme('page', 'List memberhips', $content);
 }
@@ -193,7 +199,10 @@ function lists_list_tweets_page($user, $list) {
 	$tl = twitter_standard_timeline($tweets, 'user');
 	$content = theme('status_form');
 	$list_url = "lists/{$user}/{$list}";
-	$content .= "<p>Tweets in <a href='{$user}'>@{$user}</a>/<strong>{$list}</strong> | <a href='{$list_url}/members'>View Members</a> | <a href='{$list_url}/subscribers'>View Subscribers</a></p>";
+	$content .= "<p>"._(LIST_TWEETS_IN)." <a href='{$user}'>@{$user}</a>/<strong>{$list}</strong> | ".
+						"<a href='{$list_url}/members'>"    ._(LIST_VIEW_MEMBERS)    ."</a> | ".
+						"<a href='{$list_url}/subscribers'>"._(LIST_VIEW_SUBSCRIBERS)."</a>".
+					"</p>";
 	$content .= theme('timeline', $tl);
 	theme('page', "List {$user}/{$list}", $content);
 }
@@ -204,17 +213,20 @@ function lists_list_members_page($user, $list) {
 	$p = twitter_lists_list_members($user, $list);
 
 	// TODO: use a different theme() function? Add a "delete member" link for each member
-	$content = "<div class='heading'>Members of <a href='{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>:</div>\n";
+	$list_url = "<a href='{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>";
+	$content = "<div class='heading'>".sprintf(_(LIST_MEMBERS),$list_url).":</div>\n";
 	$content .= theme('users_list', $p);
-	theme('page', "Members of {$user}/{$list}", $content);
+	theme('page', sprintf(_(LIST_MEMBERS),"{$user}/{$list}"), $content);
 }
 
 function lists_list_subscribers_page($user, $list) {
 	// Show subscribers of a list
 	$p = twitter_lists_list_subscribers($user, $list);
-	$content = "<div class='heading'>Subscribers of <a href='{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>:</div>\n";
+	$list_url = "<a href='{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>";
+
+	$content = "<div class='heading'>".sprintf(_(LIST_SUBSCRIBERS),$list_url).":</div>\n";
 	$content .= theme('users_list', $p);
-	theme('page', "Subscribers of {$user}/{$list}", $content);
+	theme('page', sprintf(_(LIST_SUBSCRIBERS),"{$user}/{$list}"), $content);
 }
 
 /* Theme functions */
@@ -227,10 +239,16 @@ function theme_lists($json) {
 		$lists = $json;
 	}
 	if (sizeof($lists) == 0 || $lists == '[]') {
-		return "<p>No lists to display</p>";
+		return "<p>"._(NO_LISTS)."p>";
 	}
 	$rows = array();
-	$headers = array('<div class="table"><div class="table-row"><span class="table-cell">Lists</span><span class="table-cell-middle">Members</span><span class="table-cell-end">Subscribers</span></div>');
+	$headers_html = '<div class="table">
+								<div class="table-row">
+									<span class="table-cell">'._(LISTS).'</span>
+									<span class="table-cell-middle">'._(MEMBERS).'</span>
+									<span class="table-cell-end">'._(SUBSCRIBERS).'</span>
+								</div>';
+	$headers = array($headers_html);
 	foreach ($lists as $list) {
 		$url = "lists/{$list->user->screen_name}/{$list->slug}";
 
@@ -240,7 +258,6 @@ function theme_lists($json) {
 										array('data' => "<a href='{$url}/subscribers'>".number_format($list->subscriber_count)."</a>", 'class' => 'table-cell-end'),
 	                                ),
 		                'class' => 'table-row');
-
 	}
 
 	//	Closing </div> missing. Grrrr.

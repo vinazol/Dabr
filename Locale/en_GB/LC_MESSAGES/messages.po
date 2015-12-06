@@ -1,0 +1,691 @@
+#
+# Terence Eden <dabr-i18n@shkspr.mobi>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Dabr\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-12-06 21:56+0100\n"
+"Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
+"Language-Team: English <dabr-i18n@shkspr.mobi>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: en-GB\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+# "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+# Test token 1
+msgid "HELLO_WORLD"
+msgstr "Hello World!"
+
+# Test token 2
+msgid "TEST_TRANSLATION"
+msgstr "Testing translation..."
+
+# Error Message
+msgid "ERROR_MESSAGE"
+msgstr "You silly sausage!"
+
+msgid "WHAT_IS"
+msgstr "What is Dabr for Twitter?"
+
+msgid "DABR_LOGIN"
+msgstr "Dabr - mobile Twitter Login"
+
+msgid "DABR_LOGGED_OUT"
+msgstr "Dabr - mobile Twitter Login"
+
+msgid "DABR_LOGIN_AGAIN"
+msgstr "Logged out. <a href=\"\">Log in again</a>"
+
+msgid "DABR_META"
+msgstr ""
+"Free open source alternative to mobile Twitter, bringing you the complete "
+"Twitter experience to your phone."
+
+msgid "TWITTER_SIGN_IN"
+msgstr "Sign in with Twitter."
+
+msgid "RE_AUTH"
+msgstr ""
+"It looks like you changed your password. Please <a href=\"logout\">logout</"
+"a> and then reauthenticate."
+
+msgid "ABOUT_TITLE"
+msgstr "About Dabr"
+
+msgid "ABOUT_1"
+msgstr "A mobile web interface for Twitter"
+
+msgid "CREATED_BY"
+msgstr "Created by <a href=\"https://alpha.app.net/edent\">Terence Eden!</a>"
+
+msgid "ABOUT_FEATURES"
+msgstr "Features:"
+
+msgid "ABOUT_2"
+msgstr "Change colour scheme - including night reading mode"
+
+msgid "ABOUT_3"
+msgstr "Change font and font size"
+
+msgid "ABOUT_4"
+msgstr "Upload images"
+
+msgid "ABOUT_5"
+msgstr "Share location"
+
+msgid "ABOUT_6"
+msgstr "Watch posted videos"
+
+msgid "ABOUT_7"
+msgstr "Preview images, FourSquare, Wikipedia and more."
+
+msgid "ABOUT_8"
+msgstr "Search for users"
+
+msgid "ABOUT_9"
+msgstr "Search posts"
+
+msgid "ABOUT_10"
+msgstr "See who has starred your posts"
+
+msgid "ABOUT_11"
+msgstr "See who has reposted your posts"
+
+msgid "ABOUT_12"
+msgstr "Change you avatar size"
+
+msgid "ABOUT_13"
+msgstr "...and so much more!"
+
+msgid "ABOUT_CREDITS"
+msgstr "Credits:"
+
+msgid "ABOUT_CREDITS_1"
+msgstr "A simplified and fast mobile web interface for Twitter."
+
+msgid "ABOUT_CREDITS_2"
+msgstr ""
+"Secure - served over http<strong>s</strong>. Your Twitter login details are "
+"stored using an encrypted cookie on your machine, and <em>never</em> stored "
+"on the website."
+
+msgid "ABOUT_CREDITS_3"
+msgstr ""
+"<a href=\"https://github.com/edent/Dabr\">Open source</a> - maintained by <a "
+"href=\"https://shkspr.mobi/blog/tag/dabr/\">Terence Eden</a>."
+
+msgid "ABOUT_CREDITS_4"
+msgstr ""
+"Originally by <a href=\"https://code.google.com/p/dabr\">David Carrington</"
+"a> with inspirations from <a href=\"http://whatleydude.com/\">@whatleydude</"
+"a>."
+
+msgid "ABOUT_CREDITS_5"
+msgstr ""
+"If you have any comments, suggestions or questions then feel free to get in "
+"touch ☺"
+
+msgid "GITHUB_LINK"
+msgstr ""
+"<a href=\"https://github.com/edent/Dabr-For-AppDotNet\">Open Source on "
+"GitHub</a>"
+
+msgid "ABOUT_COMMENTS"
+msgstr ""
+"If you have any comments, suggestions or questions then feel free to <a href="
+"\"http://edent.tel/\">get in touch</a>."
+
+msgid "POST_CAPTION"
+msgstr "Post to App.net"
+
+msgid "POST_CAPTION_REPLY"
+msgstr "Reply on App.net"
+
+msgid "LINK_VIEW_ORIGINAL"
+msgstr "View orginal"
+
+msgid "LINK_TRANSLATE"
+msgstr "Translate"
+
+msgid "CONVERSATION_VIEW"
+msgstr "And the conversation view..."
+
+msgid "ERROR_INVALID_METHOD"
+msgstr "Error: Invalid HTTP request method for this action."
+
+msgid "ARE_YOU_SURE"
+msgstr "Are you really sure you want to"
+
+msgid "DELETE_BUTTON"
+msgstr "Delete"
+
+msgid "ARE_YOU_SURE_DELETE"
+msgstr "Are you really sure you want to delete your post?"
+
+msgid "CONFIRM_BUTTON"
+msgstr "Yes please"
+
+msgid "NO_UNDO"
+msgstr "There is no way to undo this action."
+
+msgid "MUTE_1"
+msgstr "You won't see any of their posts in your timeline"
+
+msgid "MUTE_2"
+msgstr "They won't appear in your replies"
+
+msgid "MUTE_3"
+msgstr "They <em>will still be able to follow you and see your posts</em>"
+
+msgid "MUTE_4"
+msgstr "You <em>can</em> unmute them later"
+
+msgid "UNMUTE_1"
+msgstr "You will see their posts in your timeline if you follow them."
+
+msgid "UNMUTE_2"
+msgstr "Their posts will appear in your replies"
+
+msgid "UNMUTE_3"
+msgstr "You <em>can</em> mute them later"
+
+msgid "Are you sure you want to mute %s?"
+msgstr "Are you really sure you want to mute %s?"
+
+msgid "SPAM_1 %s"
+msgstr ""
+"Are you really sure you want to report <strong>%s</strong> as a spammer?"
+
+msgid "SPAM_2"
+msgstr "They will also be blocked from following you."
+
+msgid "MUTED_1 %s"
+msgstr "Shhhhhh %s! You are now <strong>muted</strong>."
+
+msgid "UNMUTED_1 %s"
+msgstr "Hello again %s - you have been <strong>unmuted</strong>."
+
+msgid "SPAMMER_1 %s"
+msgstr "Yum! Yum! Yum! Delicious spam! Goodbye @%s."
+
+msgid "SAVE_DEFAULT_SEARCH"
+msgstr "Save as default search"
+
+msgid "IN_REPLY_TO"
+msgstr "In reply to %s"
+
+msgid "REPLY"
+msgstr "Reply"
+
+msgid "SHARE_MY_LOCATION"
+msgstr "Share my location"
+
+msgid "RETWEET_TWITTER"
+msgstr "Twitter Retweet"
+
+msgid "RETWEET"
+msgstr "Retweet"
+
+msgid "RETWEET_COMMENT"
+msgstr "Comment on Tweet"
+
+msgid "RETWEET_EDIT"
+msgstr "Edit before Retweeting"
+
+msgid "RETWEET_EDIT_BUTTON"
+msgstr "Quote Tweet"
+
+msgid "RETWEET_FORBIDDEN"
+msgstr ""
+"@%s doesn't allow you to retweet them. You will have to retweet them "
+"manually."
+
+msgid "NATIVE_REPOST"
+msgstr "Native Repost:"
+
+msgid "NATIVE_REPOST_BUTTON"
+msgstr "Repost it!"
+
+msgid "EDIT_BEFORE_REPOST"
+msgstr "Edit Before Reposting:"
+
+msgid "TIMEZONE"
+msgstr "Timezone:"
+
+msgid "JOINED"
+msgstr "Joined on"
+
+msgid "BEST_MATES"
+msgstr "YOU ARE BEST FRIENDS!"
+
+msgid "FOLLOWS"
+msgstr "Follows you."
+
+msgid "FOLLOWING"
+msgstr "You are following."
+
+msgid "SH_MUTED"
+msgstr "Shhh! Muted."
+
+msgid "FOLLOW"
+msgstr "Follow"
+
+msgid "UNFOLLOW"
+msgstr "Unfollow"
+
+msgid "UNFAVOURITE"
+msgstr "Unfavourite"
+
+msgid "RETWEETS_HIDE"
+msgstr "Hide Retweets"
+
+msgid "RETWEETS_SHOW"
+msgstr "Show Retweets"
+
+msgid "UNBLOCK"
+msgstr "Unblock"
+
+msgid "BLOCK"
+msgstr "Block"
+
+msgid "BLOCK_SHOW"
+msgstr "Show blocked users"
+
+msgid "UNMUTE"
+msgstr "Unmute"
+
+msgid "MUTE"
+msgstr "Mute"
+
+msgid "REPORT_SPAM"
+msgstr "Report Spam"
+
+msgid "SEARCH_AT"
+msgstr "Search @%s"
+
+msgid "BIO"
+msgstr "Bio:"
+
+msgid "VIEW_CONV"
+msgstr "View Conversation"
+
+msgid "VIEW_ANNOT"
+msgstr "View Annotations"
+
+msgid "RETWEETED_BY %s"
+msgstr "Retweeted by %s"
+
+msgid "VIA"
+msgstr "Sent via "
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "NO_USERS_FOUND"
+msgstr "Where is everybody? No users found :-("
+
+msgid "NO_RETWEETERS_FOUND"
+msgstr "Where is everybody? No users retweeted this message :-("
+
+msgid "NO_TWEETS"
+msgstr "No Tweets to display :-( sorry"
+
+msgid "SEARCH_BUTTON"
+msgstr "Search"
+
+msgid "SEARCH_SAVE %s"
+msgstr "Save %s as new search"
+
+msgid "SAVED_SEARCHES"
+msgstr "Saved Searches"
+
+msgid "LINK_OLDER"
+msgstr "← Older"
+
+msgid "LINK_NEWER"
+msgstr "Newer →"
+
+msgid "LINK_MENU_BUTTON"
+msgstr "↑ Menu ↑"
+
+msgid "LINK_FIRST"
+msgstr "First →"
+
+msgid "LINK_MENU"
+msgstr "Menu"
+
+msgid "ERROR_THEME %s"
+msgstr "Error: theme function <b>%s</b> not found."
+
+msgid "LIST_PAGE_NOT_FOUND"
+msgstr "Error: List page not found."
+
+msgid "LIST_MUTED"
+msgstr "This is everyone you have muted"
+
+msgid "LIST_FOLLOWING"
+msgstr "Lists following %s"
+
+msgid "LIST_USER_FOLLOWS"
+msgstr "Lists %s follows"
+
+msgid "LIST_TWEETS_IN"
+msgstr "Tweets in"
+
+msgid "LIST_VIEW_MEMBERS"
+msgstr "View members"
+
+msgid "LIST_MEMBERS"
+msgstr "Members of %s"
+
+msgid "LIST_VIEW_SUBSCRIBERS"
+msgstr "View subscribers"
+
+msgid "LIST_SUBSCRIBERS"
+msgstr "Subscribers of %s"
+
+msgid "LIST_FOLLOWERS"
+msgstr "These lovely people hang on your every word"
+
+msgid "NO_LISTS"
+msgstr "No lists to display"
+
+msgid "LISTS"
+msgstr "Lists"
+
+msgid "MEMBERS"
+msgstr "Members"
+
+msgid "SUBSCRIBERS"
+msgstr "Subscribers"
+
+msgid "LIST_SEARCH"
+msgstr "Let's go exploring!"
+
+msgid "LIST_STARRED"
+msgstr "People who starred that post"
+
+msgid "LIST_REPOSTERS"
+msgstr "They came, they saw, they reposted"
+
+msgid "LIST_FOUND"
+msgstr "Who have we found?</h3>"
+
+msgid "LIST_STARS"
+msgstr "OMG! It's full of stars!"
+
+msgid "TIME_PROCESSED %s"
+msgstr "Processed in %s seconds"
+
+msgid "TIME_PROCESSED_MEDIA"
+msgstr "Embedded Media"
+
+msgid "OTHER_SERVICES"
+msgstr "other services"
+
+msgid "UGLY"
+msgstr ""
+"Think Dabr looks ugly? <a href=\"settings\">Change the colours, font, and "
+"more!</a>"
+
+msgid "COOKIE_MONSTER_DONE"
+msgstr ""
+"The cookie monster has logged you out and cleared all settings. Try logging "
+"in again now."
+
+msgid "BIG_ICONS"
+msgstr "Big Icons"
+
+msgid "SMALL_ICONS"
+msgstr "Small Icons"
+
+msgid "TEXT_ONLY"
+msgstr "Text Only"
+
+msgid "FONT_SMALLEST"
+msgstr "Smallest"
+
+msgid "FONT_SMALL"
+msgstr "Small"
+
+msgid "FONT_MEDIUM"
+msgstr "Medium"
+
+msgid "FONT_NORMAL"
+msgstr "Normal"
+
+msgid "FONT_BIG"
+msgstr "A bit bigger"
+
+msgid "FONT_LARGE"
+msgstr "Large"
+
+msgid "FONT_HUGE"
+msgstr "Huge"
+
+msgid "MENU_SMART"
+msgstr "Smart Menu"
+
+msgid "MENU_OLD"
+msgstr "Old Style Menu (For older web browsers)"
+
+msgid "POST_PER_PAGE %s"
+msgstr "%s Posts Per Page"
+
+msgid "GWT_DIRECT"
+msgstr "Direct URL Access"
+
+msgid "GWT_GWT"
+msgstr "Google Web Transcoder"
+
+msgid "SETTINGS_H1"
+msgstr "Settings"
+
+msgid "SETTINGS_1"
+msgstr ""
+"This is where you can set your personal preferences! Have fun changing the "
+"colour schemes - my favourite is PINK!"
+
+msgid "PROFILE_NAME"
+msgstr "Name"
+
+msgid "PROFILE_AVATAR"
+msgstr "Avatar"
+
+msgid "PROFILE_BIO"
+msgstr "Bio"
+
+msgid "PROFILE_LINK"
+msgstr "Link"
+
+msgid "PROFILE_LOCATION"
+msgstr "Location"
+
+msgid "PROFILE_JOINED"
+msgstr "Joined on"
+
+msgid "PROFILE_TWEETS_PER_DAY"
+msgid_plural "~%s Tweets per day"
+msgstr[0] "%s Tweets per day"
+msgstr[1] "%s Tweet per day"
+
+msgid "PROFILE_COUNT_FOLLOWERS"
+msgid_plural "%s followers"
+msgstr[0] "%s followers"
+msgstr[1] "%s follower"
+
+msgid "PROFILE_COUNT_TWEETS"
+msgid_plural "%s tweets"
+msgstr[0] "%s tweet"
+msgstr[1] "%s tweets"
+
+msgid "PROFILE_COUNT_FRIENDS"
+msgid_plural "%s friends"
+msgstr[0] "%s friend"
+msgstr[1] "%s friends"
+
+msgid "PROFILE_COUNT_FAVOURITES"
+msgid_plural "%s favourites"
+msgstr[0] "%s favourite"
+msgstr[1] "%s favourites"
+
+msgid "PROFILE_COUNT_LISTS"
+msgid_plural "%s lists"
+msgstr[0] "%s list"
+msgstr[1] "%s lists"
+
+msgid "DIRECTS_CREATE"
+msgstr "Create"
+
+msgid "DIRECTS_INBOX"
+msgstr "Inbox"
+
+msgid "DIRECTS_SENT"
+msgstr "Sent"
+
+msgid "DIRECTS_WARNING"
+msgstr "Warning"
+
+msgid "DIRECTS_TO"
+msgstr "To"
+
+msgid "DIRECTS_MESSAGE"
+msgstr "Message"
+
+msgid "DIRECT_MESSAGE"
+msgstr "Direct Message"
+
+msgid "DIRECTS_BUTTON"
+msgstr "Send Direct Message"
+
+msgid "DIRECTS_WARNING_TEXT"
+msgstr ""
+"<b>$s</b> is not following you. You might not be able to send them a Direct "
+"Message :-("
+
+msgid "DIRECTS_SENDING_TO"
+msgstr "Sending direct message to <b>%s</b>"
+
+msgid "ICONS_CAMERA"
+msgstr "Add photo"
+
+msgid "SETTINGS_COLOUR"
+msgstr "Colour scheme:"
+
+msgid "SETTINGS_MODE"
+msgstr "Icon Size"
+
+msgid "SETTINGS_FONT_SIZE"
+msgstr "Font Size:"
+
+msgid "SETTINGS_FONT"
+msgstr "Choose a fun new font"
+
+msgid "SETTINGS_MENU"
+msgstr "Menu Bar:"
+
+msgid "SETTINGS_PPP %s"
+msgstr "%s Posts Per Page"
+
+msgid "SETTINGS_AVATAR_SIZE"
+msgstr "Avatar Size"
+
+msgid "SETTINGS_WORK_SAFE"
+msgstr "Work Safe"
+
+msgid "SETTINGS_HIDE_INLINE"
+msgstr "Hide inline media (eg image thumbnails &amp; embedded videos)"
+
+msgid "SETTINGS_HIDE_AVATARS"
+msgstr "Hide avatars"
+
+msgid "SETTINGS_EMOTICONS"
+msgstr "Replace :-) with"
+
+msgid "SETTINGS_NON_DIRECT"
+msgstr "Show non-directed replies:"
+
+msgid "SETTINGS_NON_DIRECT_DETAIL"
+msgstr ""
+"You follow Alice, you don't follow Bob. Alice sends a post to Bob - do you "
+"want to see it?"
+
+msgid "SETTINGS_EXTERNAL"
+msgstr "External links go:"
+
+msgid "SETTINGS_GWT_DETAIL"
+msgstr ""
+"Google Web Transcoder (GWT) converts third-party sites into small, speedy "
+"pages suitable for older phones and people with less bandwidth."
+
+msgid "SETTINGS_OTHERS"
+msgstr "Others:"
+
+msgid "SETTINGS_TIMESTAMP %s"
+msgstr "Show the timestamp \"%s\" instead of \"25 sec ago\""
+
+msgid "SETTINGS_TIMESTAMP_IS %s"
+msgstr "The current time is: %s"
+
+msgid "SETTINGS_TIMESTAMP_OFFSET"
+msgstr "You can use an offset of "
+
+msgid "SETTINGS_TIMESTAMP_DISPLAY %s"
+msgstr "we display the time as %s"
+
+msgid "SETTINGS_TIMESTAMP_ADJUST"
+msgstr "It is worth adjusting this value if the time appears to be wrong."
+
+msgid "SETTINGS_SAVE_BUTTON"
+msgstr "Save Settings"
+
+msgid "SETTINGS_RESET"
+msgstr ""
+"Visit <a href=\"reset\">Reset</a> if things go horribly wrong - it will log "
+"you out and clear all settings."
+
+msgid "MENU_ABOUT"
+msgstr "About"
+
+msgid "MENU_LOGOUT"
+msgstr "Logout"
+
+msgid "MENU_REPLIES"
+msgstr "Replies"
+
+msgid "MENU_GLOBAL"
+msgstr "Global"
+
+msgid "MENU_SEARCH"
+msgstr "Search"
+
+msgid "MENU_STARRED"
+msgstr "My Stars"
+
+msgid "MENU_FOLLOWERS"
+msgstr "Followers"
+
+msgid "MENU_FRIENDS"
+msgstr "Following"
+
+msgid "MENU_MUTED"
+msgstr "Shhhh!"
+
+msgid "MENU_SETTINGS"
+msgstr "Settings"
+
+msgid "MENU_HOME"
+msgstr "Home"
+
+msgid "MENU_EDITPROFILE"
+msgstr "Edit Profile"
+
+msgid "PROFILE_UPDATED"
+msgstr "Your Profile Has Been Updated"
+
+msgid "ERROR_SCOPE"
+msgstr "You need to logout and sign-in again in order to use this new service"
