@@ -645,17 +645,17 @@ function twitter_status_page($query) {
 		$screen_name = $status->from->screen_name;
 		$content .= '<p>
 		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() .
-		                '">View original tweet on Twitter</a> | ';
+		                '">'._(LINK_VIEW_ORIGINAL).'</a> | ';
 
 		//	Translate the tweet
-		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) . '" target="'. get_target() . '">Translate this tweet</a>
+		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) . '" target="'. get_target() . '">'._(LINK_TRANSLATE).'</a>
 		            </p>';
 
 		$content .= "<p>
 		                <strong>
-		                    <a href=\"https://mobile.twitter.com/{$screen_name}/status/{$id}/report\" target=\"". get_target() . "\">
-		                        Report Abusive Tweet
-		                    </a>
+		                    <a href=\"https://mobile.twitter.com/{$screen_name}/status/{$id}/report\" target=\"". get_target() . "\">"
+		                     ._(LINK_ABUSE).
+		                    "</a>
 		                </strong>
 		            </p>";
 
@@ -750,8 +750,7 @@ function twitter_ensure_post_action() {
 	// This function is used to make sure the user submitted their action as an HTTP POST request
 	// It slightly increases security for actions such as Delete, Block and Spam
 	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-		theme('error', "<h2>Error: You broke something.</h2><p>Invalid HTTP request method for this action.</p>");
-		// die('Error: Invalid HTTP request method for this action.');
+		theme('error', "<h2>"._(ERROR)."</h2><p>"._(ERROR_INVALID_METHOD)."</p>");
 	}
 }
 
@@ -816,12 +815,12 @@ function twitter_confirmation_page($query)
 			if (twitter_block_exists($target_id)) //Is the target blocked by the user?
 			{
 				$action = 'unblock';
-				$content  = "<p>Are you really sure you want to <strong>Unblock $target</strong>?</p>";
+				$content  = "<p>".sprintf(_(ARE_YOU_SURE), "Unblock {$target}")."</p>";
 				$content .= '<ul><li>They will see your updates on their home page if they follow you again.</li><li>You <em>can</em> block them again if you want.</li></ul>';
 			}
 			else
 			{
-				$content = "<p>Are you really sure you want to <strong>$action $target</strong>?</p>";
+				$content = "<p>".sprintf(_(ARE_YOU_SURE), "{$action} {$target}")."</p>";
 				$content .= "<ul>
 				                <li>You won't show up in their list of friends</li>
 				                <li>They won't see your updates on their home page</li>
@@ -837,10 +836,10 @@ function twitter_confirmation_page($query)
 			$status = $cb->statuses_show_ID($api_options);
 			@twitter_api_status($status);
 
-			$content = '<p>Are you really sure you want to delete your tweet?</p>';
+			$content = '<p>'._(ARE_YOU_SURE_DELETE).'</p>';
 			$content .= "<ul>
-			                 <li>Tweet: {$status->text}</li>
-			                 <li>There is <strong>no way to undo this action</strong>.</li>
+			                 <li>{$status->text}</li>
+			                 <li>"._(NO_UNDO)."</li>
 			            </ul>";
 			break;
 
@@ -849,11 +848,11 @@ function twitter_confirmation_page($query)
 			$api_options = array("id" => $target);
 			$status = $cb->directMessages_show($api_options);
 			@twitter_api_status($status);
-			$content = '<p>Are you really sure you want to delete that DM?</p>';
+			$content = '<p>'._(ARE_YOU_SURE_DELETE_DM).'</p>';
 			$content .= "<ul>
-			                <li>Message: {$status->text}</li>
-			                <li>There is <strong>no way to undo this action</strong>.</li>
-			                <li>The DM will be deleted from both the sender's outbox <em>and</em> receiver's inbox.</li>
+			                <li>"._(DIRECT_MESSAGE).": {$status->text}</li>
+			                <li>"._(NO_UNDO)."</li>
+			                <li>"._(DELETE_DM_NOTIFICATION)."</li>
 			            </ul>";
 			break;
 
@@ -863,37 +862,37 @@ function twitter_confirmation_page($query)
 
 			$search = $cb->savedSearches_show_ID($api_options);
 			@twitter_api_status($search);
-			$content = '<p>Are you really sure you want to delete this Saved Search?</p>';
+			$content = '<p>'._(ARE_YOU_SURE_DELETE_SEARCH).'</p>';
 			$content .= "<ul>
-			                <li>Search: {$search->query}</li>
-			                <li>There is <strong>no way to undo this action</strong>.</li>
+			                <li>"._(SEARCH_BUTTON).": {$search->query}</li>
+			                <li>"._(NO_UNDO)."</li>
 			            </ul>";
 			break;
 
 		case 'spam':
-			$content  = "<p>Are you really sure you want to report <strong>$target</strong> as a spammer?</p>";
-			$content .= "<p>They will also be blocked from following you.</p>";
+			$content  = "<p>".sprintf(_(SPAM_1),$target)."</p>";
+			$content .= "<p>"._(SPAM_2)."</p>";
 			break;
 
 		case 'hideretweets':
-			$content  = "<p>Are you really sure you want to hide the Retweets from <strong>$target</strong>?</p>";
-			$content .= "<ul><li>The tweets that {$target} shares will no longer appear in your timeline.</li>
-			                 <li>However you will still see them when looking at {$target}'s timeline.</li></ul>";
+			$content  = "<p>".sprintf(_(HIDE_RETWEETS),$target)."</p>";
+			$content .= "<ul><li>".sprintf(_(HIDE_RETWEETS_1),$target)."</li>
+			                 <li>".sprintf(_(HIDE_RETWEETS_2),$target)."</li></ul>";
 			break;
 
 		case 'showretweets':
-			$content  = "<p>Are you really sure you want to show the Retweets from <strong>$target</strong>?</p>";
-			$content .= "<ul><li>The tweets that {$target} shares will appear in your timeline.</li>
-			                 <li>You can turn these off at any time.</li></ul>";
+			$content  = "<p>".sprintf(_(SHOW_RETWEETS),$target)."</p>";
+			$content .= "<ul><li>".sprintf(_(SHOW_RETWEETS_1),$target)."</li>
+			                 <li>"._(SHOW_RETWEETS_2)."</li></ul>";
 			break;
 		case '':
-			theme('error', "<h2>Error!</h2><p>Nothing to confirm.</p>");
+			theme('error', "<h2>"._(ERROR)."</h2><p>"._(ERROR_NOTHING_TO_CONFIRM)."</p>");
 			break;
 
 
 	}
 	$content .= "<form action='$action/$target' method='post'>
-						<input type='submit' value='Yes please' />
+						<input type='submit' value='"._(CONFIRM_BUTTON)."' />
 					</form>";
 	theme('Page', 'Confirm', $content);
 }
@@ -905,15 +904,30 @@ function twitter_confirmed_page($query)
         $target = $query[2]; // The username of the target
 
 	switch ($action) {
-                case 'block':
-			$content  = "<p><span class='avatar'><img src='images/dabr.png' width='48' height='48' /></span><span class='status shift'>Bye-bye @$target - you are now <strong>blocked</strong>.</span></p>";
-                        break;
-                case 'unblock':
-                        $content  = "<p><span class='avatar'><img src='images/dabr.png' width='48' height='48' /></span><span class='status shift'>Hello again @$target - you have been <strong>unblocked</strong>.</span></p>";
-                        break;
-                case 'spam':
-                        $content = "<p><span class='avatar'><img src='images/dabr.png' width='48' height='48' /></span><span class='status shift'>Yum! Yum! Yum! Delicious spam! Goodbye @$target.</span></p>";
-                        break;
+	   case 'block':
+			$content  = "<p>
+								<span class='avatar'>
+									<img src='images/dabr.png' width='48' height='48' />
+								</span>
+								<span class='status shift'>".sprintf(_(BLOCKED_MESSAGE),$target)."</span>
+							</p>";
+         break;
+	   case 'unblock':
+         $content  = "<p>
+								<span class='avatar'>
+									<img src='images/dabr.png' width='48' height='48' />
+								</span>
+								<span class='status shift'>".sprintf(_(UNBLOCKED_MESSAGE),$target)."</span>
+							</p>";
+         break;
+	   case 'spam':
+         $content = "<p>
+								<span class='avatar'>
+									<img src='images/dabr.png' width='48' height='48' />
+								</span>
+								<span class='status shift'>".sprintf(_(SPAMMER_MESSAGE),$target)."</span>
+							</p>";
+         break;
 	}
  	theme ('Page', 'Confirmed', $content);
 }
@@ -1026,7 +1040,7 @@ function twitter_retweeters_page($query) {
 
 	// Format the output
 	$content = theme('users_list', $users);
-	theme('page', "Everyone who retweeted {$id}", $content);
+	theme('page', sprintf(_(RETWEET_LIST),$id), $content);
 }
 
 function twitter_update() {
@@ -1914,13 +1928,16 @@ function twitter_api_status(&$response) {
 				return;
 			case 401:
 				user_logout();
-				theme('error', "<h2>Error: Login credentials incorrect.</h2><p>Twitter says: {$error_message} (Code {$error_code})</p>");
+				theme('error', "<h2>"._(ERROR).": "._(ERROR_LOGIN)."</h2>".
+							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 			case 429:
-				theme('error', "<h2>Rate limit exceeded!</h2><p>{$rate_limit}.</p>");
+				theme('error', "<h2>"._(ERROR_RATE_LIMIT)."</h2><p>{$rate_limit}.</p>");
 			case 403:
-				theme('error', "<h2>{$error_message}</h2><p>Twitter says: {$error_message} (Code {$error_code})</p>");
+				theme('error', "<h2>"._(ERROR).": </h2>".
+							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 			default:
-				theme('error', "<h2>Something went wrong.</h2><p>Twitter says: {$error_message} (Code {$error_code})</p>");
+				theme('error', "<h2>" . _(ERROR) . ": </h2>".
+							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 		}
 	}
 }

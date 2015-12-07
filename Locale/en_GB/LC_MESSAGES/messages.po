@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dabr\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-06 21:56+0100\n"
+"PO-Revision-Date: 2015-12-07 13:51+0100\n"
 "Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
 "Language-Team: English <dabr-i18n@shkspr.mobi>\n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 # "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-# Test token 1
-msgid "HELLO_WORLD"
-msgstr "Hello World!"
-
-# Test token 2
-msgid "TEST_TRANSLATION"
-msgstr "Testing translation..."
-
 # Error Message
 msgid "ERROR_MESSAGE"
 msgstr "You silly sausage!"
@@ -48,58 +40,11 @@ msgstr ""
 msgid "TWITTER_SIGN_IN"
 msgstr "Sign in with Twitter."
 
-msgid "RE_AUTH"
-msgstr ""
-"It looks like you changed your password. Please <a href=\"logout\">logout</"
-"a> and then reauthenticate."
-
 msgid "ABOUT_TITLE"
 msgstr "About Dabr"
 
 msgid "ABOUT_1"
 msgstr "A mobile web interface for Twitter"
-
-msgid "CREATED_BY"
-msgstr "Created by <a href=\"https://alpha.app.net/edent\">Terence Eden!</a>"
-
-msgid "ABOUT_FEATURES"
-msgstr "Features:"
-
-msgid "ABOUT_2"
-msgstr "Change colour scheme - including night reading mode"
-
-msgid "ABOUT_3"
-msgstr "Change font and font size"
-
-msgid "ABOUT_4"
-msgstr "Upload images"
-
-msgid "ABOUT_5"
-msgstr "Share location"
-
-msgid "ABOUT_6"
-msgstr "Watch posted videos"
-
-msgid "ABOUT_7"
-msgstr "Preview images, FourSquare, Wikipedia and more."
-
-msgid "ABOUT_8"
-msgstr "Search for users"
-
-msgid "ABOUT_9"
-msgstr "Search posts"
-
-msgid "ABOUT_10"
-msgstr "See who has starred your posts"
-
-msgid "ABOUT_11"
-msgstr "See who has reposted your posts"
-
-msgid "ABOUT_12"
-msgstr "Change you avatar size"
-
-msgid "ABOUT_13"
-msgstr "...and so much more!"
 
 msgid "ABOUT_CREDITS"
 msgstr "Credits:"
@@ -129,48 +74,55 @@ msgstr ""
 "If you have any comments, suggestions or questions then feel free to get in "
 "touch ☺"
 
-msgid "GITHUB_LINK"
-msgstr ""
-"<a href=\"https://github.com/edent/Dabr-For-AppDotNet\">Open Source on "
-"GitHub</a>"
-
-msgid "ABOUT_COMMENTS"
-msgstr ""
-"If you have any comments, suggestions or questions then feel free to <a href="
-"\"http://edent.tel/\">get in touch</a>."
-
-msgid "POST_CAPTION"
-msgstr "Post to App.net"
-
-msgid "POST_CAPTION_REPLY"
-msgstr "Reply on App.net"
-
 msgid "LINK_VIEW_ORIGINAL"
-msgstr "View orginal"
+msgstr "View orginal tweet on Twitter"
 
 msgid "LINK_TRANSLATE"
-msgstr "Translate"
+msgstr "Translate this tweet"
 
-msgid "CONVERSATION_VIEW"
-msgstr "And the conversation view..."
+msgid "LINK_ABUSE"
+msgstr "Report Abusive Tweet"
+
+msgid "ERROR"
+msgstr "Error!"
+
+msgid "ERROR_LOGIN"
+msgstr "Login credentials incorrect."
+
+msgid "ERROR_TWITTER_MESSAGE"
+msgstr "Twitter responded with: %s (Code %s)."
+
+msgid "ERROR_RATE_LIMIT"
+msgstr "Rate limit exceeded.  Slow down and try again later."
 
 msgid "ERROR_INVALID_METHOD"
-msgstr "Error: Invalid HTTP request method for this action."
+msgstr "Invalid HTTP request method for this action."
 
 msgid "ARE_YOU_SURE"
-msgstr "Are you really sure you want to"
+msgstr "Are you really sure you want to <strong>%s</strong>?"
 
 msgid "DELETE_BUTTON"
 msgstr "Delete"
 
 msgid "ARE_YOU_SURE_DELETE"
-msgstr "Are you really sure you want to delete your post?"
+msgstr "Are you really sure you want to delete your Tweet?"
+
+msgid "ARE_YOU_SURE_DELETE_DM"
+msgstr "Are you really sure you want to delete that Direct Message?"
+
+msgid "DELETE_DM_NOTIFICATION"
+msgstr ""
+"The DM will be deleted from both the sender's outbox <em>and</em> receiver's "
+"inbox."
+
+msgid "ARE_YOU_SURE_DELETE_SEARCH"
+msgstr "Are you really sure you want to delete this Saved Search?"
 
 msgid "CONFIRM_BUTTON"
 msgstr "Yes please"
 
 msgid "NO_UNDO"
-msgstr "There is no way to undo this action."
+msgstr "There is <strong>no way to undo this action</strong>."
 
 msgid "MUTE_1"
 msgstr "You won't see any of their posts in your timeline"
@@ -196,21 +148,45 @@ msgstr "You <em>can</em> mute them later"
 msgid "Are you sure you want to mute %s?"
 msgstr "Are you really sure you want to mute %s?"
 
-msgid "SPAM_1 %s"
+msgid "SPAM_1"
 msgstr ""
 "Are you really sure you want to report <strong>%s</strong> as a spammer?"
 
 msgid "SPAM_2"
 msgstr "They will also be blocked from following you."
 
-msgid "MUTED_1 %s"
-msgstr "Shhhhhh %s! You are now <strong>muted</strong>."
-
-msgid "UNMUTED_1 %s"
-msgstr "Hello again %s - you have been <strong>unmuted</strong>."
-
-msgid "SPAMMER_1 %s"
+msgid "SPAMMER_MESSAGE"
 msgstr "Yum! Yum! Yum! Delicious spam! Goodbye @%s."
+
+msgid "BLOCKED_MESSAGE"
+msgstr "Bye-bye @%s - you are now <strong>blocked</strong>."
+
+msgid "UNBLOCKED_MESSAGE"
+msgstr "Hello again @%s - you have been <strong>unblocked</strong>."
+
+msgid "HIDE_RETWEETS"
+msgstr ""
+"Are you really sure you want to hide the Retweets from <strong>%s</strong>?"
+
+msgid "HIDE_RETWEETS_1"
+msgstr "The tweets that %s shares will no longer appear in your timeline."
+
+msgid "HIDE_RETWEETS_2"
+msgstr "However you will still see them when looking at %s's timeline."
+
+msgid "SHOW_RETWEETS"
+msgstr ""
+"Are you really sure you want to show Retweets from <strong>%s</strong>?"
+
+msgid "SHOW_RETWEETS_1"
+msgstr "The tweets that %s shares will appear in your timeline."
+
+msgid "SHOW_RETWEETS_2"
+msgstr "You can turn these off at any time."
+
+msgid "ERROR_NOTHING_TO_CONFIRM"
+msgstr ""
+"There was nothing to confirm. You should not see this message. How strange..."
 
 msgid "SAVE_DEFAULT_SEARCH"
 msgstr "Save as default search"
@@ -243,6 +219,9 @@ msgid "RETWEET_FORBIDDEN"
 msgstr ""
 "@%s doesn't allow you to retweet them. You will have to retweet them "
 "manually."
+
+msgid "RETWEET_LIST"
+msgstr "Everyone who retweeted %s"
 
 msgid "NATIVE_REPOST"
 msgstr "Native Repost:"
