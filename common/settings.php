@@ -48,7 +48,7 @@ function cookie_monster() {
 
 	setting_clear_session_oauth();
 
-	return theme('page', 'Cookie Monster', '<p>The cookie monster has logged you out and cleared all settings. Try logging in again now.</p>');
+	return theme('page', _(COOKIE_MONSTER), '<p>'._(COOKIE_MONSTER_DONE).'</p>');
 }
 
 function setting_clear_session_oauth() {
@@ -91,23 +91,23 @@ function settings_page($args) {
 	}
 
 	$perPage = array(
-		  '5'	=>   '5 Tweets Per Page',
-		 '10'	=>  '10 Tweets Per Page',
-		 '20'	=>  '20 Tweets Per Page',
-		 '30'	=>  '30 Tweets Per Page',
-		 '40'	=>  '40 Tweets Per Page',
-		 '50'	=>  '50 Tweets Per Page',
-		'100' 	=> '100 Tweets Per Page (Slow)',
-		'150' 	=> '150 Tweets Per Page (Very Slow)',
-		'200' 	=> '200 Tweets Per Page (Extremely Slow)',
+		  '5'	=> sprintf(_(SETTINGS_TWEETS_PER_PAGE),5),
+		 '10'	=> sprintf(_(SETTINGS_TWEETS_PER_PAGE),10),
+		 '20'	=> sprintf(_(SETTINGS_TWEETS_PER_PAGE),20),
+		 '30'	=> sprintf(_(SETTINGS_TWEETS_PER_PAGE),30),
+		 '40'	=> sprintf(_(SETTINGS_TWEETS_PER_PAGE),40),
+		 '50'	=> sprintf(_(SETTINGS_TWEETS_PER_PAGE),50),
+		'100' => sprintf(_(SETTINGS_TWEETS_PER_PAGE),100) ." ". _(SETTINGS_SLOW_1),
+		'150' => sprintf(_(SETTINGS_TWEETS_PER_PAGE),150) ." ". _(SETTINGS_SLOW_2),
+		'200' => sprintf(_(SETTINGS_TWEETS_PER_PAGE),200) ." ". _(SETTINGS_SLOW_3),
 	);
 
 	$image_size = array(
-		'thumb'	=>  'Thumbnail (150*150)',
-		'small'	=>  'Small (340*340)',
-		'medium' =>  'Medium (600*600)',
-		'large'	=>  'Large (1024*1024)',
-		'orig'	=>  'Original (8000*8000)'
+		'thumb'	=>  _(SETTINGS_IMAGE_THUMB),
+		'small'	=>  _(SETTINGS_IMAGE_SMALL),
+		'medium' =>  _(SETTINGS_IMAGE_MEDIUM),
+		'large'	=>  _(SETTINGS_IMAGE_LARGE),
+		'orig'	=>  _(SETTINGS_IMAGE_ORIGINAL)
 	);
 
 	$colour_schemes = array();
@@ -129,7 +129,7 @@ function settings_page($args) {
 
 	$content = '';
 	$content .= '<form action="settings/save" method="post">
-	                <p>Colour scheme:
+	                <p>'._(SETTINGS_COLOUR).'
 	                    <br />
 	                    <select name="colours">';
 	$content .= theme('options', $colour_schemes, setting_fetch('colours', 0));
@@ -137,7 +137,7 @@ function settings_page($args) {
 	                </p>';
 
 
-	$content .=     '<p>Tweets Per Page:
+	$content .=     '<p>'._(SETTINGS_PER_PAGE).'
                         <br />
                         <select name="perPage">';
 	$content .=             theme('options', $perPage, setting_fetch('perPage', 20));
@@ -145,7 +145,7 @@ function settings_page($args) {
 	                    <br/>
 	                </p>';
 
-	$content .=     '<p>Image size:
+	$content .=     '<p>'._(SETTINGS_IMAGE_SIZE).'
                         <br />
                         <select name="image_size">';
 	$content .=             theme('options', $image_size, setting_fetch('image_size', "medium"));
@@ -154,53 +154,58 @@ function settings_page($args) {
 	                </p>';
 
 	$content .= '<p>
-	                <label>
-	                    <input type="checkbox" name="gwt" value="on" '. (setting_fetch('gwt') == 'on' ? ' checked="checked" ' : '') .' />
-	                    Use Google Web Transcoder (GWT) for external links. Suitable for older phones and people with less bandwidth.
-	                </label>
+	               <label>
+	                  <input type="checkbox" name="gwt" value="on" '. (setting_fetch('gwt') == 'on' ? ' checked="checked" ' : '') .' />'.
+							_(SETTINGS_GWT_DETAIL) .
+	               '</label>
+	            </p>';
+
+	$content .= '<p>
+	               <label>
+	                  <input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' />'.
+							sprintf(_(SETTINGS_TIMESTAMP), twitter_date('H:i')).
+						'</label>
 	            </p>';
 
 	$content .= '<p>
 	                <label>
-	                    <input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' />
-	                    Show the timestamp ' . twitter_date('H:i') . ' instead of 25 sec ago
-	                </label>
-	            </p>';
-
-	$content .= '<p>
-	                <label>
-	                    <input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' />
-	                    Hide Twitter photos.
-	                </label>
+	                    <input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' />'.
+							  _(SETTINGS_HIDE_INLINE).
+	                '</label>
 	            </p>';
 
 	//	Hide oembeds by default. Keep things fast & save API calls.
 	$content .= '<p>
-	                <label>
-	                    <input type="checkbox" name="show_oembed" value="yes" '. (setting_fetch('show_oembed') == yes ? ' checked="checked" ' : '') .' />
-	                    Show link previews (YouTube, Instagram, Blogs, etc).
-	                </label>
+	               <label>
+	                  <input type="checkbox" name="show_oembed" value="yes" '. (setting_fetch('show_oembed') == yes ? ' checked="checked" ' : '') .' />'
+	                  ._(SETTINGS_SHOW_PREVIEW).
+						'</label>
 	            </p>';
 
 	$content .= '<p>
-	                <label>
-	                    <input type="checkbox" name="hide_avatars" value="yes" '. (setting_fetch('hide_avatars') == 'yes' ? ' checked="checked" ' : '') .' />
-	                    Hide users\' profile images.
-	                </label>
+	               <label>
+	                  <input type="checkbox" name="hide_avatars" value="yes" '. (setting_fetch('hide_avatars') == 'yes' ? ' checked="checked" ' : '') .' />'.
+							_(SETTINGS_HIDE_AVATARS).
+						'</label>
 	            </p>';
 
 	$content .= '<p>
-	                <label>
-	                    <input type="checkbox" name="menu_icons" value="yes" '. (setting_fetch('menu_icons') == 'yes' ? ' checked="checked" ' : '') .' />
-	                    Show Menu icons like <span class="icons">🏠⌖</span>.
-	                </label>
+	               <label>
+	                  <input type="checkbox" name="menu_icons" value="yes" '. (setting_fetch('menu_icons') == 'yes' ? ' checked="checked" ' : '') .' />'.
+							_(SETTINGS_MENU_ICONS).
+						'</label>
 	            </p>';
 
-	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />It is worth adjusting this value if the time appears to be wrong.</label></p>';
+	$content .= '<p>
+						<label>'.sprintf(_(SETTINGS_TIMESTAMP_IS),gmdate('H:i')) .' ' .
+							sprintf(_(SETTINGS_TIMESTAMP_DISPLAY), "<input type=\"text\" name=\"utc_offset\" value=\"{$utc_offset}\" size=\"3\" />", twitter_date('H:i')) .
+							'<br />'._(SETTINGS_TIMESTAMP_ADJUST).'
+						</label>
+					</p>';
 
-	$content .= '<p><input type="submit" value="Save" /></p></form>';
+	$content .= '<p><input type="submit" value="'._(SETTINGS_SAVE_BUTTON).'" /></p></form>';
 
-	$content .= '<hr /><p>Visit <a href="reset">Reset</a> if things go horribly wrong - it will log you out and clear all settings.</p>';
+	$content .= '<hr /><p>'._(SETTINGS_RESET).'</p>';
 
 	return theme('page', 'Settings', $content);
 }

@@ -202,7 +202,7 @@ function twitter_profile_page() {
 
 		@twitter_api_status($cb->account_updateProfile($api_options));
 
-		$content = "<h2>Profile Updated</h2>";
+		$content = "<h2>"._(PROFILE_UPDATED)."</h2>";
 	}
 
 	//	http://api.twitter.com/1/account/update_profile_image.format
@@ -228,33 +228,6 @@ function twitter_profile_page() {
 
 	theme('page', "Edit Profile", $content);
 }
-
-
-// function long_url($shortURL)
-// {
-// 	if (!defined('LONGURL_KEY'))
-// 	{
-// 		return $shortURL;
-// 	}
-// 	$url = "http://www.longurlplease.com/api/v1.1?q=" . $shortURL;
-// 	$curl_handle=curl_init();
-// 	curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-// 	curl_setopt($curl_handle,CURLOPT_URL,$url);
-// 	$url_json = curl_exec($curl_handle);
-// 	curl_close($curl_handle);
-
-// 	$url_array = json_decode($url_json,true);
-
-// 	$url_long = $url_array["$shortURL"];
-
-// 	if ($url_long == null)
-// 	{
-// 		return $shortURL;
-// 	}
-
-// 	return $url_long;
-// }
-
 
 function friendship_exists($user_a) {
 
@@ -314,8 +287,9 @@ function twitter_trends_page($query) {
 	$local = (array)$local_object;
 
 
-	$header = '<form method="get" action="trends"><select name="woeid">';
-	$header .= '<option value="1"' . (($woeid == 1) ? ' selected="selected"' : '') . '>Worldwide</option>';
+	$header = '<form method="get" action="trends">
+	         		<select name="woeid">';
+	$header .=     	'<option value="1"' . (($woeid == 1) ? ' selected="selected"' : '') . '>Worldwide</option>';
 
 	//sort the output, going for Country with Towns as children
 	foreach($local as $key => $row) {
@@ -332,7 +306,9 @@ function twitter_trends_page($query) {
 			$header .= '<option value="' . $l->woeid . '"' . (($l->woeid == $woeid) ? ' selected="selected"' : '') . '>' . $n . '</option>';
 		}
 	}
-	$header .= '</select> <input type="submit" value="Go" /></form>';
+	$header .= 		'</select>
+						<input type="submit" value="'._(TREND_BUTTON).'" />
+					</form>';
 
 	$api_options = array("id" => $woeid);
 
@@ -393,20 +369,6 @@ function get_codebird() { //$url, $post_data = false) {
 	$api_start = microtime(1);
 
 	return $cb;
-
-	// global $api_time;
-	// global $rate_limit;
-
-	// //	Not every request is rate limited
-	// if ($headers_array['x-rate-limit-limit']) {
-	// 	$current_time = time();
-	// 	$ratelimit_time = $headers_array['x-rate-limit-reset'];
-	// 	$time_until_reset = $ratelimit_time - $current_time;
-	// 	$minutes_until_reset = round($time_until_reset / 60);
-	// 	$rate_limit .= " Rate Limit: " . $headers_array['x-rate-limit-remaining'] . " out of " . $headers_array['x-rate-limit-limit'] . " calls remaining for the next {$minutes_until_reset} minutes";
-	// }
-
-	// $api_time += microtime(1) - $api_start;
 }
 
 
@@ -443,8 +405,7 @@ function twitter_get_media($status) {
 					$media_html .= "<source src=\"" . image_proxy($video_url) . "\" type=\"{$video_type}\">";
 				}
 
-				$media_html .= "Your browser does not support the video element.
-					</video>";
+				$media_html .= _(ERROR_VIDEO) . "</video>";
 			} else {
 				$link = $media->url;
 
@@ -607,10 +568,10 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 function format_interval($timestamp, $granularity = 2) {
 	$units = array(
 	'year' => 31536000,
-	'day'  => 86400,
-	'hour' => 3600,
-	'min'  => 60,
-	'sec'  => 1
+	'day'  =>    86400,
+	'hour' =>     3600,
+	'min'  =>       60,
+	'sec'  =>        1
 	);
 	$output = '';
 	foreach ($units as $key => $value) {
@@ -644,39 +605,27 @@ function twitter_status_page($query) {
 		//	Show a link to the original tweet
 		$screen_name = $status->from->screen_name;
 		$content .= '<p>
-		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() .
-		                '">'._(LINK_VIEW_ORIGINAL).'</a> | ';
+		                <a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() .'">'.
+								_(LINK_VIEW_ORIGINAL).
+							'</a> | ';
 
 		//	Translate the tweet
-		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) . '" target="'. get_target() . '">'._(LINK_TRANSLATE).'</a>
+		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) . '" target="'. get_target() . '">'.
+								_(LINK_TRANSLATE).
+							'</a>
 		            </p>';
 
 		$content .= "<p>
 		                <strong>
-		                    <a href=\"https://mobile.twitter.com/{$screen_name}/status/{$id}/report\" target=\"". get_target() . "\">"
-		                     ._(LINK_ABUSE).
+		                    <a href=\"https://mobile.twitter.com/{$screen_name}/status/{$id}/report\" target=\"". get_target() . "\">" .
+		                     _(LINK_ABUSE).
 		                    "</a>
 		                </strong>
 		            </p>";
 
-		/* NO LONGER SUPPORTED WITH THE MOVE TO 1.1
-		if (!$status->user->protected) {
-			$thread = twitter_thread_timeline($id);
-		}
-		if ($thread) {
-			$content .= '<p>And the experimental conversation view...</p>'.theme('timeline', $thread);
-			$content .= "<p>Don't like the thread order? Go to <a href='settings'>settings</a> to reverse it. Either way - the dates/times are not always accurate.</p>";
-		}
-		*/
 		theme('page', "{$screen_name} Status {$id}", $content);
 	}
 }
-
-// function twitter_thread_timeline($thread_id) {
-// 	$request = "https://search.twitter.com/search/thread/{$thread_id}";
-// 	$tl = twitter_standard_timeline(twitter_fetch($request), 'thread');
-// 	return $tl;
-// }
 
 function twitter_retweet_page($query) {
 	$id = (string) $query[1];
@@ -789,8 +738,8 @@ function twitter_block_page($query) {
 
 function twitter_spam_page($query)
 {
-	//http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam
-	//We need to post this data
+	//	http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam
+	//	We need to post this data
 	twitter_ensure_post_action();
 	$screen_name = $query[1];
 
@@ -802,30 +751,32 @@ function twitter_spam_page($query)
 	twitter_refresh("confirmed/spam/{$screen_name}");
 }
 
-
 function twitter_confirmation_page($query)
 {
-	// the URL /confirm can be passed parameters like so /confirm/param1/param2/param3 etc.
-	$action = $query[1];
-	$target = $query[2];	//The name of the user we are doing this action on
-	$target_id = $query[3];	//The targets's ID.  Needed to check if they are being blocked.
+	//	The URL /confirm can be passed parameters like so /confirm/param1/param2/param3 etc.
+	$action    = $query[1];
+	$target    = $query[2];	//	The name of the user we are doing this action on
+	$target_id = $query[3];	//	The targets's ID.  Needed to check if they are being blocked.
 
 	switch ($action) {
 		case 'block':
 			if (twitter_block_exists($target_id)) //Is the target blocked by the user?
 			{
 				$action = 'unblock';
-				$content  = "<p>".sprintf(_(ARE_YOU_SURE), "Unblock {$target}")."</p>";
-				$content .= '<ul><li>They will see your updates on their home page if they follow you again.</li><li>You <em>can</em> block them again if you want.</li></ul>';
+				$content  = "<p>".sprintf(_(ARE_YOU_SURE_UNBLOCK), $target)."</p>";
+				$content .= "<ul>
+									<li>"._(UNBLOCK_1)."</li>
+									<li>"._(UNBLOCK_2)."</li>
+								</ul>";
 			}
 			else
 			{
-				$content = "<p>".sprintf(_(ARE_YOU_SURE), "{$action} {$target}")."</p>";
+				$content = "<p>".sprintf(_(ARE_YOU_SURE_BLOCK), $target)."</p>";
 				$content .= "<ul>
-				                <li>You won't show up in their list of friends</li>
-				                <li>They won't see your updates on their home page</li>
-				                <li>They won't be able to follow you</li>
-				                <li>You <em>can</em> unblock them but you will need to follow them again afterwards</li>
+				                <li>"._(BLOCK_1)."</li>
+				                <li>"._(BLOCK_2)."</li>
+				                <li>"._(BLOCK_3)."</li>
+				                <li>"._(BLOCK_4)."</li>
 				            </ul>";
 			}
 			break;
@@ -1106,10 +1057,6 @@ function twitter_update() {
 			// Now use the media_id in a tweet
 			$api_options['media_ids'] = $media_id;
 
-			// $reply = $cb->statuses_update([
-			//     'status'    => 'Twitter now accepts video uploads.',
-			//     'media_ids' => $media_id
-			// ]);
 		} else {	//	Just Images
 
 			// these files to upload. You can also just upload 1 image!
@@ -1138,8 +1085,7 @@ function twitter_update() {
 		}
 	}
 
-	//	POSTing adds slashes, let's get rid of them.
-	//	Or not...
+	//	Remove extra whitespace
 	$status_text = trim($_POST['status']);
 
 	if ($status_text) {
@@ -1173,11 +1119,9 @@ function twitter_retweet($query) {
 	twitter_ensure_post_action();
 	$id = $query[1];
 	if (is_numeric($id)) {
-
 		$cb = get_codebird();
 		$api_options = array("id" => $id);
 		$cb->statuses_retweet_ID($api_options);
-
 	}
 	twitter_refresh($_POST['from'] ? $_POST['from'] : '');
 }
@@ -1239,94 +1183,6 @@ function twitter_directs_page($query) {
 
 		case 'send':
 			twitter_ensure_post_action();
-
-			//	Upload the image (if there is one) first
-			if ($_FILES['image']['tmp_name']) {
-
-				$finfo = finfo_open(FILEINFO_MIME_TYPE);
-
-				if (finfo_file($finfo, $_FILES['image']['tmp_name']) == "video/mp4") {	//	For Videos
-					$file       = $_FILES['image']['tmp_name'];
-					$size_bytes = filesize($file);
-					$fp         = fopen($file, 'r');
-
-					// INIT the upload
-
-					$reply = $cb->media_upload([
-					    'command'     => 'INIT',
-					    'media_type'  => 'video/mp4',
-					    'total_bytes' => $size_bytes
-					]);
-
-					$media_id = $reply->media_id_string;
-
-					// APPEND data to the upload
-
-					$segment_id = 0;
-
-					while (! feof($fp)) {
-					    $chunk = fread($fp, 1048576); // 1MB per chunk for this sample
-
-					    $reply = $cb->media_upload([
-					        'command'       => 'APPEND',
-					        'media_id'      => $media_id,
-					        'segment_index' => $segment_id,
-					        'media'         => $chunk
-					    ]);
-
-					    $segment_id++;
-					}
-
-					fclose($fp);
-
-					// FINALIZE the upload
-
-					$reply = $cb->media_upload([
-					    'command'       => 'FINALIZE',
-					    'media_id'      => $media_id
-					]);
-
-					// var_dump($reply);
-
-					if ($reply->httpstatus < 200 || $reply->httpstatus > 299) {
-					    die();
-					}
-
-					// Now use the media_id in a tweet
-					$api_options['media_ids'] = $media_id;
-
-					// $reply = $cb->statuses_update([
-					//     'status'    => 'Twitter now accepts video uploads.',
-					//     'media_ids' => $media_id
-					// ]);
-				} else {	//	Just Images
-
-					// these files to upload. You can also just upload 1 image!
-					$media_files = array(
-						$_FILES['image']['tmp_name']
-					);
-
-					// will hold the uploaded IDs
-					$media_ids = array();
-
-					foreach ($media_files as $file) {
-						// upload all media files
-						$reply = $cb->media_upload(array(
-							'media' => $file
-						));
-						twitter_api_status($reply);
-						// and collect their IDs
-						$media_ids[] = $reply->media_id_string;
-					}
-
-					// convert media ids to string list
-					$media_ids = implode(',', $media_ids);
-
-					// send tweet with these medias
-					$api_options['media_ids'] = $media_ids;
-				}
-			}
-
 			$to = trim(stripslashes(str_replace('@','',$_POST['to'])));
 			$message = trim(stripslashes($_POST['message']));
 			$api_options["screen_name"] = $to;
@@ -1512,9 +1368,6 @@ function twitter_user_page($query) {
 		twitter_api_status($user_timeline);
 
 		$tl = twitter_standard_timeline($user_timeline, 'user');
-		// $content = theme('status_form');
-		// $content .= theme('timeline', $tl);
-		// theme('page', 'user', $content);
 	}
 
 	// Build an array of people we're talking to
@@ -1529,13 +1382,13 @@ function twitter_user_page($query) {
 
 		$out = twitter_parse_tags($tweet->text);
 
-		$content .= "<p>In reply to:<br />{$out}</p>";
+		$content .= "<p>"._(IN_REPLY_TO).":<br />{$out}</p>";
 
-		// if ($subaction == 'replyall') {
-			$found = Twitter_Extractor::create($tweet->text)
-				->extractMentionedUsernames();
-			$to_users = array_unique(array_merge($to_users, $found));
-		// }
+		//	Reply to all users mentioned in the tweet.
+		//	TODO: Include the retweeter?
+		$found = Twitter_Extractor::create($tweet->text)
+			->extractMentionedUsernames();
+		$to_users = array_unique(array_merge($to_users, $found));
 
 		if ($tweet->entities->hashtags) {
 			$hashtags = $tweet->entities->hashtags;
@@ -1649,35 +1502,16 @@ function twitter_hashtag_page($query) {
 	} else {
 		//	Ugly cludge because @hash is a real user
 		twitter_refresh('user/hash');
-		// theme('page', 'Hashtag', 'Hash hash!');
 	}
 }
 
-
-function twitter_tweets_per_day($user, $rounding = 1) {
+function twitter_tweets_per_day($user, $rounding = 0) {
 	// Helper function to calculate an average count of tweets per day
 	$days_on_twitter = (time() - strtotime($user->created_at)) / 86400;
 	return round($user->statuses_count / $days_on_twitter, $rounding);
 }
 
-
 function twitter_date($format, $timestamp = null) {
-/*
-	static $offset;
-	if (!isset($offset)) {
-		if (user_is_authenticated()) {
-			if (array_key_exists('utc_offset', $_COOKIE)) {
-				$offset = $_COOKIE['utc_offset'];
-			} else {
-				$user = twitter_user_info();
-				$offset = $user->utc_offset;
-				setcookie('utc_offset', $offset, time() + 3000000, '/');
-			}
-		} else {
-			$offset = 0;
-		}
-	}
-*/
 	$offset = setting_fetch('utc_offset', 0) * 3600;
 	if (!isset($timestamp)) {
 		$timestamp = time();
@@ -1686,10 +1520,7 @@ function twitter_date($format, $timestamp = null) {
 }
 
 function twitter_standard_timeline($feed, $source) {
-//	echo "<pre>";
-	//var_dump($feed);
-//	echo json_encode($feed);
-	//	Remove the status elements from the array
+	//	Remove the HTTP elements from the array
 	unset($feed->httpstatus);
 	if ($feed->rate){
 		twitter_rate_limit($feed->rate);
@@ -1697,26 +1528,6 @@ function twitter_standard_timeline($feed, $source) {
 	}
 
 	$output = array();
-//	if (!is_array($feed) && $source != 'thread') return $output;
-
-	//32bit int / snowflake patch
-	// if (is_array($feed)) {
-	// 	foreach($feed as $key => $status) {
-	// 		if($status->id_str) {
-	// 			$feed[$key]->id = $status->id_str;
-	// 		}
-	// 		if($status->in_reply_to_status_id_str) {
-	// 			$feed[$key]->in_reply_to_status_id = $status->in_reply_to_status_id_str;
-	// 		}
-	// 		if($status->retweeted_status->id_str) {
-	// 			$feed[$key]->retweeted_status->id = $status->retweeted_status->id_str;
-	// 		}
-	// 	}
-	// }
-
-	foreach ($feed as $status) {
-//		echo "</pre><br.>STATUS = " . $status->text;
-	}
 
 	switch ($source) {
 		case 'status':
@@ -1758,45 +1569,6 @@ function twitter_standard_timeline($feed, $source) {
 			}
 			return $output;
 
-		case 'thread':
-			// First pass: extract tweet info from the HTML
-			$html_tweets = explode('</li>', $feed);
-			foreach ($html_tweets as $tweet) {
-				$id = preg_match_one('#msgtxt(\d*)#', $tweet);
-				if (!$id) continue;
-				$output[$id] = (object) array(
-					'id' => $id,
-					'text' => strip_tags(preg_match_one('#</a>: (.*)</span>#', $tweet)),
-					'source' => preg_match_one('#>from (.*)</span>#', $tweet),
-					'from' => (object) array(
-						'id' => preg_match_one('#profile_images/(\d*)#', $tweet),
-						'screen_name' => preg_match_one('#twitter.com/([^"]+)#', $tweet),
-						'profile_image_url' => preg_match_one('#src="([^"]*)"#' , $tweet),
-					),
-					'to' => (object) array(
-						'screen_name' => preg_match_one('#@([^<]+)#', $tweet),
-					),
-					'created_at' => str_replace('about', '', preg_match_one('#info">\s(.*)#', $tweet)),
-				);
-			}
-			// Second pass: OPTIONALLY attempt to reverse the order of tweets
-			if (setting_fetch('reverse') == 'yes') {
-				$first = false;
-				foreach ($output as $id => $tweet) {
-					$date_string = str_replace('later', '', $tweet->created_at);
-					if ($first) {
-						$attempt = strtotime("+$date_string");
-						if ($attempt == 0) $attempt = time();
-						$previous = $current = $attempt - time() + $previous;
-					} else {
-						$previous = $current = $first = strtotime($date_string);
-					}
-					$output[$id]->created_at = date('r', $current);
-				}
-				$output = array_reverse($output);
-			}
-			return $output;
-
 		default:
 			echo "<h1>$source</h1><pre>";
 			print_r($feed); die();
@@ -1809,8 +1581,6 @@ function preg_match_one($pattern, $subject, $flags = null) {
 }
 
 function twitter_user_info($username = null) {
-	// if (!$username)
-
 	$cb = get_codebird();
 
 	$api_options = "screen_name={$username}";
@@ -1868,7 +1638,6 @@ function is_64bit() {
 	return ($int == 9223372036854775807);
 }
 
-
 function x_times($count) {
 	if($count == 1) return 'once';
 	if($count == 2) return 'twice';
@@ -1887,15 +1656,12 @@ function image_proxy($src, $size = "") {
 }
 
 function twitter_rate_limit($rate) {
-	// echo "<br> RATE <pre>" . var_export($rate,true). "</pre>";
 	if ($rate){
 		global $rate_limit;
 		$ratelimit_time = $rate["reset"]- time();
 		$ratelimit_time = floor($ratelimit_time / 60);
 		$rate_limit = $rate["remaining"] . "/" . $rate["limit"] . " reset in {$ratelimit_time} minutes";
 	}
-	// $backtrace = debug_backtrace();
-	// echo "<BR> Called by <pre>". var_export($backtrace,true). "</pre><br/>";
 }
 
 function twitter_api_status(&$response) {
@@ -1928,15 +1694,15 @@ function twitter_api_status(&$response) {
 				return;
 			case 401:
 				user_logout();
-				theme('error', "<h2>"._(ERROR).": "._(ERROR_LOGIN)."</h2>".
+				theme('error', "<h2>"._(ERROR)." "._(ERROR_LOGIN)."</h2>".
 							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 			case 429:
 				theme('error', "<h2>"._(ERROR_RATE_LIMIT)."</h2><p>{$rate_limit}.</p>");
 			case 403:
-				theme('error', "<h2>"._(ERROR).": </h2>".
+				theme('error', "<h2>"._(ERROR)."</h2>".
 							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 			default:
-				theme('error', "<h2>" . _(ERROR) . ": </h2>".
+				theme('error', "<h2>" . _(ERROR) . "</h2>".
 							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 		}
 	}

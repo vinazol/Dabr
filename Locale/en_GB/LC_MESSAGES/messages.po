@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dabr\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-07 13:51+0100\n"
+"PO-Revision-Date: 2015-12-12 21:36+0100\n"
 "Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
 "Language-Team: English <dabr-i18n@shkspr.mobi>\n"
 "MIME-Version: 1.0\n"
@@ -74,6 +74,9 @@ msgstr ""
 "If you have any comments, suggestions or questions then feel free to get in "
 "touch ☺"
 
+msgid "STATUS_BOX"
+msgstr "What's Happening?"
+
 msgid "LINK_VIEW_ORIGINAL"
 msgstr "View orginal tweet on Twitter"
 
@@ -98,8 +101,41 @@ msgstr "Rate limit exceeded.  Slow down and try again later."
 msgid "ERROR_INVALID_METHOD"
 msgstr "Invalid HTTP request method for this action."
 
-msgid "ARE_YOU_SURE"
-msgstr "Are you really sure you want to <strong>%s</strong>?"
+msgid "ERROR_VIDEO"
+msgstr "Your browser does not support playing video."
+
+msgid "ARE_YOU_SURE_UNBLOCK"
+msgstr "Are you sure you want to <strong>Unblock %s</strong>?"
+
+msgid "UNBLOCK_1"
+msgstr ""
+"They will see your updates on their home page if they follow you again."
+
+msgid "UNBLOCK_2"
+msgstr "You <em>can</em> block them again if you want."
+
+msgid "ARE_YOU_SURE_BLOCK"
+msgstr "Are you sure you want to <strong>Block %s</strong>?"
+
+msgid "BLOCK_1"
+msgstr "You won't show up in their list of friends."
+
+msgid "BLOCK_2"
+msgstr "They won't see your updates on their home page."
+
+msgid "BLOCK_3"
+msgstr "They won't be able to follow you."
+
+msgid "BLOCK_4"
+msgstr ""
+"You <em>can</em> unblock them but you will need to follow them again "
+"afterwards."
+
+msgid "SEND_BUTTON"
+msgstr "Send Tweet"
+
+msgid "TREND_BUTTON"
+msgstr "See Trends"
 
 msgid "DELETE_BUTTON"
 msgstr "Delete"
@@ -200,6 +236,21 @@ msgstr "Reply"
 msgid "SHARE_MY_LOCATION"
 msgstr "Share my location"
 
+msgid "PRIVATE_TWEETS"
+msgstr "Private / Protected Account"
+
+msgid "LAST_TWEET"
+msgstr "Latest Tweet"
+
+msgid "LAST_TWEET_PRIVATE"
+msgstr "Private Account"
+
+msgid "LAST_TWEET_NEVER"
+msgstr "Never tweeted"
+
+msgid "LOCATING"
+msgstr "Locating..."
+
 msgid "RETWEET_TWITTER"
 msgstr "Twitter Retweet"
 
@@ -232,6 +283,9 @@ msgstr "Repost it!"
 msgid "EDIT_BEFORE_REPOST"
 msgstr "Edit Before Reposting:"
 
+msgid "VERIFIED"
+msgstr "Verified"
+
 msgid "TIMEZONE"
 msgstr "Timezone:"
 
@@ -258,6 +312,9 @@ msgstr "Unfollow"
 
 msgid "UNFAVOURITE"
 msgstr "Unfavourite"
+
+msgid "FAVOURITE"
+msgstr "Favourite"
 
 msgid "RETWEETS_HIDE"
 msgstr "Hide Retweets"
@@ -298,6 +355,9 @@ msgstr "View Annotations"
 msgid "RETWEETED_BY %s"
 msgstr "Retweeted by %s"
 
+msgid "RETWEETED"
+msgstr "Retweeted"
+
 msgid "VIA"
 msgstr "Sent via "
 
@@ -316,7 +376,7 @@ msgstr "No Tweets to display :-( sorry"
 msgid "SEARCH_BUTTON"
 msgstr "Search"
 
-msgid "SEARCH_SAVE %s"
+msgid "SEARCH_SAVE"
 msgstr "Save %s as new search"
 
 msgid "SAVED_SEARCHES"
@@ -400,6 +460,9 @@ msgstr "OMG! It's full of stars!"
 msgid "TIME_PROCESSED %s"
 msgstr "Processed in %s seconds"
 
+msgid "SECONDS"
+msgstr "%s seconds ago"
+
 msgid "TIME_PROCESSED_MEDIA"
 msgstr "Embedded Media"
 
@@ -415,6 +478,9 @@ msgid "COOKIE_MONSTER_DONE"
 msgstr ""
 "The cookie monster has logged you out and cleared all settings. Try logging "
 "in again now."
+
+msgid "COOKIE_MONSTER"
+msgstr "Cookie Monster"
 
 msgid "BIG_ICONS"
 msgstr "Big Icons"
@@ -487,33 +553,33 @@ msgstr "Location"
 msgid "PROFILE_JOINED"
 msgstr "Joined on"
 
-msgid "PROFILE_TWEETS_PER_DAY"
-msgid_plural "~%s Tweets per day"
-msgstr[0] "%s Tweets per day"
-msgstr[1] "%s Tweet per day"
+msgid "PROFILE_TWEET_PER_DAY %s"
+msgid_plural "PROFILE_TWEETS_PER_DAY %s"
+msgstr[0] "%s tweet per day"
+msgstr[1] "~%s tweets per day"
 
-msgid "PROFILE_COUNT_FOLLOWERS"
-msgid_plural "%s followers"
-msgstr[0] "%s followers"
-msgstr[1] "%s follower"
+msgid "PROFILE_COUNT_FOLLOWER %s"
+msgid_plural "PROFILE_COUNT_FOLLOWERS %s"
+msgstr[0] "%s follower"
+msgstr[1] "%s followers"
 
-msgid "PROFILE_COUNT_TWEETS"
-msgid_plural "%s tweets"
+msgid "PROFILE_COUNT_TWEET %s"
+msgid_plural "PROFILE_COUNT_TWEETS %s"
 msgstr[0] "%s tweet"
 msgstr[1] "%s tweets"
 
-msgid "PROFILE_COUNT_FRIENDS"
-msgid_plural "%s friends"
+msgid "PROFILE_COUNT_FRIEND %s"
+msgid_plural "PROFILE_COUNT_FRIENDS %s"
 msgstr[0] "%s friend"
 msgstr[1] "%s friends"
 
-msgid "PROFILE_COUNT_FAVOURITES"
-msgid_plural "%s favourites"
+msgid "PROFILE_COUNT_FAVOURITE %s"
+msgid_plural "PROFILE_COUNT_FAVOURITES %s"
 msgstr[0] "%s favourite"
 msgstr[1] "%s favourites"
 
-msgid "PROFILE_COUNT_LISTS"
-msgid_plural "%s lists"
+msgid "PROFILE_COUNT_LIST %s"
+msgid_plural "PROFILE_COUNT_LISTS %s"
 msgstr[0] "%s list"
 msgstr[1] "%s lists"
 
@@ -543,7 +609,7 @@ msgstr "Send Direct Message"
 
 msgid "DIRECTS_WARNING_TEXT"
 msgstr ""
-"<b>$s</b> is not following you. You might not be able to send them a Direct "
+"<b>%s</b> is not following you. You might not be able to send them a Direct "
 "Message :-("
 
 msgid "DIRECTS_SENDING_TO"
@@ -554,6 +620,9 @@ msgstr "Add photo"
 
 msgid "SETTINGS_COLOUR"
 msgstr "Colour scheme:"
+
+msgid "SETTINGS_PER_PAGE"
+msgstr "Tweets Per Page:"
 
 msgid "SETTINGS_MODE"
 msgstr "Icon Size"
@@ -573,25 +642,26 @@ msgstr "%s Posts Per Page"
 msgid "SETTINGS_AVATAR_SIZE"
 msgstr "Avatar Size"
 
+msgid "SETTINGS_IMAGE_SIZE"
+msgstr "Image Size:"
+
 msgid "SETTINGS_WORK_SAFE"
 msgstr "Work Safe"
 
 msgid "SETTINGS_HIDE_INLINE"
 msgstr "Hide inline media (eg image thumbnails &amp; embedded videos)"
 
+msgid "SETTINGS_SHOW_PREVIEW"
+msgstr "Show link previews (YouTube, Instagram, Blogs, etc)."
+
 msgid "SETTINGS_HIDE_AVATARS"
-msgstr "Hide avatars"
+msgstr "Hide users' profile images"
 
 msgid "SETTINGS_EMOTICONS"
 msgstr "Replace :-) with"
 
-msgid "SETTINGS_NON_DIRECT"
-msgstr "Show non-directed replies:"
-
-msgid "SETTINGS_NON_DIRECT_DETAIL"
-msgstr ""
-"You follow Alice, you don't follow Bob. Alice sends a post to Bob - do you "
-"want to see it?"
+msgid "SETTINGS_MENU_ICONS"
+msgstr "Show Menu icons like <span class=\"icons\">🏠⌖</span>."
 
 msgid "SETTINGS_EXTERNAL"
 msgstr "External links go:"
@@ -604,17 +674,17 @@ msgstr ""
 msgid "SETTINGS_OTHERS"
 msgstr "Others:"
 
-msgid "SETTINGS_TIMESTAMP %s"
+msgid "SETTINGS_TIMESTAMP"
 msgstr "Show the timestamp \"%s\" instead of \"25 sec ago\""
 
-msgid "SETTINGS_TIMESTAMP_IS %s"
-msgstr "The current time is: %s"
+msgid "SETTINGS_TIMESTAMP_IS"
+msgstr "The current time is: %s."
 
 msgid "SETTINGS_TIMESTAMP_OFFSET"
 msgstr "You can use an offset of "
 
-msgid "SETTINGS_TIMESTAMP_DISPLAY %s"
-msgstr "we display the time as %s"
+msgid "SETTINGS_TIMESTAMP_DISPLAY"
+msgstr "By using an offset of %s, we display the time as %s."
 
 msgid "SETTINGS_TIMESTAMP_ADJUST"
 msgstr "It is worth adjusting this value if the time appears to be wrong."
@@ -626,6 +696,33 @@ msgid "SETTINGS_RESET"
 msgstr ""
 "Visit <a href=\"reset\">Reset</a> if things go horribly wrong - it will log "
 "you out and clear all settings."
+
+msgid "SETTINGS_IMAGE_THUMB"
+msgstr "Thumbnail (150*150)"
+
+msgid "SETTINGS_IMAGE_SMALL"
+msgstr "Small (340*340)"
+
+msgid "SETTINGS_IMAGE_MEDIUM"
+msgstr "Medium (600*600)"
+
+msgid "SETTINGS_IMAGE_LARGE"
+msgstr "Large (1024*1024)"
+
+msgid "SETTINGS_IMAGE_ORIGINAL"
+msgstr "Original (8000*8000)"
+
+msgid "SETTINGS_TWEETS_PER_PAGE"
+msgstr "%s Tweets Per Page"
+
+msgid "SETTINGS_SLOW_1"
+msgstr "(Slow)"
+
+msgid "SETTINGS_SLOW_2"
+msgstr "(Very slow)"
+
+msgid "SETTINGS_SLOW_3"
+msgstr "(Extremely slow)"
 
 msgid "MENU_ABOUT"
 msgstr "About"
