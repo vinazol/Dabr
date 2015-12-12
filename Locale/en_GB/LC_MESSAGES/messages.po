@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dabr\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-12 21:36+0100\n"
+"PO-Revision-Date: 2015-12-12 21:45+0100\n"
 "Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
 "Language-Team: English <dabr-i18n@shkspr.mobi>\n"
 "MIME-Version: 1.0\n"
@@ -161,22 +161,22 @@ msgid "NO_UNDO"
 msgstr "There is <strong>no way to undo this action</strong>."
 
 msgid "MUTE_1"
-msgstr "You won't see any of their posts in your timeline"
+msgstr "You won't see any of their Tweets in your timeline"
 
 msgid "MUTE_2"
 msgstr "They won't appear in your replies"
 
 msgid "MUTE_3"
-msgstr "They <em>will still be able to follow you and see your posts</em>"
+msgstr "They <em>will still be able to follow you and see your Tweets</em>"
 
 msgid "MUTE_4"
 msgstr "You <em>can</em> unmute them later"
 
 msgid "UNMUTE_1"
-msgstr "You will see their posts in your timeline if you follow them."
+msgstr "You will see their Tweets in your timeline if you follow them."
 
 msgid "UNMUTE_2"
-msgstr "Their posts will appear in your replies"
+msgstr "Their Tweets will appear in your replies"
 
 msgid "UNMUTE_3"
 msgstr "You <em>can</em> mute them later"
@@ -274,15 +274,6 @@ msgstr ""
 msgid "RETWEET_LIST"
 msgstr "Everyone who retweeted %s"
 
-msgid "NATIVE_REPOST"
-msgstr "Native Repost:"
-
-msgid "NATIVE_REPOST_BUTTON"
-msgstr "Repost it!"
-
-msgid "EDIT_BEFORE_REPOST"
-msgstr "Edit Before Reposting:"
-
 msgid "VERIFIED"
 msgstr "Verified"
 
@@ -291,9 +282,6 @@ msgstr "Timezone:"
 
 msgid "JOINED"
 msgstr "Joined on"
-
-msgid "BEST_MATES"
-msgstr "YOU ARE BEST FRIENDS!"
 
 msgid "FOLLOWS"
 msgstr "Follows you."
@@ -345,12 +333,6 @@ msgstr "Search @%s"
 
 msgid "BIO"
 msgstr "Bio:"
-
-msgid "VIEW_CONV"
-msgstr "View Conversation"
-
-msgid "VIEW_ANNOT"
-msgstr "View Annotations"
 
 msgid "RETWEETED_BY %s"
 msgstr "Retweeted by %s"
@@ -442,21 +424,6 @@ msgstr "Members"
 msgid "SUBSCRIBERS"
 msgstr "Subscribers"
 
-msgid "LIST_SEARCH"
-msgstr "Let's go exploring!"
-
-msgid "LIST_STARRED"
-msgstr "People who starred that post"
-
-msgid "LIST_REPOSTERS"
-msgstr "They came, they saw, they reposted"
-
-msgid "LIST_FOUND"
-msgstr "Who have we found?</h3>"
-
-msgid "LIST_STARS"
-msgstr "OMG! It's full of stars!"
-
 msgid "TIME_PROCESSED %s"
 msgstr "Processed in %s seconds"
 
@@ -511,15 +478,6 @@ msgstr "Large"
 
 msgid "FONT_HUGE"
 msgstr "Huge"
-
-msgid "MENU_SMART"
-msgstr "Smart Menu"
-
-msgid "MENU_OLD"
-msgstr "Old Style Menu (For older web browsers)"
-
-msgid "POST_PER_PAGE %s"
-msgstr "%s Posts Per Page"
 
 msgid "GWT_DIRECT"
 msgstr "Direct URL Access"
@@ -657,9 +615,6 @@ msgstr "Show link previews (YouTube, Instagram, Blogs, etc)."
 msgid "SETTINGS_HIDE_AVATARS"
 msgstr "Hide users' profile images"
 
-msgid "SETTINGS_EMOTICONS"
-msgstr "Replace :-) with"
-
 msgid "SETTINGS_MENU_ICONS"
 msgstr "Show Menu icons like <span class=\"icons\">🏠⌖</span>."
 
@@ -733,14 +688,8 @@ msgstr "Logout"
 msgid "MENU_REPLIES"
 msgstr "Replies"
 
-msgid "MENU_GLOBAL"
-msgstr "Global"
-
 msgid "MENU_SEARCH"
 msgstr "Search"
-
-msgid "MENU_STARRED"
-msgstr "My Stars"
 
 msgid "MENU_FOLLOWERS"
 msgstr "Followers"
