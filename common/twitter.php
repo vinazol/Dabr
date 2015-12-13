@@ -226,7 +226,7 @@ function twitter_profile_page() {
 	$content .= theme('user_header', $user);
 	$content .= theme('profile_form', $user);
 
-	theme('page', "Edit Profile", $content);
+	theme('page', _(MENU_EDITPROFILE), $content);
 }
 
 function friendship_exists($user_a) {
@@ -326,7 +326,7 @@ function twitter_trends_page($query) {
 	}
 	$headers = array($header);
 	$content = theme('table', $headers, $rows, array('class' => 'timeline'));
-	theme('page', 'Trends', $content);
+	theme('page', _(TRENDS_TITLE), $content);
 }
 
 function js_counter($name, $length='140')
@@ -623,7 +623,7 @@ function twitter_status_page($query) {
 		                </strong>
 		            </p>";
 
-		theme('page', "{$screen_name} Status {$id}", $content);
+		theme('page', "{$screen_name} - {$id}", $content);
 	}
 }
 
@@ -637,7 +637,7 @@ function twitter_retweet_page($query) {
 		twitter_api_status($tl);
 
 		$content = theme('retweet', $tl);
-		theme('page', 'Retweet', $content);
+		theme('page', _(RETWEET), $content);
 	}
 }
 
@@ -845,7 +845,7 @@ function twitter_confirmation_page($query)
 	$content .= "<form action='$action/$target' method='post'>
 						<input type='submit' value='"._(CONFIRM_BUTTON)."' />
 					</form>";
-	theme('Page', 'Confirm', $content);
+	theme('Page', _(CONFIRM_TITLE), $content);
 }
 
 function twitter_confirmed_page($query)
@@ -927,7 +927,7 @@ function twitter_friends_page($query) {
 	twitter_api_status($tl);
 
 	$content = theme('users_list', $tl);
-	theme('page', 'Friends', $content);
+	theme('page', _(MENU_FRIENDS), $content);
 }
 
 function twitter_followers_page($query) {
@@ -953,7 +953,7 @@ function twitter_followers_page($query) {
 	twitter_api_status($tl);
 
 	$content = theme('users_list', $tl);
-	theme('page', 'Followers', $content);
+	theme('page', _(MENU_FOLLOWERS), $content);
 }
 
 function twitter_blocks() {
@@ -976,7 +976,7 @@ function twitter_blocks() {
 	twitter_api_status($tl);
 
 	$content = theme('users_list', $tl);
-	theme('page', 'Blocked Users', $content);
+	theme('page', _(BLOCKED_TITLE), $content);
 }
 
 //  Shows first 100 users who retweeted a specific status (limit defined by twitter)
@@ -1145,7 +1145,7 @@ function twitter_replies_page() {
 	$tl = twitter_standard_timeline($replies, 'replies');
 	$content = theme('status_form');
 	$content .= theme('timeline', $tl);
-	theme('page', 'Replies', $content);
+	theme('page', _(MENU_REPLIES), $content);
 }
 
 function twitter_retweets_page() {
@@ -1166,7 +1166,7 @@ function twitter_retweets_page() {
 	$tl = twitter_standard_timeline($retweets, 'replies');
 	$content = theme('status_form');
 	$content .= theme('timeline', $tl);
-	theme('page', 'Retweets', $content);
+	theme('page', _(RETWEETS_TITLE), $content);
 }
 
 function twitter_directs_page($query) {
@@ -1179,7 +1179,7 @@ function twitter_directs_page($query) {
 		case 'create':
 			$to = $query[2];
 			$content = theme('directs_form', $to);
-			theme('page', 'Create DM', $content);
+			theme('page', _(CREATE_DM_TITLE), $content);
 
 		case 'send':
 			twitter_ensure_post_action();
@@ -1201,7 +1201,7 @@ function twitter_directs_page($query) {
 			$tl = twitter_standard_timeline($tl, 'directs_sent');
 			$content = theme_directs_menu();
 			$content .= theme('timeline', $tl);
-			theme('page', 'DM Sent', $content);
+			theme('page', _(DM_SENT_TITLE), $content);
 
 		case 'inbox':
 		default:
@@ -1214,7 +1214,7 @@ function twitter_directs_page($query) {
 			$tl = twitter_standard_timeline($tl, 'directs_inbox');
 			$content = theme_directs_menu();
 			$content .= theme('timeline', $tl);
-			theme('page', 'DM Inbox', $content);
+			theme('page', _(DM_INBOX_TITLE), $content);
 	}
 }
 
@@ -1271,7 +1271,7 @@ function twitter_search_page() {
 		$tl = twitter_search($search_query, $lat, $long, $radius);
 		$content .= theme('timeline', $tl);
 	}
-	theme('page', 'Search', $content);
+	theme('page', _(MENU_SEARCH), $content);
 }
 
 function twitter_search($search_query, $lat = null, $long = null, $radius = null) {
@@ -1412,7 +1412,7 @@ function twitter_user_page($query) {
 	$content .= theme('user_header', $user);
 	$content .= theme('timeline', $tl);
 
-	theme('page', "User {$screen_name}", $content);
+	theme('page', sprintf(_(USER_TITLE),$screen_name), $content);
 }
 
 function twitter_favourites_page($query) {
@@ -1442,7 +1442,7 @@ function twitter_favourites_page($query) {
 	$tl = twitter_standard_timeline($favorites_list, 'favourites');
 	// $content = theme('status_form');
 	$content .= theme('timeline', $tl);
-	theme('page', 'Favourites', $content);
+	theme('page', _(FAVOURITES_TITLE), $content);
 }
 
 function twitter_mark_favourite_page($query) {
@@ -1489,7 +1489,7 @@ function twitter_home_page() {
 	$tl = twitter_standard_timeline($home_timeline, 'friends');
 	$content = theme('status_form');
 	$content .= theme('timeline', $tl);
-	theme('page', 'Home', $content);
+	theme('page', _(MENU_HOME), $content);
 }
 
 function twitter_hashtag_page($query) {

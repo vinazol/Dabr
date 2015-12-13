@@ -505,8 +505,8 @@ function theme_status_time_link($status, $is_link = true) {
 	$time = strtotime($status->created_at);
 	if ($time > 0) {
 		if (twitter_date('dmy') == twitter_date('dmy', $time) && !setting_fetch('timestamp')) {
-			//$out = format_interval(time() - $time, 1). ' ago';
-			$out = sprintf(_(SECONDS), time() - $time);
+			$out = format_interval(time() - $time, 1). ' ago';
+			// $out = sprintf(_(SECONDS), time() - $time);
 		} else {
 			$out = twitter_date('H:i', $time);
 		}
@@ -958,7 +958,7 @@ function theme_users_list($feed, $hide_pagination = false) {
 		$content .= theme_user_info($user);
 
 		if($user->status->created_at) {
-			$content .= _(LAST_TWEET) . ": ";
+			$content .= " " . _(LAST_TWEET) . ": ";
 			if($user->protected == 'true' && $last_tweet == 0)
 				$content .= _(LAST_TWEET_PRIVATE);
 			else if($last_tweet == 0)

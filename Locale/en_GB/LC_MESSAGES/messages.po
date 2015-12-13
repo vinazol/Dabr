@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dabr\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-12 21:45+0100\n"
+"PO-Revision-Date: 2015-12-13 12:14+0100\n"
 "Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
 "Language-Team: English <dabr-i18n@shkspr.mobi>\n"
 "MIME-Version: 1.0\n"
@@ -199,6 +199,39 @@ msgstr "Bye-bye @%s - you are now <strong>blocked</strong>."
 
 msgid "UNBLOCKED_MESSAGE"
 msgstr "Hello again @%s - you have been <strong>unblocked</strong>."
+
+msgid "BLOCKED_TITLE"
+msgstr "Blocked Users"
+
+msgid "CONFIRM_TITLE"
+msgstr "Are you sure?"
+
+msgid "RETWEETS_TITLE"
+msgstr "Retweets"
+
+msgid "CREATE_DM_TITLE"
+msgstr "Create Direct Message"
+
+msgid "DM_SENT_TITLE"
+msgstr "Sent Direct Message"
+
+msgid "DM_INBOX_TITLE"
+msgstr "Direct Message Inbox"
+
+msgid "USER_TITLE"
+msgstr "User @%s"
+
+msgid "FAVOURITES_TITLE"
+msgstr "♥"
+
+msgid "TRENDS_TITLE"
+msgstr "Trending Topics"
+
+msgid "USERS_LISTS_TITLE"
+msgstr "@%s's lists"
+
+msgid "MEMBERSHIP_LISTS_TITLE"
+msgstr "List memberhips"
 
 msgid "HIDE_RETWEETS"
 msgstr ""

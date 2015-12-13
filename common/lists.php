@@ -179,7 +179,7 @@ function lists_lists_page($user) {
 						"<strong>".sprintf(_(LIST_USER_FOLLOWS),$user)."</strong>".
 					"</p>";
  	$content .= theme('lists', $lists);
- 	theme('page', "{$user}'s lists", $content);
+ 	theme('page', sprintf(_(USERS_LISTS_TITLE),$user), $content);
 }
 
 function lists_membership_page($user) {
@@ -190,7 +190,7 @@ function lists_membership_page($user) {
 						"<a href='lists/{$user}'>".sprintf(_(LIST_USER_FOLLOWS),$user)."</a>".
 					"</p>";
 	$content .= theme('lists', $lists);
-	theme('page', 'List memberhips', $content);
+	theme('page', _(MEMBERSHIP_LISTS_TITLE), $content);
 }
 
 function lists_list_tweets_page($user, $list) {
@@ -204,7 +204,7 @@ function lists_list_tweets_page($user, $list) {
 						"<a href='{$list_url}/subscribers'>"._(LIST_VIEW_SUBSCRIBERS)."</a>".
 					"</p>";
 	$content .= theme('timeline', $tl);
-	theme('page', "List {$user}/{$list}", $content);
+	theme('page', "{$user}/{$list}", $content);
 }
 
 function lists_list_members_page($user, $list) {
