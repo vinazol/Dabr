@@ -505,7 +505,7 @@ function theme_status_time_link($status, $is_link = true) {
 	$time = strtotime($status->created_at);
 	if ($time > 0) {
 		if (twitter_date('dmy') == twitter_date('dmy', $time) && !setting_fetch('timestamp')) {
-			$out = format_interval(time() - $time, 1). ' ago';
+			$out = format_interval(time() - $time);
 			// $out = sprintf(_(SECONDS), time() - $time);
 		} else {
 			$out = twitter_date('H:i', $time);

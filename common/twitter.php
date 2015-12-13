@@ -565,26 +565,57 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 	return $out;
 }
 
-function format_interval($timestamp, $granularity = 2) {
-	$units = array(
-	'year' => 31536000,
-	'day'  =>    86400,
-	'hour' =>     3600,
-	'min'  =>       60,
-	'sec'  =>        1
-	);
-	$output = '';
-	foreach ($units as $key => $value) {
-		if ($timestamp >= $value) {
-			$output .= ($output ? ' ' : ''). pluralise($key, floor($timestamp / $value), true);
-			$timestamp %= $value;
-			$granularity--;
-		}
-		if ($granularity == 0) {
-			break;
-		}
-	}
-	return $output ? $output : '0 sec';
+function format_interval($timestamp) {
+	// $units = array(
+	// 'year' => 31536000,
+	// 'day'  =>    86400,
+	// 'hour' =>     3600,
+	// 'min'  =>       60,
+	// 'sec'  =>        1
+	// );
+	// $output = '';
+	// foreach ($units as $key => $value) {
+	// 	if ($timestamp >= $value) {
+	// 		$output .= ($output ? ' ' : ''). pluralise($key, floor($timestamp / $value), true);
+	// 		$timestamp %= $value;
+	// 		$granularity--;
+	// 	}
+	// 	if ($granularity == 0) {
+	// 		break;
+	// 	}
+	// }
+	// return $output ? $output : '0 sec';
+
+
+	if ($timestamp<60)
+		return sprintf(ngettext("TIME_SECOND %s",
+							 "TIME_SECONDS %s",
+							 $timestamp), $timestamp);
+	$timestamp = round($timestamp/60);
+	if ($timestamp<60)
+		return sprintf(ngettext("TIME_MINUTE %s",
+							"TIME_MINUTES %s",
+							$timestamp),$timestamp);
+	$timestamp = round($timestamp/60);
+	if ($timestamp<24)
+		return sprintf(ngettext("TIME_HOUR %s",
+							"TIME_HOURS %s",
+							$timestamp), $timestamp);
+	$timestamp = round($timestamp/24);
+	if ($timestamp<7)
+		return sprintf(ngettext("TIME_DAY %s",
+							 "TIME_DAYS %s",
+							 $timestamp), $timestamp);
+	$timestamp = round($timestamp/7);
+	if ($timestamp<4)
+		return sprintf(ngettext("TIME_MONTH %s",
+							 "TIME_MONTHS %s",
+							 $timestamp), $timestamp);
+	$timestamp = round($timestamp/52);
+
+	return sprintf(ngettext("TIME_YEAR %s",
+						 "TIME_YEARS %s",
+						 $timestamp), $timestamp);
 }
 
 function twitter_status_page($query) {
