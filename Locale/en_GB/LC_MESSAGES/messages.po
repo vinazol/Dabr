@@ -261,7 +261,7 @@ msgid "SAVE_DEFAULT_SEARCH"
 msgstr "Save as default search"
 
 msgid "IN_REPLY_TO"
-msgstr "In reply to %s"
+msgstr "In reply to @%s"
 
 msgid "REPLY"
 msgstr "Reply"

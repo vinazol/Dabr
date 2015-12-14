@@ -1413,7 +1413,7 @@ function twitter_user_page($query) {
 
 		$out = twitter_parse_tags($tweet->text);
 
-		$content .= "<p>"._(IN_REPLY_TO).":<br />{$out}</p>";
+		$content .= "<p>".sprintf(_(IN_REPLY_TO),$screen_name).":<br />{$out}</p>";
 
 		//	Reply to all users mentioned in the tweet.
 		//	TODO: Include the retweeter?
