@@ -1,7 +1,7 @@
 <?php
 
 function user_oauth() {
-	
+
 	\Codebird\Codebird::setConsumerKey(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET);
 	$cb = \Codebird\Codebird::getInstance();
 
@@ -25,7 +25,7 @@ function user_oauth() {
 		header('Location: ' . $auth_url);
 		die();
 
-	}	//	If there's an OAuth Token 
+	}	//	If there's an OAuth Token
 	elseif (isset($_GET['oauth_verifier']) && isset($_SESSION['oauth_verify'])) {
 		// verify the token
 		$cb->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
@@ -39,9 +39,9 @@ function user_oauth() {
 		// store the token (which is different from the request token!)
 		$_SESSION['oauth_token']        = $reply->oauth_token;
 		$_SESSION['oauth_token_secret'] = $reply->oauth_token_secret;
-		
+
 		$cb->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
-				
+
 		//	Verify and get the username
 		$user = $cb->account_verifyCredentials();
 		$GLOBALS['user']['username']    = $user->screen_name;
@@ -54,7 +54,7 @@ function user_oauth() {
 		header('Location: '. BASE_URL);
 		die();
 	}
-	header('Location: '. BASE_URL);	
+	header('Location: '. BASE_URL);
 }
 
 function user_ensure_authenticated() {
@@ -105,7 +105,7 @@ function user_is_authenticated() {
 		// 	$GLOBALS['user']['username'] = trim($_POST['username']);
 		// 	$GLOBALS['user']['password'] = $_POST['password'];
 		// 	$GLOBALS['user']['type'] = 'oauth';
-						
+
 		// 	_user_save_cookie($_POST['stay-logged-in'] == 'yes');
 		// 	header('Location: '. BASE_URL);
 		// 	exit();
@@ -130,7 +130,7 @@ function user_type() {
 }
 
 function _user_save_cookie($stay_logged_in = 0) {
-	
+
 	if ($stay_logged_in) {
 		$duration = time() + (3600 * 24 * 365);
 	} else {
@@ -141,7 +141,7 @@ function _user_save_cookie($stay_logged_in = 0) {
 	// setcookie('oauth_token_secret', $_SESSION['oauth_token_secret'], $duration);
 
 	$cookie = _user_encrypt_cookie();
-	
+
 	setcookie('USER_AUTH', $cookie, $duration, '/');
 }
 
@@ -181,18 +181,18 @@ function theme_login() {
 	$content = '<div class="tweet">
 					<p>
 						<a href="oauth">
-							<img src="images/sign-in-with-twitter-gray.png" 
-							     alt="Sign in with Twitter" 
-							     width="158" 
-							     height="28" 
+							<img src="images/sign-in-with-twitter-gray.png"
+							     alt="'._(TWITTER_SIGN_IN).'"
+							     width="158"
+							     height="28"
 							     class="action" /></a>
 						<br />
-						<a href="oauth">Sign in via Twitter.com</a>
+						<a href="oauth">'._(TWITTER_SIGN_IN).'</a>
 					</p>';
 
 	return $content;
 }
 
 function theme_logged_out() {
-	return '<p>Logged out. <a href="">Login again</a></p>';
+	return "<p>"._(DABR_LOGIN_AGAIN)."</p>";
 }
