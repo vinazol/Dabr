@@ -1,6 +1,6 @@
 <?php
 
-function css() 
+function css()
 {
 //	Get the colours that the user has chosen
 $c = theme('colours');
@@ -68,7 +68,7 @@ textarea {
 
 .actionicons {
 	display: block;
-	margin: 0.3em; 
+	margin: 0.3em;
 	clear: both;
 }
 .actionicons a{
@@ -121,7 +121,7 @@ small,small a{
 .menu{
 	color:#{$c->menu_text};
 	background:#{$c->menu_background};
-	padding: 2px;
+	padding: 0.2em;
 	font-family:icons,sans-serif;
 	font-size: 1.75em;
 }
@@ -153,7 +153,7 @@ small,small a{
 	height: auto;
 	width: auto;
 	float: left;
-	margin-right: 10px;
+	margin-right: 0.5em;
 }
 
 .shift{
@@ -169,7 +169,7 @@ small,small a{
 	display: block;
 	overflow-x: auto;
 	clear: both;
-	max-width: 480px;
+	max-width: 600px;
 }
 .embedded {
 	/*max-width:80%;*/
@@ -190,7 +190,7 @@ small,small a{
 }
 
 .date{
-	padding:5px;
+	padding:0.5em;
 	font-size:0.8em;
 	font-weight:bold;
 	color:#{$c->small}
