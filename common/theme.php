@@ -424,7 +424,7 @@ function theme_user_header($user) {
 	$out .= theme_user_info($user);
 
 	if($following) {
-		$out .=	"<a href='messages/create/{$screen_name}'>"._(DIRECTS_BUTTON)."</a>";
+		$out .=	" | <a href='messages/create/{$screen_name}'>"._(DIRECTS_BUTTON)."</a>";
 	}
 
 	//	One cannot follow, block, nor report spam oneself.
@@ -670,7 +670,7 @@ function theme_timeline($feed, $paginate = true) {
 function theme_full_name($user) {
 
 	//	Link to the screen name but display as "Ms E Xample (@Example"
-	if ($user->name == $user->screen_name || "" == $user->name)
+	if ($user->name == $user->screen_name || null == $user->name)
 	{
 		$name = "@<a href='{$user->screen_name}'>{$user->screen_name}</a>";
 	} else  {
