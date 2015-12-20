@@ -28,12 +28,12 @@ menu_register(array(
 		'callback' => 'twitter_replies_page',
 		'display'  => '@'
 	),
-	'favourite' => array(
+	'.favourite' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_mark_favourite_page',
 	),
-	'unfavourite' => array(
+	'.unfavourite' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_mark_favourite_page',
@@ -53,37 +53,47 @@ menu_register(array(
 		'security' => true,
 		'callback' => 'twitter_user_page',
 	),
-	'follow' => array(
+	'.follow' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_follow_page',
 	),
-	'unfollow' => array(
+	'.unfollow' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_follow_page',
 	),
-	'confirm' => array(
+	'.confirm' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_confirmation_page',
 	),
-	'confirmed' => array(
+	'.confirmed' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_confirmed_page',
 	),
-	'block' => array(
+	'.block' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_block_page',
 	),
-	'unblock' => array(
+	'.unblock' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_block_page',
 	),
-	'spam' => array(
+	'.mute' => array(
+		'hidden' => true,
+		'security' => true,
+		'callback' => 'twitter_mute_page',
+	),
+	'.unmute' => array(
+		'hidden' => true,
+		'security' => true,
+		'callback' => 'twitter_mute_page',
+	),
+	'.spam' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_spam_page',
@@ -103,22 +113,22 @@ menu_register(array(
 		'callback' => 'twitter_friends_page',
 		'display' => '😉'
 	),
-	'delete' => array(
+	'.delete' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_delete_page',
 	),
-	'deleteDM' => array(
+	'.deleteDM' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_deleteDM_page',
 	),
-	'deleteSavedSearch' => array(
+	'.deleteSavedSearch' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_delete_saved_search_page',
 	),
-	'retweet' => array(
+	'.retweet' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_retweet_page',
@@ -127,6 +137,16 @@ menu_register(array(
 		'security' => true,
 		'hidden' => true,
 		'callback' => 'twitter_hashtag_page',
+	),
+	'muted-list' => array(
+		'security' => true,
+		'callback' => 'twitter_muted_page',
+		'display' => '🔇' // http://graphemica.com/%F0%9F%94%87
+	),
+	'blocked-list' => array(
+		'security' => true,
+		'callback' => 'twitter_blocks',
+		'display'  => '⛔',
 	),
 	'trends' => array(
 		'security' => true,
@@ -143,7 +163,7 @@ menu_register(array(
  		'callback' => 'lists_controller',
  		'display'  => '≡'
  	),
-	'retweeted_by' => array(
+	'retweeted-by' => array(
 		'security' => true,
 		'hidden' => true,
 		'callback' => 'twitter_retweeters_page',
@@ -153,21 +173,17 @@ menu_register(array(
 		'callback' => 'twitter_profile_page',
 		'display' => '☺'
 	),
-	'showretweets' => array(
+	'.showRetweets' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_retweets',
 	),
-	'hideretweets' => array(
+	'.hideRetweets' => array(
 		'hidden' => true,
 		'security' => true,
 		'callback' => 'twitter_retweets',
 	),
-	'blocked' => array(
-		'hidden' => true,
-		'security' => true,
-		'callback' => 'twitter_blocks',
-	),
+
 ));
 
 // How should external links be opened?
@@ -740,7 +756,7 @@ function twitter_follow_page($query) {
 		$cb = get_codebird();
 		$api_options = array("screen_name" => $screen_name);
 
-		if($query[0] == 'follow'){
+		if($query[0] == '.follow'){
 			@twitter_api_status($cb->friendships_create($api_options));
 		} else {
 			@twitter_api_status($cb->friendships_destroy($api_options));
@@ -757,12 +773,29 @@ function twitter_block_page($query) {
 		$cb = get_codebird();
 		$api_options = array("screen_name" => $screen_name);
 
-		if($query[0] == 'block'){
+		if($query[0] == '.block'){
 			@twitter_api_status($cb->blocks_create($api_options));
-			twitter_refresh("confirmed/block/{$screen_name}");
+			twitter_refresh(".confirmed/.block/{$screen_name}");
 		} else {
 			@twitter_api_status($cb->blocks_destroy($api_options));
-			twitter_refresh("confirmed/unblock/{$screen_name}");
+			twitter_refresh(".confirmed/.unblock/{$screen_name}");
+		}
+	}
+}
+
+function twitter_mute_page($query) {
+	twitter_ensure_post_action();
+	$screen_name = $query[1];
+	if ($screen_name) {
+		$cb = get_codebird();
+		$api_options = array("screen_name" => $screen_name);
+
+		if($query[0] == '.mute'){
+			@twitter_api_status($cb->mutes_users_create($api_options));
+			twitter_refresh(".confirmed/.mute/{$screen_name}");
+		} else {
+			@twitter_api_status($cb->mutes_users_destroy($api_options));
+			twitter_refresh(".confirmed/.unmute/{$screen_name}");
 		}
 	}
 }
@@ -779,40 +812,55 @@ function twitter_spam_page($query)
 	@twitter_api_status($cb->users_reportSpam($api_options));
 
 	//Where should we return the user to?  Back to the user
-	twitter_refresh("confirmed/spam/{$screen_name}");
+	twitter_refresh(".confirmed/.spam/{$screen_name}");
 }
 
 function twitter_confirmation_page($query)
 {
-	//	The URL /confirm can be passed parameters like so /confirm/param1/param2/param3 etc.
+	//	The URL /confirm can be passed parameters like so /.confirm/.param1/param2/param3 etc.
 	$action    = $query[1];
 	$target    = $query[2];	//	The name of the user we are doing this action on
 	$target_id = $query[3];	//	The targets's ID.  Needed to check if they are being blocked.
 
 	switch ($action) {
-		case 'block':
-			if (twitter_block_exists($target_id)) //Is the target blocked by the user?
-			{
-				$action = 'unblock';
-				$content  = "<p>".sprintf(_(ARE_YOU_SURE_UNBLOCK), $target)."</p>";
-				$content .= "<ul>
-									<li>"._(UNBLOCK_1)."</li>
-									<li>"._(UNBLOCK_2)."</li>
-								</ul>";
-			}
-			else
-			{
-				$content = "<p>".sprintf(_(ARE_YOU_SURE_BLOCK), $target)."</p>";
-				$content .= "<ul>
-				                <li>"._(BLOCK_1)."</li>
-				                <li>"._(BLOCK_2)."</li>
-				                <li>"._(BLOCK_3)."</li>
-				                <li>"._(BLOCK_4)."</li>
-				            </ul>";
-			}
+		case '.block':
+			$content = "<p>".sprintf(_(ARE_YOU_SURE_BLOCK), $target)."</p>";
+			$content .= "<ul>
+			                <li>"._(BLOCK_1)."</li>
+			                <li>"._(BLOCK_2)."</li>
+			                <li>"._(BLOCK_3)."</li>
+			                <li>"._(BLOCK_4)."</li>
+			            </ul>";
+			break;
+		case '.unblock':
+			$action = '.unblock';
+			$content  = "<p>".sprintf(_(ARE_YOU_SURE_UNBLOCK), $target)."</p>";
+			$content .= "<ul>
+								<li>"._(UNBLOCK_1)."</li>
+								<li>"._(UNBLOCK_2)."</li>
+							</ul>";
+			break;
+		case '.mute':
+			$content  = "<p>".sprintf(_(ARE_YOU_SURE_MUTE),$target)."</p>";
+			$content .= "<ul>
+								 <li>"._(MUTE_1)."</li>
+								 <li>"._(MUTE_2)."</li>
+								 <li>"._(MUTE_3)."</li>
+								 <li>"._(MUTE_4)."</li>
+							</ul>";
 			break;
 
-		case 'delete':
+		case '.unmute':
+			$content  = "<p>".sprintf(_(ARE_YOU_SURE_UNMUTE),$target)."</p>";
+			$content .= "<ul>
+								 <li>"._(UNMUTE_1)."</li>
+								 <li>"._(UNMUTE_2)."</li>
+								 <li>"._(UNMUTE_3)."</li>
+							</ul>";
+			break;
+
+		case '.delete':
+			//	Display the Tweet which is being deleted
 			$cb = get_codebird();
 			$api_options = array("id" => $target);
 			$status = $cb->statuses_show_ID($api_options);
@@ -825,11 +873,13 @@ function twitter_confirmation_page($query)
 			            </ul>";
 			break;
 
-		case 'deleteDM':
+		case '.deleteDM':
+			//	Display the message which is being deleted
 			$cb = get_codebird();
 			$api_options = array("id" => $target);
 			$status = $cb->directMessages_show($api_options);
 			@twitter_api_status($status);
+
 			$content = '<p>'._(ARE_YOU_SURE_DELETE_DM).'</p>';
 			$content .= "<ul>
 			                <li>"._(DIRECT_MESSAGE).": {$status->text}</li>
@@ -838,7 +888,7 @@ function twitter_confirmation_page($query)
 			            </ul>";
 			break;
 
-		case 'deleteSavedSearch':
+		case '.deleteSavedSearch':
 			$cb = get_codebird();
 			$api_options = array("id" => $target);
 
@@ -856,13 +906,13 @@ function twitter_confirmation_page($query)
 			$content .= "<p>"._(SPAM_2)."</p>";
 			break;
 
-		case 'hideretweets':
+		case '.hideRetweets':
 			$content  = "<p>".sprintf(_(HIDE_RETWEETS),$target)."</p>";
 			$content .= "<ul><li>".sprintf(_(HIDE_RETWEETS_1),$target)."</li>
 			                 <li>".sprintf(_(HIDE_RETWEETS_2),$target)."</li></ul>";
 			break;
 
-		case 'showretweets':
+		case '.showRetweets':
 			$content  = "<p>".sprintf(_(SHOW_RETWEETS),$target)."</p>";
 			$content .= "<ul><li>".sprintf(_(SHOW_RETWEETS_1),$target)."</li>
 			                 <li>"._(SHOW_RETWEETS_2)."</li></ul>";
@@ -881,12 +931,12 @@ function twitter_confirmation_page($query)
 
 function twitter_confirmed_page($query)
 {
-        // the URL /confirm can be passed parameters like so /confirm/param1/param2/param3 etc.
+        // the URL /confirm can be passed parameters like so /.confirm/.param1/param2/param3 etc.
         $action = $query[1]; // The action. block, unblock, spam
         $target = $query[2]; // The username of the target
 
 	switch ($action) {
-	   case 'block':
+	   case '.block':
 			$content  = "<p>
 								<span class='avatar'>
 									<img src='images/dabr.png' width='48' height='48' />
@@ -894,7 +944,7 @@ function twitter_confirmed_page($query)
 								<span class='status shift'>".sprintf(_(BLOCKED_MESSAGE),$target)."</span>
 							</p>";
          break;
-	   case 'unblock':
+	   case '.unblock':
          $content  = "<p>
 								<span class='avatar'>
 									<img src='images/dabr.png' width='48' height='48' />
@@ -902,7 +952,7 @@ function twitter_confirmed_page($query)
 								<span class='status shift'>".sprintf(_(UNBLOCKED_MESSAGE),$target)."</span>
 							</p>";
          break;
-	   case 'spam':
+	   case '.spam':
          $content = "<p>
 								<span class='avatar'>
 									<img src='images/dabr.png' width='48' height='48' />
@@ -910,6 +960,22 @@ function twitter_confirmed_page($query)
 								<span class='status shift'>".sprintf(_(SPAMMER_MESSAGE),$target)."</span>
 							</p>";
          break;
+		case '.mute':
+				$content  = "<p>
+									<span class='avatar'>
+										<img src='images/dabr.png' width='48' height='48' />
+									</span>
+									<span class='status shift'>".sprintf(_(MUTED_MESSAGE),$target)."</span>
+								</p>";
+	         break;
+		case '.unmute':
+				$content  = "<p>
+									<span class='avatar'>
+										<img src='images/dabr.png' width='48' height='48' />
+									</span>
+									<span class='status shift'>".sprintf(_(UNMUTED_MESSAGE),$target)."</span>
+								</p>";
+				break;
 	}
  	theme ('Page', 'Confirmed', $content);
 }
@@ -922,7 +988,7 @@ function twitter_retweets($query) {
 	$api_options = array("screen_name" => $user);
 
 	if($user) {
-		if($query[0] == 'hideretweets') {
+		if($query[0] == '.hideRetweets') {
 			$api_options["retweets"] = false;
 			@twitter_api_status($cb->friendships_update($api_options));
 		} else {
@@ -957,7 +1023,8 @@ function twitter_friends_page($query) {
 	$tl = $cb->friends_list($api_options);
 	twitter_api_status($tl);
 
-	$content = theme('users_list', $tl);
+	$content = "<h2>" . sprintf(_(FRIENDS_OF), $user) . "</h2>";
+	$content .= theme('users_list', $tl);
 	theme('page', _(MENU_FRIENDS), $content);
 }
 
@@ -983,12 +1050,12 @@ function twitter_followers_page($query) {
 	$tl = $cb->followers_list($api_options);
 	twitter_api_status($tl);
 
-	$content = theme('users_list', $tl);
+	$content = "<h2>" . sprintf(_(FOLLOWERS_OF), $user) . "</h2>";
+	$content .= theme('users_list', $tl);
 	theme('page', _(MENU_FOLLOWERS), $content);
 }
 
 function twitter_blocks() {
-
 	$cursor = $_GET['cursor'];
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
@@ -1006,8 +1073,33 @@ function twitter_blocks() {
 	$tl = $cb->blocks_list($api_options);
 	twitter_api_status($tl);
 
-	$content = theme('users_list', $tl);
+	$content = "<h2>"._(BLOCKED_TITLE)."</h2>\n";
+	$content .= theme('users_list', $tl);
+
 	theme('page', _(BLOCKED_TITLE), $content);
+}
+
+function twitter_muted_page() {
+	$cursor = $_GET['cursor'];
+	if (!is_numeric($cursor)) {
+		$cursor = -1;
+	}
+
+	$cb = get_codebird();
+
+	$api_options = array("skip_status" => "true");
+	$api_options["count"] = setting_fetch('perPage', 20);
+
+	if ($cursor > 0) {
+		$api_options["cursor"] = $cursor;
+	}
+
+	$tl = $cb->mutes_users_list($api_options);
+	twitter_api_status($tl);
+
+	$content = "<h2>"._(LIST_MUTED)."</h2>\n";
+	$content .= theme('users_list', $tl);
+	theme('page', _(LIST_MUTED), $content);
 }
 
 //  Shows first 100 users who retweeted a specific status (limit defined by twitter)
@@ -1467,11 +1559,11 @@ function twitter_favourites_page($query) {
 
 	$api_options .= "&screen_name={$screen_name}";
 
-	//echo "$api_options";
 	$favorites_list = $cb->favorites_list($api_options);
 	twitter_api_status($favorites_list);
 	$tl = twitter_standard_timeline($favorites_list, 'favourites');
-	// $content = theme('status_form');
+
+	$content = "<h2>" . sprintf(_(FAVOURITES_OF), $screen_name) . "</h2>"; 
 	$content .= theme('timeline', $tl);
 	theme('page', _(FAVOURITES_TITLE), $content);
 }

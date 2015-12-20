@@ -19,15 +19,6 @@ Font license info
    Homepage:  http://www.entypo.com
 
 
-## Linecons
-
-   Copyright (C) 2013 by Designmodo
-
-   Author:    Designmodo for Smashing Magazine
-   License:   CC BY ()
-   Homepage:  http://designmodo.com/linecons-free/
-
-
 ## Font Awesome
 
    Copyright (C) 2012 by Dave Gandy
@@ -35,6 +26,15 @@ Font license info
    Author:    Dave Gandy
    License:   SIL ()
    Homepage:  http://fortawesome.github.com/Font-Awesome/
+
+
+## Linecons
+
+   Copyright (C) 2013 by Designmodo
+
+   Author:    Designmodo for Smashing Magazine
+   License:   CC BY ()
+   Homepage:  http://designmodo.com/linecons-free/
 
 
 ## Iconic
@@ -55,13 +55,13 @@ Font license info
    Homepage:  http://aristeides.com/
 
 
-## Web Symbols
+## Maki
 
-   Copyright (c) 2011 by Just Be Nice studio. All rights reserved.
+   Copyright (C) Mapbox, LCC
 
-   Author:    Just Be Nice studio
-   License:   SIL (http://scripts.sil.org/OFL)
-   Homepage:  http://www.justbenicestudio.com/
+   Author:    Mapbox
+   License:   BSD (https://github.com/mapbox/maki/blob/gh-pages/LICENSE.txt)
+   Homepage:  http://mapbox.com/maki/
 
 
 ## Zocial
@@ -71,5 +71,3 @@ Font license info
    Author:    Sam Collins
    License:   MIT (http://opensource.org/licenses/mit-license.php)
    Homepage:  http://zocial.smcllns.com/
-
-

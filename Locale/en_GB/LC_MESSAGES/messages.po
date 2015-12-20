@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dabr\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-13 21:54+0100\n"
+"PO-Revision-Date: 2015-12-20 21:06+0100\n"
 "Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
 "Language-Team: English <dabr-i18n@shkspr.mobi>\n"
 "MIME-Version: 1.0\n"
@@ -105,7 +105,7 @@ msgid "ERROR_VIDEO"
 msgstr "Your browser does not support playing video."
 
 msgid "ARE_YOU_SURE_UNBLOCK"
-msgstr "Are you sure you want to <strong>Unblock %s</strong>?"
+msgstr "Are you sure you want to <strong>Unblock @%s</strong>?"
 
 msgid "UNBLOCK_1"
 msgstr ""
@@ -115,7 +115,7 @@ msgid "UNBLOCK_2"
 msgstr "You <em>can</em> block them again if you want."
 
 msgid "ARE_YOU_SURE_BLOCK"
-msgstr "Are you sure you want to <strong>Block %s</strong>?"
+msgstr "Are you sure you want to <strong>Block @%s</strong>?"
 
 msgid "BLOCK_1"
 msgstr "You won't show up in their list of friends."
@@ -160,6 +160,9 @@ msgstr "Yes please"
 msgid "NO_UNDO"
 msgstr "There is <strong>no way to undo this action</strong>."
 
+msgid "ARE_YOU_SURE_MUTE"
+msgstr "Are you really sure you want to <strong>mute</strong> @%s?"
+
 msgid "MUTE_1"
 msgstr "You won't see any of their Tweets in your timeline"
 
@@ -172,6 +175,9 @@ msgstr "They <em>will still be able to follow you and see your Tweets</em>"
 msgid "MUTE_4"
 msgstr "You <em>can</em> unmute them later"
 
+msgid "ARE_YOU_SURE_UNMUTE"
+msgstr "Are you really sure you want to <strong>unmute</strong> @%s?"
+
 msgid "UNMUTE_1"
 msgstr "You will see their Tweets in your timeline if you follow them."
 
@@ -180,9 +186,6 @@ msgstr "Their Tweets will appear in your replies"
 
 msgid "UNMUTE_3"
 msgstr "You <em>can</em> mute them later"
-
-msgid "Are you sure you want to mute %s?"
-msgstr "Are you really sure you want to mute %s?"
 
 msgid "SPAM_1"
 msgstr ""
@@ -199,6 +202,9 @@ msgstr "Bye-bye @%s - you are now <strong>blocked</strong>."
 
 msgid "UNBLOCKED_MESSAGE"
 msgstr "Hello again @%s - you have been <strong>unblocked</strong>."
+
+msgid "UNMUTED_MESSAGE"
+msgstr "@%s has been unmuted. You will now be able to see their tweets."
 
 msgid "BLOCKED_TITLE"
 msgstr "Blocked Users"
@@ -235,23 +241,23 @@ msgstr "List memberhips"
 
 msgid "HIDE_RETWEETS"
 msgstr ""
-"Are you really sure you want to hide the Retweets from <strong>%s</strong>?"
+"Are you really sure you want to hide the Retweets from <strong>@%s</strong>?"
 
 msgid "HIDE_RETWEETS_1"
-msgstr "The tweets that %s shares will no longer appear in your timeline."
+msgstr "The tweets that @%s shares will no longer appear in your timeline."
 
 msgid "HIDE_RETWEETS_2"
-msgstr "However you will still see them when looking at %s's timeline."
+msgstr "However you will still see them when looking at @%s's timeline."
 
 msgid "SHOW_RETWEETS"
 msgstr ""
-"Are you really sure you want to show Retweets from <strong>%s</strong>?"
+"Are you really sure you want to show Retweets from <strong>@%s</strong>?"
 
 msgid "SHOW_RETWEETS_1"
-msgstr "The tweets that %s shares will appear in your timeline."
+msgstr "The tweets that @%s shares will appear in your timeline."
 
 msgid "SHOW_RETWEETS_2"
-msgstr "You can turn these off at any time."
+msgstr "You can turn these off again at any time."
 
 msgid "ERROR_NOTHING_TO_CONFIRM"
 msgstr ""
@@ -322,8 +328,8 @@ msgstr "Follows you."
 msgid "FOLLOWING"
 msgstr "You are following."
 
-msgid "SH_MUTED"
-msgstr "Shhh! Muted."
+msgid "MUTED_MESSAGE"
+msgstr "Shhh! @%s is muted."
 
 msgid "FOLLOW"
 msgstr "Follow"
@@ -630,11 +636,11 @@ msgstr "Send Direct Message"
 
 msgid "DIRECTS_WARNING_TEXT"
 msgstr ""
-"<b>%s</b> is not following you. You might not be able to send them a Direct "
+"<b>@%s</b> is not following you. You might not be able to send them a Direct "
 "Message :-("
 
 msgid "DIRECTS_SENDING_TO"
-msgstr "Sending direct message to <b>%s</b>"
+msgstr "Sending direct message to <b>@%s</b>"
 
 msgid "ICONS_CAMERA"
 msgstr "Add photo"
@@ -757,8 +763,17 @@ msgstr "Search"
 msgid "MENU_FOLLOWERS"
 msgstr "Followers"
 
+msgid "FOLLOWERS_OF"
+msgstr "Followers of @%s"
+
 msgid "MENU_FRIENDS"
 msgstr "Following"
+
+msgid "FRIENDS_OF"
+msgstr "Users following @%s"
+
+msgid "FAVOURITES_OF"
+msgstr "@%s's Favourites"
 
 msgid "MENU_MUTED"
 msgstr "Shhhh!"

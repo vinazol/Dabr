@@ -214,7 +214,7 @@ function lists_list_members_page($user, $list) {
 
 	// TODO: use a different theme() function? Add a "delete member" link for each member
 	$list_url = "<a href='{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>";
-	$content = "<div class='heading'>".sprintf(_(LIST_MEMBERS),$list_url).":</div>\n";
+	$content = "<h2>".sprintf(_(LIST_MEMBERS),$list_url).":</h2>\n";
 	$content .= theme('users_list', $p);
 	theme('page', sprintf(_(LIST_MEMBERS),"{$user}/{$list}"), $content);
 }
@@ -224,7 +224,7 @@ function lists_list_subscribers_page($user, $list) {
 	$p = twitter_lists_list_subscribers($user, $list);
 	$list_url = "<a href='{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>";
 
-	$content = "<div class='heading'>".sprintf(_(LIST_SUBSCRIBERS),$list_url).":</div>\n";
+	$content = "<h2>".sprintf(_(LIST_SUBSCRIBERS),$list_url).":</h2>\n";
 	$content .= theme('users_list', $p);
 	theme('page', sprintf(_(LIST_SUBSCRIBERS),"{$user}/{$list}"), $content);
 }

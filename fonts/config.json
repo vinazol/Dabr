@@ -19,6 +19,12 @@
       "src": "fontawesome"
     },
     {
+      "uid": "43c629249e2cca7e73cd4ef410c9551f",
+      "css": "mute",
+      "code": 128263,
+      "src": "fontawesome"
+    },
+    {
       "uid": "a2a74f5e7b7d9ba054897d8c795a326a",
       "css": "list-bullet",
       "code": 8801,
@@ -101,6 +107,12 @@
       "css": "user",
       "code": 9786,
       "src": "iconic"
+    },
+    {
+      "uid": "40664a3e8916bfdcc5fb5655d469723e",
+      "css": "roadblock",
+      "code": 9940,
+      "src": "maki"
     },
     {
       "uid": "b1ec8e90c2c85cf0035849980a3789b3",

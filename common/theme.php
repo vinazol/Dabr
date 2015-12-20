@@ -235,8 +235,9 @@ function theme_directs_menu() {
 
 function theme_directs_form($to) {
 	if ($to) {
-
-		if (friendship_exists($to) != 1)
+		$friendship = friendship($to);
+		$messaging = $friendship->relationship->source->can_dm;
+		if (!$messaging)
 		{
 			$html_to = "<em>"._(DIRECTS_WARNING)."</em> ". sprintf(_(DIRECTS_WARNING_TEXT),$to) .
 			           "<br/>";
@@ -436,44 +437,6 @@ function theme_user_header($user) {
             		</span>
    					<div class='features'>";
 	$out .= theme_user_info($user);
-
-	if($following) {
-		$out .=	" | <a href='messages/create/{$screen_name}'>"._(DIRECTS_BUTTON)."</a>";
-	}
-
-	//	One cannot follow, block, nor report spam oneself.
-	if (strtolower($user->screen_name) !== strtolower(user_current_username())) {
-
-		if ($followed_by == false) {
-			$out .= " | <a href='follow/{$user->screen_name}'>"._(FOLLOW)."</a>";
-		}
-		else {
-			$out .= " | <a href='unfollow/{$user->screen_name}'>"._(UNFOLLOW)."</a>";
-
-			if($friendship->relationship->source->want_retweets) {
-				$out .= " | <a href='confirm/hideretweets/{$user->screen_name}'>"._(RETWEETS_HIDE)."</a>";
-			}
-			else {
-				$out .= " | <a href='confirm/showretweets/{$user->screen_name}'>"._(RETWEETS_SHOW)."</a>";
-			}
-		}
-
-		//We need to pass the User Name and the User ID.  The Name is presented in the UI, the ID is used in checking
-		$blocked = $friendship->relationship->source->blocking; //The $user is blocked by the authenticating
-		if ($blocked == true) {
-			$out.= " | <a href='confirm/block/{$user->screen_name}/{$user->id}'>"._(UNBLOCK)."</a>";
-		}
-		else {
-			$out.= " | <a href='confirm/block/{$user->screen_name}/{$user->id}'>"._(BLOCK)."</a>";
-		}
-
-		$out .= " | <a href='confirm/spam/{$user->screen_name}/{$user->id}'>"._(REPORT_SPAM)."</a>";
-	} else {
-		//	Items we can only show on ourself
-		$out .= " | <a href='blocked'>"._(BLOCK_SHOW)."</a>";
-	}
-
-	$out .= " | <a href='search?query=%40{$user->screen_name}'>".sprintf(_(SEARCH_AT),$user->screen_name)."</a>";
 	$out .= "</div>
 			</div>";
 	return $out;
@@ -505,8 +468,76 @@ function theme_user_info($user) {
 						"</a>";
 	}
 	$out .=     " | <a href='lists/{$screen_name}'>" .
-							sprintf(ngettext("PROFILE_COUNT_LIST %s", "PROFILE_COUNT_LISTS %s", $user->listed_count), number_format($user->listed_count)) .
- 						"</a>";
+							sprintf(ngettext("PROFILE_COUNT_LIST %s",     "PROFILE_COUNT_LISTS %s",     $user->listed_count),    number_format($user->listed_count)) .
+						"</a>";
+
+	//	Blocking and Muting are not always returned. Here's the hacky way to get it.
+	if ($user->muting === null)
+	{
+		$friendship = friendship($user->screen_name);
+		$muting    = $friendship->relationship->source->muting;
+		$blocking  = $friendship->relationship->source->blocking;
+		$messaging = $friendship->relationship->source->can_dm;
+		$retweets  = $friendship->relationship->source->want_retweets;
+	} else {
+		$muting    = $user->muting;
+		$blocking  = $user->blocking;
+		$messaging = $user->following;
+		$retweets  = true; //	Can assume that Retweets haven't been hidden?
+	}
+
+	if($muting)
+	{
+		$out .= " | <a href='.confirm/.unmute/{$screen_name}'>".
+							_(UNMUTE) .
+						"</a>";
+	} else {
+		$out .= " | <a href='.confirm/.mute/{$screen_name}'>".
+							_(MUTE) .
+						"</a>";
+	}
+
+	if($blocking == true)
+	{
+		$out .= " | <a href='.confirm/.unblock/{$screen_name}'>".
+							_(UNBLOCK) .
+						"</a>";
+	} else {
+		$out .= " | <a href='.confirm/.block/{$screen_name}'>".
+							_(BLOCK) .
+						"</a>";
+	}
+
+	if($messaging == true)
+	{
+		$out .=	" | <a href='messages/create/{$screen_name}'>"._(DIRECTS_BUTTON)."</a>";
+	}
+
+	//	One cannot follow, block, nor report spam oneself.
+	if (strtolower($screen_name) !== strtolower(user_current_username())) {
+
+		if ($user->following == false) {
+			$out .= " | <a href='.follow/{$screen_name}'>"._(FOLLOW)."</a>";
+		}
+		else {
+			$out .= " | <a href='.unfollow/{$screen_name}'>"._(UNFOLLOW)."</a>";
+
+			if($retweets) {
+				$out .= " | <a href='.confirm/.hideRetweets/{$screen_name}'>"._(RETWEETS_HIDE)."</a>";
+			}
+			else {
+				$out .= " | <a href='.confirm/.showRetweets/{$screen_name}'>"._(RETWEETS_SHOW)."</a>";
+			}
+		}
+
+		$out .= " | <a href='.confirm/.spam/{$user->screen_name}/{$user->id}'>"._(REPORT_SPAM)."</a>";
+	} else {
+		//	Items we can only show on ourself
+		$out .= " | <a href='blocked-list'>"._(BLOCK_SHOW)."</a>";
+	}
+
+	$out .= " | <a href='search?query=%40{$screen_name}'>".sprintf(_(SEARCH_AT),$user->screen_name)."</a>";
+
 	return $out;
 }
 
@@ -778,7 +809,7 @@ function theme_search_form($search_query, $saved) {
 		$saved_searches_html .= "<a href='search?query={$saved_query}'>{$saved_display}</a> ";
 
 		//	Add a delete icon
-		$saved_searches_html .= theme('action_icon', "confirm/deleteSavedSearch/{$saved_id}", '🗑', '['._(DELETE_BUTTON).']');
+		$saved_searches_html .= theme('action_icon', ".confirm/.deleteSavedSearch/{$saved_id}", '🗑', '['._(DELETE_BUTTON).']');
 		$saved_searches_html .= " | ";
 
 		// Remove the Save New Search button if the term was already found
@@ -861,9 +892,9 @@ function theme_action_icons($status) {
 		}
 
 		if ($status->favorited == '1') {
-			$actions[] = theme('action_icon', "unfavourite/{$id}", '<span style="color:#FF0000;">♥</span>', _(UNFAVOURITE)) . $favourite_count;
+			$actions[] = theme('action_icon', ".unfavourite/{$id}", '<span style="color:#FF0000;">♥</span>', _(UNFAVOURITE)) . $favourite_count;
 		} else {
-			$actions[] = theme('action_icon', "favourite/{$id}", '♡', _(FAVOURITE)) . $favourite_count;
+			$actions[] = theme('action_icon', ".favourite/{$id}", '♡', _(FAVOURITE)) . $favourite_count;
 		}
 
 		$retweet_count = "";
@@ -879,25 +910,25 @@ function theme_action_icons($status) {
 
 		// Show a diffrent retweet icon to indicate to the user this is an RT
 		if ($status->retweeted || user_is_current_user($retweeted_by)) {
-			$actions[] = theme('action_icon', "retweet/{$id}", '<span style="color:#009933;">♻</span>', _(RETWEET)) . $retweet_count;
+			$actions[] = theme('action_icon', ".retweet/{$id}", '<span style="color:#009933;">♻</span>', _(RETWEET)) . $retweet_count;
 		}
 		else {
-			$actions[] = theme('action_icon', "retweet/{$id}", '♻', _(RETWEET)) . $retweet_count;
+			$actions[] = theme('action_icon', ".retweet/{$id}", '♻', _(RETWEET)) . $retweet_count;
 		}
 
 
 		if (user_is_current_user($from)) {
-			$actions[] = theme('action_icon', "confirm/delete/{$id}", '🗑', _(DELETE_BUTTON));
+			$actions[] = theme('action_icon', ".confirm/.delete/{$id}", '🗑', _(DELETE_BUTTON));
 		}
 
 		//Allow users to delete what they have retweeted
 		if (user_is_current_user($retweeted_by)) {
-			$actions[] = theme('action_icon', "confirm/delete/{$retweeted_id}", '🗑', _(DELETE_BUTTON));
+			$actions[] = theme('action_icon', ".confirm/.delete/{$retweeted_id}", '🗑', _(DELETE_BUTTON));
 		}
 
 	}
 	else {
-		$actions[] = theme('action_icon', "confirm/deleteDM/{$id}", '🗑', _(DELETE_BUTTON));
+		$actions[] = theme('action_icon', ".confirm/.deleteDM/{$id}", '🗑', _(DELETE_BUTTON));
 	}
 	if ($geo !== null) {
 		$latlong = $geo->coordinates;
@@ -933,11 +964,6 @@ function theme_action_icon($url, $display, $text) {
 	{
 		return "<span class='{$class}' title='{$text}'>{$display}</span>";
 	}
-
-    // if (0 === strpos($image_url, "images/"))
-    // {
-    //     return "<a href='$url'><img src='$image_url' alt='$text' /></a>";
-    // }
 
     return "<a href='{$url}' class='{$class}' title='{$text}'>{$display}</a>";
 
