@@ -117,8 +117,21 @@ function theme_table_cell($contents, $header = false) {
 }
 
 
-function theme_error($message) {
-	theme_page('Error', $message);
+function theme_error($message, $response = NULL, $post = NULL) {
+	if ($response->errors) {
+		$errors = current($response->errors);
+		$error_message = $errors->message;
+		$error_code = $errors->code;
+	}
+
+	//	Handle overly long messages by allowing the user to re-edit them.
+	if (186 == $error_code)
+	{
+		$status = $post->status;
+		$message .= theme_status_form($post["status"], $post["in_reply_to_id"]);
+	}
+
+	theme_page(_(ERROR), $message);
 }
 
 function theme_about() {
@@ -246,6 +259,7 @@ function theme_directs_form($to) {
 	$content .= js_counter("message");
 	return $content;
 }
+
 function theme_status_form($text = '', $in_reply_to_id = null) {
 
 	if (user_is_authenticated()) {

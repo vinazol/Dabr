@@ -1699,6 +1699,7 @@ function twitter_api_status(&$response) {
 	global $rate_limit;
 	global $api_time;
 	global $api_start;
+
 	$api_time += microtime(1) - $api_start;
 
 	//	Store the rate limit
@@ -1710,7 +1711,6 @@ function twitter_api_status(&$response) {
 	//	Have we any errors?
 	if ($response->httpstatus) {
 		$httpstatus = intval($response->httpstatus);
-		// echo "STATUS <pre>$httpstatus</pre>";
 
 		if ($response->errors) {
 			$errors = current($response->errors);
@@ -1728,13 +1728,16 @@ function twitter_api_status(&$response) {
 				theme('error', "<h2>"._(ERROR)." "._(ERROR_LOGIN)."</h2>".
 							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
 			case 429:
-				theme('error', "<h2>"._(ERROR_RATE_LIMIT)."</h2><p>{$rate_limit}.</p>");
+				theme('error', "<h2>"._(ERROR_RATE_LIMIT)."</h2><p>{$rate_limit}.</p>",
+						$response, $_POST);
 			case 403:
 				theme('error', "<h2>"._(ERROR)."</h2>".
-							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
+							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>",
+						$response, $_POST);
 			default:
-				theme('error', "<h2>" . _(ERROR) . "</h2>".
-							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>");
+				theme('error', "<h2>"._(ERROR)."</h2>".
+							"<p>".sprintf(_(ERROR_TWITTER_MESSAGE), $error_message, $error_code)."</p>",
+						$response, $_POST);
 		}
 	}
 }
