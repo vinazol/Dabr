@@ -902,7 +902,7 @@ function theme_action_icons($status) {
 		if ($status->retweet_count)	{
 			$retweet_count = "<sup>" .
 			                    theme('action_icon',
-									        ".retweeted_by/{$id}",
+									        ".retweeted-by/{$id}",
 											  number_format($status->retweet_count),
 											  number_format($status->retweet_count)) .
 			                "</sup>";

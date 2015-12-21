@@ -163,7 +163,7 @@ menu_register(array(
  		'callback' => 'lists_controller',
  		'display'  => '≡'
  	),
-	'retweeted-by' => array(
+	'.retweeted-by' => array(
 		'security' => true,
 		'hidden' => true,
 		'callback' => 'twitter_retweeters_page',
@@ -1563,7 +1563,7 @@ function twitter_favourites_page($query) {
 	twitter_api_status($favorites_list);
 	$tl = twitter_standard_timeline($favorites_list, 'favourites');
 
-	$content = "<h2>" . sprintf(_(FAVOURITES_OF), $screen_name) . "</h2>"; 
+	$content = "<h2>" . sprintf(_(FAVOURITES_OF), $screen_name) . "</h2>";
 	$content .= theme('timeline', $tl);
 	theme('page', _(FAVOURITES_TITLE), $content);
 }
