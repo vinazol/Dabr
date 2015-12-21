@@ -1107,14 +1107,26 @@ function twitter_retweeters_page($query) {
 	// Which tweet are we looking for?
 	$id = $query[1];
 
+	//	List of retweeters
 	$cb = get_codebird();
 	$api_options = array("id" => $id);
 	$users = $cb->statuses_retweets_ID($api_options);
 	twitter_api_status($users);
 
+	//	Display the Tweet which is being retweeted
+	$cb = get_codebird();
+	$api_options = array("id" => $id);
+	$status = $cb->statuses_show_ID($api_options);
+	@twitter_api_status($status);
+
 	// Format the output
-	$content = theme('users_list', $users);
-	theme('page', sprintf(_(RETWEET_LIST),$id), $content);
+	$title = sprintf(_(RETWEET_LIST),"{$status->user->screen_name}");
+	
+	$content =  "<h2>{$title}</h2>";
+	$content .= "<p>".twitter_parse_tags($status->text)."</p>";
+	$content .= theme('users_list', $users);
+
+	theme('page', $title, $content);
 }
 
 function twitter_update() {
