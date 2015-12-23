@@ -34,20 +34,20 @@ function theme_list($items, $attributes) {
 	return $output;
 }
 
-function theme_options($options, $selected = null) {
-	if (count($options) == 0) return '';
-	$output = '';
-	foreach($options as $value => $name) {
-		if (is_array($name)) {
-			$output .= '<optgroup label="'.$value.'">';
-			$output .= theme('options', $name, $selected);
-			$output .= '</optgroup>';
-		} else {
-			$output .= '<option value="'.$value.'"'.($selected == $value ? ' selected="selected"' : '').'>'.$name."</option>\n";
-		}
-	}
-	return $output;
-}
+// function theme_options($options, $selected = null) {
+// 	if (count($options) == 0) return '';
+// 	$output = '';
+// 	foreach($options as $value => $name) {
+// 		if (is_array($name)) {
+// 			$output .= '<optgroup label="'.$value.'">';
+// 			$output .= theme('options', $name, $selected);
+// 			$output .= '</optgroup>';
+// 		} else {
+// 			$output .= '<option value="'.$value.'"'.($selected == $value ? ' selected="selected"' : '').'>'.$name."</option>\n";
+// 		}
+// 	}
+// 	return $output;
+// }
 
 function theme_info($info) {
 	$rows = array();
@@ -179,11 +179,19 @@ function theme_page($title, $content) {
 						<!--[if IE]><link rel="shortcut icon" href="favicon.ico"><![endif]-->
 						<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 						<link rel="icon" href="images/favicon.png">
-						<link href="widgets" rel="stylesheet">
-					</head>
+						<link href="widgets" rel="stylesheet">';
+
+	if ($title == _(SETTINGS_TITLE))
+	{
+		echo			'<link href="//fonts.googleapis.com/css?family=Schoolbell:400|Ubuntu+Mono:500|Raleway:500|Karma:500|Open+Sans:500" rel="stylesheet" type="text/css">';
+	} else {
+		echo			'<link href="//fonts.googleapis.com/css?family='.(setting_fetch("dabr_fonts","Raleway")).'" rel="stylesheet" type="text/css">';
+	}
+
+	echo			'</head>
 					<body id="thepage">';
 	echo 				$body;
-	if (setting_fetch('colours') == null)
+	if (setting_fetch('dabr_colours') == null)
 	{
 		//	If the cookies haven't been set, remind the user that they can set how Dabr looks
 		echo			"<p>"._(UGLY)."</p>";
@@ -194,7 +202,7 @@ function theme_page($title, $content) {
 }
 
 function theme_colours() {
-	$info = $GLOBALS['colour_schemes'][setting_fetch('colours', 0)];
+	$info = $GLOBALS['colour_schemes'][setting_fetch('dabr_colours', 0)];
 	list(, $bits) = explode('|', $info);
 	$colours = explode(',', $bits);
 	return (object) array(
@@ -272,7 +280,7 @@ function theme_status_form($text = '', $in_reply_to_id = null) {
 			$text = $_GET['status'];
 		}
 
-		if ('yes' == setting_fetch('menu_icons'))
+		if ('yes' == setting_fetch('dabr_show_icons','yes'))
 		{
 			$camera = "📷";
 		} else {
@@ -549,7 +557,7 @@ function theme_avatar($url, $force_large = false) {
 function theme_status_time_link($status, $is_link = true) {
 	$time = strtotime($status->created_at);
 	if ($time > 0) {
-		if (twitter_date('dmy') == twitter_date('dmy', $time) && !setting_fetch('timestamp')) {
+		if (twitter_date('dmy') == twitter_date('dmy', $time) && !setting_fetch('dabr_timestamp')) {
 			$out = format_interval(time() - $time);
 			// $out = sprintf(_(SECONDS), time() - $time);
 		} else {
@@ -582,7 +590,7 @@ function theme_timeline($feed, $paginate = true) {
 
 	// Only embed images if user hasn't hidden them
 
-	if(setting_fetch('show_oembed')) {
+	if(setting_fetch('dabr_show_oembed')) {
 		oembed_embed_thumbnails($feed);
 	}
 
@@ -620,7 +628,7 @@ function theme_timeline($feed, $paginate = true) {
 		}
 
 		$text = $status->text;
-		if ("yes" != setting_fetch('hide_inline')) {
+		if ("yes" != setting_fetch('dabr_hide_inline')) {
 			$media = twitter_get_media($status);
 
 			if ($media != "")
@@ -638,7 +646,7 @@ function theme_timeline($feed, $paginate = true) {
 			$quoted = "";
 		}
 
-		if ("yes" != setting_fetch('hide_avatars')) {
+		if ("yes" != setting_fetch('dabr_hide_avatars')) {
 			$avatar = theme('avatar', theme_get_avatar($status->from));
 		}
 
@@ -945,7 +953,7 @@ function theme_action_icons($status) {
 function theme_action_icon($url, $display, $text) {
 
 	//	If the user doesn't want icons, display as text
-	if ('yes' !== setting_fetch('menu_icons'))
+	if ('yes' !== setting_fetch('dabr_show_icons','yes'))
 	{
 		$display = $text;
 		$class = "action-text";
@@ -1041,4 +1049,83 @@ function theme_list_pagination($json) {
 
 function theme_trends_page($locales, $trends) {
 	// TODO FIXME
+}
+
+function theme_radio($options, $name, $selected = NULL)
+{
+	if (count($options) == 0) return '';
+	$output = '';
+	foreach($options as $value => $description)
+	{
+		if ($name == "dabr_fonts")
+		{
+			$style = "style='font-family:". urldecode($value) . ", sans;'";
+			$output .= '<label for="'.$value.'" '.$style.'>
+							<input
+								type="radio"
+								name="' .$name. '"
+								id="'   .$value.'"
+								value="'.$description. '" '.
+								($selected == $description ? 'checked="checked"' : '').
+							' />';
+			$output .= ' ' . $description . '</label>
+			<br>';
+		} elseif ($name == "dabr_font_size") {
+			$style = "style='font-size:". $value . "em;'";
+			$output .= '<label for="'.$value.'" '.$style.'>
+							<input
+								type="radio"
+								name="' .$name. '"
+								id="'   .$value.'"
+								value="'.$value. '" '.
+								($selected == $value ? 'checked="checked"' : '').
+							' />';
+			$output .= ' ' . $description . '</label>
+			<br>';
+		}
+
+	}
+	return $output;
+}
+
+function theme_check($options, $name, $selected = NULL)
+{
+	if (count($options) == 0) return '';
+	$output = '';
+	foreach($options as $value => $description)
+	{
+
+		$output .= '<p>
+		               <label>
+		                  <input type="checkbox"
+								       name="'.$name.'"
+										 value="'.$value.'"
+										 '.($selected == $value ? 'checked="checked"' : '').' />';
+								$description.
+							'</label>
+		            </p>';
+	}
+	return $output;
+}
+
+function theme_options($options, $selected = NULL, $title = NULL, $select_name = NULL)
+{
+	if (count($options) == 0) return '';
+	$output = "<p>{$title}
+		        		<br />
+		 				<select name=\"{$select_name}\">'";
+
+	foreach($options as $value => $name) {
+		if (is_array($name)) {
+			$output .= '<optgroup label="'.$value.'">';
+			$output .= theme('options', $name, $selected);
+			$output .= '</optgroup>';
+		} else {
+			$output .= '<option value="'.$value.'"'.($selected == $value ? ' selected="selected"' : '').'>'.$name."</option>\n";
+		}
+	}
+	$output .= "	</select>
+	      	</p>";
+
+	return $output;
 }

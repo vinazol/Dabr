@@ -21,7 +21,8 @@ $css = "@charset \"UTF-8\";
 
 body{
 	margin:0;
-	font-family:sans-serif;
+	font-family: '". urldecode( substr(setting_fetch("dabr_fonts","Raleway"),0, -4)) . "', sans;
+	font-size: ".setting_fetch("dabr_font_size","1")."em;
 	background:#{$c->body_background};
 	color:#{$c->body_text};
 }
@@ -124,11 +125,18 @@ small,small a{
 	padding: 0.2em;
 	font-family:icons,sans-serif;
 	font-size: 1.75em;
+	width:99%;
 }
 
 .menu-text{
 	background:#{$c->menu_background};
 	font-family:sans-serif;
+	width:95%;
+}
+
+.menu-float {
+	position:fixed;
+	z-index:1;
 }
 
 .menu a{

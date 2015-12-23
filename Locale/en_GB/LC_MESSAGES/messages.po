@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dabr\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-21 12:59+0100\n"
+"PO-Revision-Date: 2015-12-22 23:49+0100\n"
 "Last-Translator: Terence Eden <dabr-i18n@shkspr.mobi>\n"
 "Language-Team: English <dabr-i18n@shkspr.mobi>\n"
 "MIME-Version: 1.0\n"
@@ -675,17 +675,18 @@ msgstr "Image Size:"
 msgid "SETTINGS_WORK_SAFE"
 msgstr "Work Safe"
 
-msgid "SETTINGS_HIDE_INLINE"
-msgstr "Hide inline media (eg image thumbnails &amp; embedded videos)"
+msgid "SETTINGS_SHOW_INLINE"
+msgstr "Show Twitter Photos &amp; videos"
 
 msgid "SETTINGS_SHOW_PREVIEW"
 msgstr "Show link previews (YouTube, Instagram, Blogs, etc)."
 
-msgid "SETTINGS_HIDE_AVATARS"
-msgstr "Hide users' profile images"
+msgid "SETTINGS_SHOW_AVATARS"
+msgstr "Show users' profile images"
 
 msgid "SETTINGS_MENU_ICONS"
-msgstr "Show Menu icons like <span class=\"icons\">🏠⌖</span>."
+msgstr ""
+"Show Menu icons like:<br><span class=\"icons\">🏠@✉🔍♥☻😉🔇⛔↗♻≡☺⚙🛈</span>."
 
 msgid "SETTINGS_EXTERNAL"
 msgstr "External links go:"
@@ -699,7 +700,7 @@ msgid "SETTINGS_OTHERS"
 msgstr "Others:"
 
 msgid "SETTINGS_TIMESTAMP"
-msgstr "Show the timestamp \"%s\" instead of \"25 sec ago\""
+msgstr "Show the timestamp \"%s\" instead of \"25 seconds ago\""
 
 msgid "SETTINGS_TIMESTAMP_IS"
 msgstr "The current time is: %s."
@@ -748,6 +749,9 @@ msgstr "(Very slow)"
 msgid "SETTINGS_SLOW_3"
 msgstr "(Extremely slow)"
 
+msgid "SETTINGS_FLOAT_MENU"
+msgstr "Make the menu always on top"
+
 msgid "MENU_ABOUT"
 msgstr "About"
 
@@ -778,7 +782,7 @@ msgstr "@%s's Favourites"
 msgid "MENU_MUTED"
 msgstr "Shhhh!"
 
-msgid "MENU_SETTINGS"
+msgid "SETTINGS_TITLE"
 msgstr "Settings"
 
 msgid "MENU_HOME"

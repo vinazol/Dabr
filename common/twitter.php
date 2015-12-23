@@ -391,12 +391,12 @@ function get_codebird() { //$url, $post_data = false) {
 //	http://dev.twitter.com/pages/tweet_entities
 function twitter_get_media($status) {
 	//don't display images if: a) in the settings, b) NSFW
-	if(setting_fetch('hide_inline') || stripos($status->text, 'NSFW') !== false) {
+	if(setting_fetch('dabr_hide_inline') || stripos($status->text, 'NSFW') !== false) {
 		return;
 	}
 
 	//	Get the inline image size
-	$image_size = setting_fetch('image_size', "medium");
+	$image_size = setting_fetch('dabr_image_size', "medium");
 
 	//	If there are multiple images - or videos / gifs
 	if ($status->extended_entities) {
@@ -490,7 +490,7 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 					$url = 'http://' . $url;
 				}
 
-				if (setting_fetch('gwt') == 'on') { // If the user wants links to go via GWT
+				if (setting_fetch('dabr_gwt') == 'on') { // If the user wants links to go via GWT
 					$encoded = urlencode($url);
 					$link = "http://google.com/gwt/n?u={$encoded}";
 				}
@@ -538,7 +538,7 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 				->extractURLs();
 
 		// Hyperlink the URLs
-		if (setting_fetch('gwt') == 'on') { // If the user wants links to go via GWT
+		if (setting_fetch('dabr_gwt') == 'on') { // If the user wants links to go via GWT
 			foreach($urls as $url) {
 				$encoded = urlencode($url);
 				$out = str_replace($url, "<a href='http://google.com/gwt/n?u={$encoded}' target='" . get_target() . "'>{$url}</a>", $out);
@@ -1064,7 +1064,7 @@ function twitter_blocks() {
 	$cb = get_codebird();
 
 	$api_options = array("skip_status" => "true");
-	$api_options["count"] = setting_fetch('perPage', 20);
+	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
@@ -1088,7 +1088,7 @@ function twitter_muted_page() {
 	$cb = get_codebird();
 
 	$api_options = array("skip_status" => "true");
-	$api_options["count"] = setting_fetch('perPage', 20);
+	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
@@ -1121,7 +1121,7 @@ function twitter_retweeters_page($query) {
 
 	// Format the output
 	$title = sprintf(_(RETWEET_LIST),"{$status->user->screen_name}");
-	
+
 	$content =  "<h2>{$title}</h2>";
 	$content .= "<p>".twitter_parse_tags($status->text)."</p>";
 	$content .= theme('users_list', $users);
@@ -1266,7 +1266,7 @@ function twitter_replies_page() {
 
 	$api_options = "";
 
-	$per_page = setting_fetch('perPage', 20);
+	$per_page = setting_fetch('dabr_perPage', 20);
 	$api_options = "count=$per_page";
 
 	//	If we're paginating through
@@ -1287,7 +1287,7 @@ function twitter_retweets_page() {
 	$cb = get_codebird();
 	$api_options = "";
 
-	$per_page = setting_fetch('perPage', 20);
+	$per_page = setting_fetch('dabr_perPage', 20);
 	$api_options = "count=$per_page";
 
 	//	If we're paginating through
@@ -1307,7 +1307,7 @@ function twitter_retweets_page() {
 function twitter_directs_page($query) {
 
 	$cb = get_codebird();
-	$api_options = array("count" => setting_fetch('perPage', 20), "full_text" => true);
+	$api_options = array("count" => setting_fetch('dabr_perPage', 20), "full_text" => true);
 
 	$action = strtolower(trim($query[1]));
 	switch ($action) {
@@ -1411,7 +1411,7 @@ function twitter_search_page() {
 
 function twitter_search($search_query, $lat = null, $long = null, $radius = null) {
 
-	$per_page = setting_fetch('perPage', 20);
+	$per_page = setting_fetch('dabr_perPage', 20);
 
 	$cb = get_codebird();
 	$api_options = array("q" => urlencode($search_query),
@@ -1489,7 +1489,7 @@ function twitter_user_page($query) {
 
 		$api_options = "";
 
-		$per_page = setting_fetch('perPage', 20);
+		$per_page = setting_fetch('dabr_perPage', 20);
 		$api_options = "&count={$per_page}";
 
 		//	If we're paginating through
@@ -1561,7 +1561,7 @@ function twitter_favourites_page($query) {
 
 	$api_options = "";
 
-	$per_page = setting_fetch('perPage', 20);
+	$per_page = setting_fetch('dabr_perPage', 20);
 	$api_options = "&count={$per_page}";
 
 	//	If we're paginating through
@@ -1604,7 +1604,7 @@ function twitter_home_page() {
 
 	$api_options = "";
 
-	$per_page = setting_fetch('perPage', 20);
+	$per_page = setting_fetch('dabr_perPage', 20);
 	$api_options = "&count={$per_page}";
 
 	//	If we're paginating through
@@ -1647,7 +1647,7 @@ function twitter_tweets_per_day($user, $rounding = 0) {
 }
 
 function twitter_date($format, $timestamp = null) {
-	$offset = setting_fetch('utc_offset', 0) * 3600;
+	$offset = setting_fetch('dabr_utc_offset', 0) * 3600;
 	if (!isset($timestamp)) {
 		$timestamp = time();
 	}

@@ -47,7 +47,7 @@ function twitter_lists_user_lists($user) {
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
 	}
-	$api_options["count"] = setting_fetch('perPage', 20);
+	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 	$list = $cb->lists_list($api_options);
 	twitter_api_status($list);
 	return $list;
@@ -66,7 +66,7 @@ function twitter_lists_user_memberships($user) {
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
 	}
-	$api_options["count"] = setting_fetch('perPage', 20);
+	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 	$list = $cb->lists_memberships($api_options);
 	twitter_api_status($list);
 	// return lists_paginated_process($list);
@@ -77,7 +77,7 @@ function twitter_lists_list_members($user, $list) {
 	// Members of a list
 	$cb = get_codebird();
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
-	$api_options["count"] = setting_fetch('perPage', 20);
+	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 	$cursor = $_GET['cursor'];
 
 	if (!is_numeric($cursor)) {
@@ -95,7 +95,7 @@ function twitter_lists_list_subscribers($user, $list) {
 	// Subscribers of a list
 	$cb = get_codebird();
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
-	$api_options["count"] = setting_fetch('perPage', 20);
+	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 	$cursor = $_GET['cursor'];
 
 	if (!is_numeric($cursor)) {
