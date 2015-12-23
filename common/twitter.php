@@ -319,7 +319,9 @@ function twitter_trends_page($query) {
 		if($l->woeid != 1) {
 			$n = $l->name;
 			if($l->placeType->code != 12) $n = '-' . $n;
-			$header .= '<option value="' . $l->woeid . '"' . (($l->woeid == $woeid) ? ' selected="selected"' : '') . '>' . $n . '</option>';
+			$header .= '<option value="' . $l->woeid . '"' . (($l->woeid == $woeid) ? ' selected="selected"' : '') . '>' .
+								$n .
+							'</option>';
 		}
 	}
 	$header .= 		'</select>
@@ -373,10 +375,8 @@ function get_codebird() { //$url, $post_data = false) {
 	list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
 
 	//	Create our CodeBird
-	// $cb = \Codebird\Codebird::getInstance();
-	// $cb->setToken($oauth_token, $oauth_token_secret);
-
-	\Codebird\Codebird::setConsumerKey(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET); // static, see 'Using multiple Codebird instances'
+	// static, see 'Using multiple Codebird instances'
+	\Codebird\Codebird::setConsumerKey(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET);
 	$cb = \Codebird\Codebird::getInstance();
 	$cb->setToken($oauth_token, $oauth_token_secret);
 
@@ -541,7 +541,9 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 		if (setting_fetch('dabr_gwt') == 'on') { // If the user wants links to go via GWT
 			foreach($urls as $url) {
 				$encoded = urlencode($url);
-				$out = str_replace($url, "<a href='http://google.com/gwt/n?u={$encoded}' target='" . get_target() . "'>{$url}</a>", $out);
+				$out = str_replace($url,
+										"<a href='http://google.com/gwt/n?u={$encoded}' target='" . get_target() . "'>{$url}</a>",
+										$out);
 			}
 		}
 		else {
@@ -582,27 +584,6 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 }
 
 function format_interval($timestamp) {
-	// $units = array(
-	// 'year' => 31536000,
-	// 'day'  =>    86400,
-	// 'hour' =>     3600,
-	// 'min'  =>       60,
-	// 'sec'  =>        1
-	// );
-	// $output = '';
-	// foreach ($units as $key => $value) {
-	// 	if ($timestamp >= $value) {
-	// 		$output .= ($output ? ' ' : ''). pluralise($key, floor($timestamp / $value), true);
-	// 		$timestamp %= $value;
-	// 		$granularity--;
-	// 	}
-	// 	if ($granularity == 0) {
-	// 		break;
-	// 	}
-	// }
-	// return $output ? $output : '0 sec';
-
-
 	if ($timestamp<60)
 		return sprintf(ngettext("TIME_SECOND %s",
 							 "TIME_SECONDS %s",
@@ -637,7 +618,6 @@ function format_interval($timestamp) {
 function twitter_status_page($query) {
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-
 		$cb = get_codebird();
 
 		$api_options = "id={$id}";
@@ -657,14 +637,16 @@ function twitter_status_page($query) {
 							'</a> | ';
 
 		//	Translate the tweet
-		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) . '" target="'. get_target() . '">'.
+		$content .= '   <a href="https://translate.google.com/m?hl=en&sl=auto&ie=UTF-8&q=' . urlencode($text) .
+										'" target="'. get_target() . '">'.
 								_(LINK_TRANSLATE).
 							'</a>
 		            </p>';
 
 		$content .= "<p>
 		                <strong>
-		                    <a href=\"https://mobile.twitter.com/{$screen_name}/status/{$id}/report\" target=\"". get_target() . "\">" .
+		                    <a href=\"https://mobile.twitter.com/{$screen_name}/status/{$id}/report\" ".
+										"target=\"". get_target() . "\">" .
 		                     _(LINK_ABUSE).
 		                    "</a>
 		                </strong>

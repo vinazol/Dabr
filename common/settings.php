@@ -184,8 +184,12 @@ function settings_page($args) {
 	$content .= theme('options', $image_size,    setting_fetch('dabr_image_size', "medium"),_(SETTINGS_IMAGE_SIZE),"dabr_image_size");
 
 	global $fonts;
+	$content .= "<fieldset><legend>"._(SETTINGS_FONT)."</legend>";
 	$content .= theme('radio',array_combine($fonts,$fonts), "dabr_fonts", urldecode( substr(setting_fetch("dabr_fonts","Raleway"),0, -4)));
+	$content .= "</fieldset>";
+	$content .= "<fieldset><legend>"._(SETTINGS_FONT_SIZE)."</legend>";
 	$content .= theme('radio',$font_size, "dabr_font_size", setting_fetch("dabr_font_size","1"));
+	$content .= "</fieldset>";
 
 	$content .= '<p>
 	               <label>
