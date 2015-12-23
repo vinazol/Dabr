@@ -49,9 +49,9 @@ function menu_visible_items() {
 	return $items;
 }
 
-function theme_menu_top() {
-	return theme('menu_both', 'top');
-}
+// function theme_menu_top() {
+// 	return theme('menu_both', 'top');
+// }
 
 function theme_menu_bottom_button() {
 	//	Trim the first slash
@@ -59,13 +59,14 @@ function theme_menu_bottom_button() {
 	return '<a href="'. SERVER_NAME . $request . '#menu" class="button">'._(LINK_MENU_BUTTON).'</a>';
 }
 
-function theme_menu_both($menu) {
+// function theme_menu_both($menu) {
+function theme_menu_top() {
 	$links = array();
 	foreach (menu_visible_items() as $url => $page) {
 		$title = $url ? $url : 'home';
 		$title = ucwords(str_replace("-", " ", $title));
 
-		if ('yes' == setting_fetch('menu_icons'))
+		if ('yes' == setting_fetch('dabr_show_icons',"yes"))
 		{
 			$display = $page['display'];
 			$class = "menu";
@@ -78,12 +79,20 @@ function theme_menu_both($menu) {
 		$links[] = "<a href=\"{$url}\" title=\"{$title}\">$display</a>"	;
 
 	}
-	if (user_is_authenticated()) {
-		// $user = user_current_username();
-		// array_unshift($links, "<b><a href='user/$user'>$user</a></b>");
+	// if (user_is_authenticated()) {
+	// 	// $user = user_current_username();
+	// 	// array_unshift($links, "<b><a href='user/$user'>$user</a></b>");
+	// }
+	// if ($menu == 'bottom') {
+	// 	// $links[] = "<a href='{$_GET['q']}' accesskey='5'>refresh</a> 5";
+	// }
+
+	if ('yes' == setting_fetch('dabr_float_menu',"yes")){
+		//	Horrible hack to make the height of the element corrent
+		$padding = "<div class='{$class}' id='menu'>".implode('&ensp;', $links)."</div>";
+
+		$class .=' menu-float';
+		return "<div class='{$class}' id='menu-float'>".implode('&ensp;', $links)."</div>".$padding;
 	}
-	if ($menu == 'bottom') {
-		// $links[] = "<a href='{$_GET['q']}' accesskey='5'>refresh</a> 5";
-	}
-	return "<div class='{$class}' id='menu'>".implode('&ensp;', $links).'</div>';
+	return "<div class='{$class}' id='menu'>".implode('&ensp;', $links)."</div>";
 }
