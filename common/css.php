@@ -27,6 +27,10 @@ body{
 	color:#{$c->body_text};
 }
 
+select,button,input {
+	font-size:0.9em;
+}
+
 .embedded-tweet{
 	border : 0.1em solid #{$c->menu_background};
 	margin-left: 0.5em;
