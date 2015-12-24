@@ -883,7 +883,7 @@ function twitter_confirmation_page($query)
 			            </ul>";
 			break;
 
-		case 'spam':
+		case '.spam':
 			$content  = "<p>".sprintf(_(SPAM_1),$target)."</p>";
 			$content .= "<p>"._(SPAM_2)."</p>";
 			break;
