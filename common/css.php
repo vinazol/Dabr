@@ -129,7 +129,7 @@ small,small a{
 	padding: 0.2em;
 	font-family:icons,sans-serif;
 	font-size: 1.75em;
-	width:99%;
+	width:95%;
 }
 
 .menu-text{
@@ -141,6 +141,7 @@ small,small a{
 .menu-float {
 	position:fixed;
 	z-index:1;
+	width:100%;
 }
 
 .menu a{

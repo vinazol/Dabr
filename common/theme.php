@@ -190,11 +190,6 @@ function theme_page($title, $content) {
 
 	echo			'</head>
 					<body id="thepage">';
-	if (setting_fetch('dabr_colours') == null)
-	{
-		//	If the cookies haven't been set, remind the user that they can set how Dabr looks
-		echo			"<p>"._(UGLY)."</p>";
-	}
 	echo 				$body;
 	echo '      </body>
 			</html>';

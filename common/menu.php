@@ -87,12 +87,18 @@ function theme_menu_top() {
 	// 	// $links[] = "<a href='{$_GET['q']}' accesskey='5'>refresh</a> 5";
 	// }
 
+	if (setting_fetch('dabr_colours') == null)
+	{
+		//	If the cookies haven't been set, remind the user that they can set how Dabr looks
+		$ugly = "<div class='tweet'>"._(UGLY)."</div>";
+	}
+
 	if ('yes' == setting_fetch('dabr_float_menu',"yes")){
 		//	Horrible hack to make the height of the element corrent
-		$padding = "<div class='{$class}' id='menu'>".implode('&ensp;', $links)."</div>";
+		$padding = "<div class='{$class}' id='menu'>".implode('&ensp;', $links)."</div>".$ugly;
 
 		$class .=' menu-float';
 		return "<div class='{$class}' id='menu-float'>".implode('&ensp;', $links)."</div>".$padding;
 	}
-	return "<div class='{$class}' id='menu'>".implode('&ensp;', $links)."</div>";
+	return "<div class='{$class}' id='menu'>".implode('&ensp;', $links)."</div>".$ugly;
 }
