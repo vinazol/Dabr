@@ -913,7 +913,7 @@ function twitter_confirmation_page($query)
 
 function twitter_confirmed_page($query)
 {
-        // the URL /confirm can be passed parameters like so /.confirm/.param1/param2/param3 etc.
+        // the URL /.confirm can be passed parameters like so /.confirm/.param1/param2/param3 etc.
         $action = $query[1]; // The action. block, unblock, spam
         $target = $query[2]; // The username of the target
 
@@ -1287,7 +1287,6 @@ function twitter_retweets_page() {
 }
 
 function twitter_directs_page($query) {
-
 	$cb = get_codebird();
 	$api_options = array("count" => setting_fetch('dabr_perPage', 20), "full_text" => true);
 
