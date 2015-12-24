@@ -265,7 +265,6 @@ function theme_directs_form($to) {
 						<br>
 						<input type="submit" value="'._(DIRECTS_BUTTON).'" />
 	            </form>';
-	$content .= js_counter("message");
 	return $content;
 }
 
@@ -295,7 +294,7 @@ function theme_status_form($text = '', $in_reply_to_id = null) {
                 <div>
                     <input name="in_reply_to_id" value="'.$in_reply_to_id.'" type="hidden" />
                     <input type="submit" value="'._(SEND_BUTTON).'" />
-                    <span id="remaining">140</span>
+                    <span id="status-remaining">140</span>
                     <span id="geo" style="display: none;">
                         <input onclick="goGeo()" type="checkbox" id="geoloc" name="location" />
                         <label for="geoloc" id="lblGeo"></label>
@@ -377,9 +376,10 @@ function theme_retweet($status)
 							id='status'>&nbsp;\nhttps://twitter.com/{$screen_name}/status/{$id}</textarea>
 						<br/>
 						<input type='submit' value='"._(RETWEET_COMMENT)."' />
-						<span id='remaining'>" . (140 - $length) ."</span>
+						<span id='status-remaining'>" . (140 - $length) ."</span>
 					</form>
 					<hr />";
+		$content .= js_counter("status");
 	}
 	else
 	{
@@ -394,12 +394,12 @@ function theme_retweet($status)
 							style='width:90%;
 							max-width: 400px;'
 							rows='5'
-							id='status'>{$text}</textarea>
+							id='edit'>{$text}</textarea>
 						<br/>
 						<input type='submit' value='"._(RETWEET_EDIT_BUTTON)."' />
-						<span id='remaining'>" . (140 - $length) ."</span>
+						<span id='edit-remaining'>" . (140 - $length) ."</span>
 					</form>";
-	$content .= js_counter("status");
+	$content .= js_counter("edit");
 
 	return $content;
 }

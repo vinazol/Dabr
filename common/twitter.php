@@ -347,25 +347,32 @@ function twitter_trends_page($query) {
 	theme('page', _(TRENDS_TITLE), $content);
 }
 
-function js_counter($name, $length='140')
+function js_counter($id='status')
 {
-	$script = '<script type="text/javascript">
-function updateCount() {
-var remaining = ' . $length . ' - document.getElementById("' . $name . '").value.length;
-document.getElementById("remaining").innerHTML = remaining;
-if(remaining < 0) {
- var colour = "#FF0000";
- var weight = "bold";
-} else {
- var colour = "";
- var weight = "";
-}
-document.getElementById("remaining").style.color = colour;
-document.getElementById("remaining").style.fontWeight = weight;
-setTimeout(updateCount, 400);
-}
-updateCount();
-</script>';
+	$length = 140;
+	$remaining = $id . "-remaining";
+	$remainingVar = $id . "Remaining";
+	$functionName = $id . "Count";
+	//	Via https://github.com/twitter/twitter-text/blob/master/js/twitter-text.js
+	$script = "<script src=\"i/js/twitter-text.js\"></script>
+	<script type=\"text/javascript\">
+		twttr;
+		function {$functionName}() {
+			var {$remainingVar} = {$length} - twttr.txt.getTweetLength(document.getElementById(\"{$id}\").value);
+			document.getElementById(\"{$remaining}\").innerHTML = {$remainingVar};
+			if({$remainingVar} < 0) {
+				var colour = \"#FF0000\";
+				var weight = \"bold\";
+			} else {
+				var colour = \"\";
+				var weight = \"\";
+			}
+			document.getElementById(\"{$remaining}\").style.color = colour;
+			document.getElementById(\"{$remaining}\").style.fontWeight = weight;
+			setTimeout({$functionName}, 400);
+		}
+		{$functionName}();
+		</script>";
 	return $script;
 }
 
