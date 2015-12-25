@@ -469,10 +469,8 @@ function twitter_get_media($status) {
 }
 
 function twitter_parse_tags($input, $entities = false, $rel = false) {
+	var_export($entities);
 	$out = $input;
-
-	//Linebreaks.  Some clients insert \n for formatting.
-	$out = nl2br($out);
 
 	// Use the Entities to replace hyperlink URLs
 	// http://dev.twitter.com/pages/tweet_entities
@@ -583,6 +581,9 @@ function twitter_parse_tags($input, $entities = false, $rel = false) {
 		}
 		$tok = strtok(" \n\t\n\r\0");	// Move to the next token
 	}
+
+	//Linebreaks.  Some clients insert \n for formatting.
+	$out = nl2br($out);
 
 	//Return the completed string
 	return $out;
@@ -970,7 +971,7 @@ function twitter_followers_page($query) {
 		$cursor = -1;
 	}
 
-	$api_options = array("screen_name" => $user);
+	$api_options = array("screen_name"=>$user);
 
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;

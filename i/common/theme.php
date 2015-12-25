@@ -447,7 +447,15 @@ function theme_user_header($user) {
 
 function theme_user_info($user) {
 	$screen_name = $user->screen_name;
-	$out = sprintf(ngettext("PROFILE_COUNT_TWEET %s", "PROFILE_COUNT_TWEETS %s", $user->statuses_count), number_format($user->statuses_count));
+	if ($user->following == false) {
+		$out = "<div class='button-div'><a class='button' href='.follow/{$screen_name}'>"._(FOLLOW)."</a></div>";
+	}
+	else {
+		$out = "<div class='button-div'><a class='button' href='.unfollow/{$screen_name}'>"._(UNFOLLOW)."</a></div>";
+	}
+	$out .= "<div>" . _(INFO) . ": ";
+	
+	$out .= sprintf(ngettext("PROFILE_COUNT_TWEET %s", "PROFILE_COUNT_TWEETS %s", $user->statuses_count), number_format($user->statuses_count));
 
 	//	If the authenticated user is not following the protected user,
 	//	the API will return a 401 error when trying to view friends, followers and favourites
@@ -485,7 +493,7 @@ function theme_user_info($user) {
 	} else {
 		$muting    = $user->muting;
 		$blocking  = $user->blocking;
-		$messaging = $user->following;
+		$messaging = false; //$user->following;	//	Is the authenticated user being followed by the listed user.
 		$retweets  = true; //	Can assume that Retweets haven't been hidden?
 	}
 
@@ -519,12 +527,7 @@ function theme_user_info($user) {
 	//	One cannot follow, block, nor report spam oneself.
 	if (strtolower($screen_name) !== strtolower(user_current_username())) {
 
-		if ($user->following == false) {
-			$out .= " | <a href='.follow/{$screen_name}'>"._(FOLLOW)."</a>";
-		}
-		else {
-			$out .= " | <a href='.unfollow/{$screen_name}'>"._(UNFOLLOW)."</a>";
-
+		if ($user->following == true) {
 			if($retweets) {
 				$out .= " | <a href='.confirm/.hideRetweets/{$screen_name}'>"._(RETWEETS_HIDE)."</a>";
 			}
@@ -540,7 +543,7 @@ function theme_user_info($user) {
 	}
 
 	$out .= " | <a href='search?query=%40{$screen_name}'>".sprintf(_(SEARCH_AT),$user->screen_name)."</a>";
-
+	$out .= "</div>";
 	return $out;
 }
 
@@ -997,7 +1000,7 @@ function theme_users_list($feed, $hide_pagination = false) {
 									_(PROFILE_LOCATION));
 			$content .= "<br />";
 		}
-		$content .= _(INFO) . ": ";
+
 		$content .= theme_user_info($user);
 
 		if($user->status->created_at) {

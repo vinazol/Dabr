@@ -98,6 +98,11 @@ textarea {
 	border: 0.15em solid black;
 }
 
+.button-div {
+	margin-top:0.25em;
+	margin-bottom:0.25em;
+}
+
 .action {
 	font-family:icons,sans-serif;
 	text-decoration: none;
