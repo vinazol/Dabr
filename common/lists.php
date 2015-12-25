@@ -153,7 +153,7 @@ function lists_membership_page($user) {
 	// Show lists a user belongs to
 	$lists = twitter_lists_user_memberships($user);
 	$content = "<p>
-						<strong>".sprintf(_(LIST_USER_FOLLOWS),$user)."</strong> | ".
+						<strong>".sprintf(_(LIST_FOLLOWING),$user)."</strong> | ".
 						"<a href='lists/{$user}'>".sprintf(_(LIST_USER_FOLLOWS),$user)."</a>".
 					"</p>";
 	$content .= theme('lists', $lists);
