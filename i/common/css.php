@@ -9,12 +9,12 @@ $css = "@charset \"UTF-8\";
 
 @font-face {
 	font-family: 'icons';
-	src: url('".BASE_URL."fonts/dabr-icons.eot');
-	src: url('".BASE_URL."fonts/dabr-icons.eot#iefix') format('embedded-opentype'),
-	     url('".BASE_URL."fonts/dabr-icons.woff2') format('woff2'),
-	     url('".BASE_URL."fonts/dabr-icons.woff') format('woff'),
-	     url('".BASE_URL."fonts/dabr-icons.ttf') format('truetype'),
-	     url('".BASE_URL."fonts/dabr-icons.svg#dabr') format('svg');
+	src: url('".BASE_URL."i/fonts/dabr-icons.eot');
+	src: url('".BASE_URL."i/fonts/dabr-icons.eot#iefix') format('embedded-opentype'),
+	     url('".BASE_URL."i/fonts/dabr-icons.woff2') format('woff2'),
+	     url('".BASE_URL."i/fonts/dabr-icons.woff') format('woff'),
+	     url('".BASE_URL."i/fonts/dabr-icons.ttf') format('truetype'),
+	     url('".BASE_URL."i/fonts/dabr-icons.svg#dabr') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
