@@ -1,23 +1,7 @@
 <?php
 
-// function lists_paginated_process($url) {
-// 	// Adds cursor/pagination parameters to a query
-// 	$cursor = $_GET['cursor'];
-// 	if (!is_numeric($cursor)) {
-// 		$cursor = -1;
-// 	}
-// 	$url .= '&cursor='.$cursor;
-// 	return twitter_process($url);
-// }
-
 function twitter_lists_tweets($user, $list) {
 	// Tweets belonging to a list
-	// $url = API_NEW."lists/statuses.json?owner_screen_name={$user}&slug={$list}";
-	// if($_GET['cursor']) {
-	// 	$url .= '&cursor=' . $_GET['cursor'];
-	// }
-	// return twitter_process($url);
-	$cb = get_codebird();
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
 	$max_id = $_GET['max_id'];
 
@@ -28,16 +12,12 @@ function twitter_lists_tweets($user, $list) {
 		$api_options["max_id"] = $max_id;
 	}
 
-	$list = $cb->lists_statuses($api_options);
-	twitter_api_status($list);
-
+	$list = execute_codebird("lists_statuses",$api_options);
 	return $list;
 }
 
 function twitter_lists_user_lists($user) {
 	// Lists a user has created
-	// return twitter_process(API_NEW."lists/list.json?screen_name={$user}");
-	$cb = get_codebird();
 	$api_options = array("screen_name" => $user);
 	$cursor = $_GET['cursor'];
 
@@ -48,15 +28,12 @@ function twitter_lists_user_lists($user) {
 		$api_options["cursor"] = $cursor;
 	}
 	$api_options["count"] = setting_fetch('dabr_perPage', 20);
-	$list = $cb->lists_list($api_options);
-	twitter_api_status($list);
+	$list = execute_codebird("lists_list",$api_options);
 	return $list;
 }
 
 function twitter_lists_user_memberships($user) {
 	// Lists a user belongs to
-	// return lists_paginated_process(API_NEW."lists/memberships.json?screen_name={$user}");
-	$cb = get_codebird();
 	$api_options = array("screen_name" => $user);
 	$cursor = $_GET['cursor'];
 
@@ -67,15 +44,12 @@ function twitter_lists_user_memberships($user) {
 		$api_options["cursor"] = $cursor;
 	}
 	$api_options["count"] = setting_fetch('dabr_perPage', 20);
-	$list = $cb->lists_memberships($api_options);
-	twitter_api_status($list);
-	// return lists_paginated_process($list);
+	$list = execute_codebird("lists_memberships",$api_options);
 	return $list;
 }
 
 function twitter_lists_list_members($user, $list) {
 	// Members of a list
-	$cb = get_codebird();
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
 	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 	$cursor = $_GET['cursor'];
@@ -86,14 +60,12 @@ function twitter_lists_list_members($user, $list) {
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
 	}
-	$list = $cb->lists_members($api_options);
-	twitter_api_status($list);
+	$list = execute_codebird("lists_members",$api_options);
 	return $list;
 }
 
 function twitter_lists_list_subscribers($user, $list) {
 	// Subscribers of a list
-	$cb = get_codebird();
 	$api_options = array("owner_screen_name" => $user, "slug" => $list);
 	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 	$cursor = $_GET['cursor'];
@@ -104,12 +76,9 @@ function twitter_lists_list_subscribers($user, $list) {
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
 	}
-	$list = $cb->lists_subscribers($api_options);
-	twitter_api_status($list);
+	$list = execute_codebird("lists_subscribers",$api_options);
 	return $list;
 }
-
-
 
 /* Front controller for the new pages
 
@@ -166,8 +135,6 @@ function lists_controller($query) {
 	//	Error to be shown for any incomplete pages (breaks above)
 	return theme('error', _(LIST_PAGE_NOT_FOUND));
 }
-
-
 
 /* Pages */
 
@@ -260,25 +227,7 @@ function theme_lists($json) {
 		                'class' => 'table-row');
 	}
 
-	//	Closing </div> missing. Grrrr.
-	// $rows[] = array("</div>");
 	$content = theme('table', $headers, $rows);
 	$content .= theme('list_pagination', $json);
 	return $content;
 }
-
-// function theme_list_pagination($json) {
-// 	if ($cursor = (string) $json->next_cursor) {
-// 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}'>Next</a>";
-// 	}
-// 	if ($cursor = (string) $json->previous_cursor) {
-// 		//	Codebird needs a +ve cursor, but returns a -ve one?
-// 		if (0 === strpos($cursor, "-"))
-// 		{
-// 			//	TODO FIXME still doesn't go back to first screen?
-// 			$cursor = trim($cursor,"-");
-// 		}
-// 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}'>Previous</a>";
-// 	}
-// 	if (count($links) > 0) return '<p>'.implode(' | ', $links).'</p>';
-// }

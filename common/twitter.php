@@ -212,11 +212,7 @@ function twitter_profile_page() {
 			"location"    => stripslashes($_POST['location']),
 			"description" => stripslashes($_POST['description']),
 		);
-
-		$cb = get_codebird();
-
-
-		@twitter_api_status($cb->account_updateProfile($api_options));
+		execute_codebird("account_updateProfile",$api_options);
 
 		$content = "<h2>"._(PROFILE_UPDATED)."</h2>";
 	}
@@ -227,8 +223,7 @@ function twitter_profile_page() {
 		$api_options = array(
 			"image" => $_FILES['image']['tmp_name']
 		);
-
-		@twitter_api_status($cb->account_updateProfileImage($api_options));
+		execute_codebird("account_updateProfileImage",$api_options);
 	}
 
 	//	Twitter API is really slow!  If there's no delay, the old profile is returned.
@@ -246,13 +241,9 @@ function twitter_profile_page() {
 }
 
 function friendship_exists($user_a) {
-
-	$cb = get_codebird();
-
 	$api_options = array('target_screen_name' => $user_a);
 
-	$friendship = $cb->friendships_show($api_options);
-	twitter_api_status($friendship);
+	$friendship = execute_codebird("friendships_show",$api_options);
 
 	if ($friendship->relationship->target->following == 1) {
 		return true;
@@ -262,21 +253,17 @@ function friendship_exists($user_a) {
 }
 
 function friendship($user_a) {
-	$cb = get_codebird();
-
 	$api_options = array('target_screen_name' => $user_a);
 
-	$friendship = $cb->friendships_show($api_options);
-	twitter_api_status($friendship);
+	$friendship = execute_codebird("friendships_show",$api_options);
 	return $friendship;
 }
 
 function twitter_block_exists($user_id) {
-	$cb = get_codebird();
 	$api_options = array("user_id" => $user_id);
 
 	// 0th element http://stackoverflow.com/questions/3851489/return-php-object-by-index-number-not-name
-	$friendship = current($cb->friendships_lookup($api_options));
+	$friendship = current(execute_codebird("friendships_lookup",$api_options));
 
 	return ("blocking" == $friendship->connections[0]);
 }
@@ -293,13 +280,10 @@ function twitter_trends_page($query) {
 
 	if($woeid == '') $woeid = '1'; //worldwide
 
-	//fetch "local" names
-	$cb = get_codebird();
-
+	//	Fetch "local" names
 	$api_options = array();
 
-	$local_object = $cb->trends_available($api_options);
-	twitter_api_status($local_object);
+	$local_object = execute_codebird("trends_available",$api_options);
 	$local = (array)$local_object;
 
 
@@ -330,8 +314,8 @@ function twitter_trends_page($query) {
 
 	$api_options = array("id" => $woeid);
 
-	$trends_object = $cb->trends_place($api_options);
-	twitter_api_status($trends_object);
+	$trends_object = execute_codebird("trends_place",$api_options);
+
 	$trends = (array)$trends_object;
 	unset($trends->httpstatus);
 	twitter_rate_limit($trends->rate);
@@ -376,8 +360,7 @@ function js_counter($id='status')
 	return $script;
 }
 
-function get_codebird() { //$url, $post_data = false) {
-
+function get_codebird() {
 	//	Get the tokens
 	list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
 
@@ -394,6 +377,21 @@ function get_codebird() { //$url, $post_data = false) {
 	return $cb;
 }
 
+function execute_codebird($function, $api_options = NULL) {
+	try {
+		$cb = get_codebird();
+		$result = $cb->$function($api_options);
+		twitter_api_status($result);
+		return $result;
+	} catch (Exception $e) {
+		theme('error',
+				"<div class=\"tweet\">".
+					"<h2>"._(ERROR)."</h2>".
+					"<pre>".sprintf(_(ERROR_TWITTER_MESSAGE), $e->getMessage(), $e->getCode())."</pre>".
+				"</div>"
+				);
+	}
+}
 
 //	http://dev.twitter.com/pages/tweet_entities
 function twitter_get_media($status) {
@@ -625,12 +623,8 @@ function format_interval($timestamp) {
 function twitter_status_page($query) {
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$cb = get_codebird();
-
 		$api_options = "id={$id}";
-
-		$status = $cb->statuses_show_ID($api_options);
-		twitter_api_status($status);
+		$status = execute_codebird("statuses_show_ID",$api_options);
 
 		$text = $status->text;	//	Grab the text before it gets formatted
 
@@ -666,11 +660,8 @@ function twitter_status_page($query) {
 function twitter_retweet_page($query) {
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$cb = get_codebird();
-
 		$api_options = array("id" => $id);
-		$tl = $cb->statuses_show_ID($api_options);
-		twitter_api_status($tl);
+		$tl = execute_codebird("statuses_show_ID",$api_options);
 
 		$content = theme('retweet', $tl);
 		theme('page', _(RETWEET), $content);
@@ -692,10 +683,8 @@ function twitter_delete_page($query) {
 
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$cb = get_codebird();
 		$api_options = array("id" => $id);
-		$response = $cb->statuses_destroy_ID($api_options);
-		twitter_api_status($response);
+		$response = execute_codebird("statuses_destroy_ID",$api_options);
 
 		twitter_refresh(user_current_username());
 	}
@@ -707,10 +696,8 @@ function twitter_deleteDM_page($query) {
 
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$cb = get_codebird();
 		$api_options = array("id" => $id);
-		$response = $cb->directMessages_destroy($api_options);
-		twitter_api_status($response);
+		$response = execute_codebird("directMessages_destroy",$api_options);
 
 		twitter_refresh('messages/');
 	}
@@ -722,10 +709,8 @@ function twitter_delete_saved_search_page($query) {
 
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$cb = get_codebird();
 		$api_options = array("id" => $id);
-		$response = $cb->savedSearches_destroy_ID($api_options);
-		twitter_api_status($response);
+		$response = execute_codebird("savedSearches_destroy_ID",$api_options);
 
 		twitter_refresh('search/');
 	}
@@ -742,13 +727,11 @@ function twitter_ensure_post_action() {
 function twitter_follow_page($query) {
 	$screen_name = $query[1];
 	if ($screen_name) {
-		$cb = get_codebird();
 		$api_options = array("screen_name" => $screen_name);
-
 		if($query[0] == '.follow'){
-			@twitter_api_status($cb->friendships_create($api_options));
+			execute_codebird("friendships_create",$api_options);
 		} else {
-			@twitter_api_status($cb->friendships_destroy($api_options));
+			execute_codebird("friendships_destroy",$api_options);
 		}
 		twitter_refresh('friends');
 	}
@@ -758,15 +741,13 @@ function twitter_block_page($query) {
 	twitter_ensure_post_action();
 	$screen_name = $query[1];
 	if ($screen_name) {
-
-		$cb = get_codebird();
 		$api_options = array("screen_name" => $screen_name);
 
 		if($query[0] == '.block'){
-			@twitter_api_status($cb->blocks_create($api_options));
+			execute_codebird("blocks_create",$api_options);
 			twitter_refresh(".confirmed/.block/{$screen_name}");
 		} else {
-			@twitter_api_status($cb->blocks_destroy($api_options));
+			execute_codebird("blocks_destroy",$api_options);
 			twitter_refresh(".confirmed/.unblock/{$screen_name}");
 		}
 	}
@@ -776,14 +757,13 @@ function twitter_mute_page($query) {
 	twitter_ensure_post_action();
 	$screen_name = $query[1];
 	if ($screen_name) {
-		$cb = get_codebird();
 		$api_options = array("screen_name" => $screen_name);
 
 		if($query[0] == '.mute'){
-			@twitter_api_status($cb->mutes_users_create($api_options));
+			execute_codebird("mutes_users_create",$api_options);
 			twitter_refresh(".confirmed/.mute/{$screen_name}");
 		} else {
-			@twitter_api_status($cb->mutes_users_destroy($api_options));
+			execute_codebird("mutes_users_destroy",$api_options);
 			twitter_refresh(".confirmed/.unmute/{$screen_name}");
 		}
 	}
@@ -796,9 +776,8 @@ function twitter_spam_page($query)
 	twitter_ensure_post_action();
 	$screen_name = $query[1];
 
-	$cb = get_codebird();
 	$api_options = array("screen_name" => $screen_name);
-	@twitter_api_status($cb->users_reportSpam($api_options));
+	execute_codebird("users_reportSpam",$api_options);
 
 	//Where should we return the user to?  Back to the user
 	twitter_refresh(".confirmed/.spam/{$screen_name}");
@@ -850,10 +829,8 @@ function twitter_confirmation_page($query)
 
 		case '.delete':
 			//	Display the Tweet which is being deleted
-			$cb = get_codebird();
 			$api_options = array("id" => $target);
-			$status = $cb->statuses_show_ID($api_options);
-			@twitter_api_status($status);
+			$status = 	execute_codebird("statuses_show_ID",$api_options);
 
 			$content = '<p>'._(ARE_YOU_SURE_DELETE).'</p>';
 			$content .= "<ul>
@@ -864,10 +841,8 @@ function twitter_confirmation_page($query)
 
 		case '.deleteDM':
 			//	Display the message which is being deleted
-			$cb = get_codebird();
 			$api_options = array("id" => $target);
-			$status = $cb->directMessages_show($api_options);
-			@twitter_api_status($status);
+			$status = execute_codebird("directMessages_show",$api_options);
 
 			$content = '<p>'._(ARE_YOU_SURE_DELETE_DM).'</p>';
 			$content .= "<ul>
@@ -878,11 +853,9 @@ function twitter_confirmation_page($query)
 			break;
 
 		case '.deleteSavedSearch':
-			$cb = get_codebird();
 			$api_options = array("id" => $target);
 
-			$search = $cb->savedSearches_show_ID($api_options);
-			@twitter_api_status($search);
+			$search = execute_codebird("savedSearches_show_ID",$api_options);
 			$content = '<p>'._(ARE_YOU_SURE_DELETE_SEARCH).'</p>';
 			$content .= "<ul>
 			                <li>"._(SEARCH_BUTTON).": {$search->query}</li>
@@ -971,18 +944,15 @@ function twitter_confirmed_page($query)
 
 function twitter_retweets($query) {
 	$user = $query[1];	//The name of the user we are doing this action on
-
-	$cb = get_codebird();
-
 	$api_options = array("screen_name" => $user);
 
 	if($user) {
 		if($query[0] == '.hideRetweets') {
 			$api_options["retweets"] = false;
-			@twitter_api_status($cb->friendships_update($api_options));
+			execute_codebird("friendships_update",$api_options);
 		} else {
 			$api_options["retweets"] = true;
-			@twitter_api_status($cb->friendships_update($api_options));
+			execute_codebird("friendships_update",$api_options);
 		}
 		twitter_refresh($user);
 	}
@@ -1001,16 +971,13 @@ function twitter_friends_page($query) {
 		$cursor = -1;
 	}
 
-	$cb = get_codebird();
-
 	$api_options = array("screen_name" => $user);
 
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
 	}
 
-	$tl = $cb->friends_list($api_options);
-	twitter_api_status($tl);
+	$tl = execute_codebird("friends_list",$api_options);
 
 	$content = "<h2>" . sprintf(_(FRIENDS_OF), $user) . "</h2>";
 	$content .= theme('users_list', $tl);
@@ -1028,16 +995,13 @@ function twitter_followers_page($query) {
 		$cursor = -1;
 	}
 
-	$cb = get_codebird();
-
 	$api_options = array("screen_name" => $user);
 
 	if ($cursor > 0) {
 		$api_options["cursor"] = $cursor;
 	}
 
-	$tl = $cb->followers_list($api_options);
-	twitter_api_status($tl);
+	$tl = execute_codebird("followers_list",$api_options);
 
 	$content = "<h2>" . sprintf(_(FOLLOWERS_OF), $user) . "</h2>";
 	$content .= theme('users_list', $tl);
@@ -1050,8 +1014,6 @@ function twitter_blocks() {
 		$cursor = -1;
 	}
 
-	$cb = get_codebird();
-
 	$api_options = array("skip_status" => "true");
 	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 
@@ -1059,8 +1021,7 @@ function twitter_blocks() {
 		$api_options["cursor"] = $cursor;
 	}
 
-	$tl = $cb->blocks_list($api_options);
-	twitter_api_status($tl);
+	$tl = execute_codebird("blocks_list",$api_options);
 
 	$content = "<h2>"._(BLOCKED_TITLE)."</h2>\n";
 	$content .= theme('users_list', $tl);
@@ -1074,8 +1035,6 @@ function twitter_muted_page() {
 		$cursor = -1;
 	}
 
-	$cb = get_codebird();
-
 	$api_options = array("skip_status" => "true");
 	$api_options["count"] = setting_fetch('dabr_perPage', 20);
 
@@ -1083,8 +1042,7 @@ function twitter_muted_page() {
 		$api_options["cursor"] = $cursor;
 	}
 
-	$tl = $cb->mutes_users_list($api_options);
-	twitter_api_status($tl);
+	$tl = execute_codebird("mutes_users_list",$api_options);
 
 	$content = "<h2>"._(LIST_MUTED)."</h2>\n";
 	$content .= theme('users_list', $tl);
@@ -1097,16 +1055,12 @@ function twitter_retweeters_page($query) {
 	$id = $query[1];
 
 	//	List of retweeters
-	$cb = get_codebird();
 	$api_options = array("id" => $id);
-	$users = $cb->statuses_retweets_ID($api_options);
-	twitter_api_status($users);
+	$users = execute_codebird("statuses_retweets_ID",$api_options);
 
 	//	Display the Tweet which is being retweeted
-	$cb = get_codebird();
 	$api_options = array("id" => $id);
-	$status = $cb->statuses_show_ID($api_options);
-	@twitter_api_status($status);
+	$status = execute_codebird("statuses_show_ID",$api_options);
 
 	// Format the output
 	$title = sprintf(_(RETWEET_LIST),"{$status->user->screen_name}");
@@ -1122,8 +1076,6 @@ function twitter_update() {
 	//	Was this request sent by POST?
 	twitter_ensure_post_action();
 
-	$cb = get_codebird();
-
 	$api_options  = array();
 
 	//	Upload the image (if there is one) first
@@ -1138,7 +1090,7 @@ function twitter_update() {
 
 			// INIT the upload
 
-			$reply = $cb->media_upload([
+			$reply = execute_codebird("media_upload",[
 			    'command'     => 'INIT',
 			    'media_type'  => 'video/mp4',
 			    'total_bytes' => $size_bytes
@@ -1153,7 +1105,7 @@ function twitter_update() {
 			while (! feof($fp)) {
 			    $chunk = fread($fp, 1048576); // 1MB per chunk for this sample
 
-			    $reply = $cb->media_upload([
+			    $reply =execute_codebird("media_upload",[
 			        'command'       => 'APPEND',
 			        'media_id'      => $media_id,
 			        'segment_index' => $segment_id,
@@ -1167,16 +1119,16 @@ function twitter_update() {
 
 			// FINALIZE the upload
 
-			$reply = $cb->media_upload([
+			$reply = execute_codebird("media_upload",[
 			    'command'       => 'FINALIZE',
 			    'media_id'      => $media_id
 			]);
 
 			// var_dump($reply);
 
-			if ($reply->httpstatus < 200 || $reply->httpstatus > 299) {
-			    die();
-			}
+			// if ($reply->httpstatus < 200 || $reply->httpstatus > 299) {
+			//     die();
+			// }
 
 			// Now use the media_id in a tweet
 			$api_options['media_ids'] = $media_id;
@@ -1193,10 +1145,9 @@ function twitter_update() {
 
 			foreach ($media_files as $file) {
 				// upload all media files
-				$reply = $cb->media_upload(array(
+				$reply = execute_codebird("media_upload",array(
 					'media' => $file
 				));
-				twitter_api_status($reply);
 				// and collect their IDs
 				$media_ids[] = $reply->media_id_string;
 			}
@@ -1233,8 +1184,7 @@ function twitter_update() {
 		}
 
 		//	Send the status
-		$reply = $cb->statuses_update($api_options);
-		twitter_api_status($reply);
+		$reply = execute_codebird("statuses_update",$api_options);
 	}
 	twitter_refresh($_POST['from'] ? $_POST['from'] : '');
 }
@@ -1243,16 +1193,13 @@ function twitter_retweet($query) {
 	twitter_ensure_post_action();
 	$id = $query[1];
 	if (is_numeric($id)) {
-		$cb = get_codebird();
 		$api_options = array("id" => $id);
-		$cb->statuses_retweet_ID($api_options);
+		execute_codebird("statuses_retweet_ID",$api_options);
 	}
 	twitter_refresh($_POST['from'] ? $_POST['from'] : '');
 }
 
 function twitter_replies_page() {
-	$cb = get_codebird();
-
 	$api_options = "";
 
 	$per_page = setting_fetch('dabr_perPage', 20);
@@ -1263,17 +1210,15 @@ function twitter_replies_page() {
 		$api_options .= '&max_id='.$_GET['max_id'];
 	}
 
-	$replies = $cb->statuses_mentionsTimeline($api_options);
-	twitter_api_status($replies);
+	$replies = execute_codebird("statuses_mentionsTimeline",$api_options);
 
 	$tl = twitter_standard_timeline($replies, 'replies');
-	$content = theme('status_form');
+	$content =  theme('status_form');
 	$content .= theme('timeline', $tl);
 	theme('page', _(MENU_REPLIES), $content);
 }
 
 function twitter_retweets_page() {
-	$cb = get_codebird();
 	$api_options = "";
 
 	$per_page = setting_fetch('dabr_perPage', 20);
@@ -1284,17 +1229,15 @@ function twitter_retweets_page() {
 		$api_options .= '&max_id='.$_GET['max_id'];
 	}
 
-	$retweets = $cb->statuses_retweetsOfMe($api_options);
-	twitter_api_status($retweets);
+	$retweets = execute_codebird("statuses_retweetsOfMe",$api_options);
 
 	$tl = twitter_standard_timeline($retweets, 'replies');
-	$content = theme('status_form');
+	$content =  theme('status_form');
 	$content .= theme('timeline', $tl);
 	theme('page', _(RETWEETS_TITLE), $content);
 }
 
 function twitter_directs_page($query) {
-	$cb = get_codebird();
 	$api_options = array("count" => setting_fetch('dabr_perPage', 20), "full_text" => true);
 
 	$action = strtolower(trim($query[1]));
@@ -1310,7 +1253,7 @@ function twitter_directs_page($query) {
 			$message = trim(stripslashes($_POST['message']));
 			$api_options["screen_name"] = $to;
 			$api_options["text"] = $message;
-			@twitter_api_status($cb->directMessages_new($api_options));
+			execute_codebird("directMessages_new",$api_options);
 			twitter_refresh('messages/sent');
 
 		case 'sent':
@@ -1318,8 +1261,7 @@ function twitter_directs_page($query) {
 				$api_options["max_id"] = $_GET['max_id'];
 			}
 
-			$tl = $cb->directMessages_sent($api_options);
-			twitter_api_status($tl);
+			$tl = execute_codebird("directMessages_sent",$api_options);
 
 			$tl = twitter_standard_timeline($tl, 'directs_sent');
 			$content = theme_directs_menu();
@@ -1332,8 +1274,7 @@ function twitter_directs_page($query) {
 				$api_options["max_id"] = $_GET['max_id'];
 			}
 
-			$tl = $cb->directMessages($api_options);
-			twitter_api_status($tl);
+			$tl = execute_codebird("directMessages",$api_options);
 			$tl = twitter_standard_timeline($tl, 'directs_inbox');
 			$content = theme_directs_menu();
 			$content .= theme('timeline', $tl);
@@ -1343,13 +1284,11 @@ function twitter_directs_page($query) {
 
 
 function twitter_search_page() {
-	$cb = get_codebird();
-
 	//	Save a search
 	if (isset($_POST['query'])) {
 		$query = $_POST['query'];
 		$api_options = array('query' => html_entity_decode($query));
-		$cb->savedSearches_create($api_options);
+		execute_codebird("savedSearches_create",$api_options);
 		twitter_refresh("search?query={$query}");
 	}
 
@@ -1362,8 +1301,7 @@ function twitter_search_page() {
 	$radius = $_GET['radius'];
 
 	//	Get Saved Searches
-	$saved_searches = $cb->savedSearches_list();
-	twitter_api_status($saved_searches);
+	$saved_searches = execute_codebird("savedSearches_list");
 
 	//	Sort the searches by the time they were created
 	$sorted_saved_searches = array();
@@ -1398,19 +1336,15 @@ function twitter_search_page() {
 }
 
 function twitter_search($search_query, $lat = null, $long = null, $radius = null) {
-
 	$per_page = setting_fetch('dabr_perPage', 20);
 
-	$cb = get_codebird();
 	$api_options = array("q" => urlencode($search_query),
 		                 "count" => $per_page,
 		                 "result_type" => "recent" // Make this customisable?
 		                 );
 
-	// $request = API_NEW."search/tweets.json?result_type=recent&q={$search_query}&rpp={$per_page}";
 	if ($_GET['max_id']) {
 		$api_options["max_id"] = $_GET['max_id'];
-		// $request .= '&max_id='.$_GET['max_id'];
 	}
 	if ($lat && $long) {
 		$geocode = "{$lat},{$long}";
@@ -1425,8 +1359,7 @@ function twitter_search($search_query, $lat = null, $long = null, $radius = null
 		$api_options["geocode"] = $geocode;
 	}
 
-	$tl = $cb->search_tweets($api_options);
-	twitter_api_status($tl);
+	$tl = execute_codebird("search_tweets",$api_options);
 
 	$tl = twitter_standard_timeline($tl->statuses, 'search');
 	return $tl;
@@ -1441,10 +1374,8 @@ function twitter_find_tweet_in_timeline($tweet_id, $tl) {
 		// Found the tweet
 		$tweet = $tl[$tweet_id];
 	} else {
-		$cb = get_codebird();
 		$api_options = array("id" => $tweet_id);
-		$tweet = $cb->statuses_show_ID($api_options);
-		twitter_api_status($tweet);
+		$tweet = execute_codebird("statuses_show_ID",$api_options);
 	}
 	return $tweet;
 }
@@ -1472,11 +1403,7 @@ function twitter_user_page($query) {
 	// If the user has at least one tweet
 	if (isset($user->status)) {
 		// Fetch the timeline early, so we can try find the tweet they're replying to
-
-		$cb = get_codebird();
-
 		$api_options = "";
-
 		$per_page = setting_fetch('dabr_perPage', 20);
 		$api_options = "&count={$per_page}";
 
@@ -1487,8 +1414,7 @@ function twitter_user_page($query) {
 
 		$api_options .= "&screen_name={$screen_name}";
 
-		$user_timeline = $cb->statuses_userTimeline($api_options);
-		twitter_api_status($user_timeline);
+		$user_timeline = execute_codebird("statuses_userTimeline",$api_options);
 
 		$tl = twitter_standard_timeline($user_timeline, 'user');
 	}
@@ -1539,8 +1465,6 @@ function twitter_user_page($query) {
 }
 
 function twitter_favourites_page($query) {
-	$cb = get_codebird();
-
 	$screen_name = $query[1];
 	if (!$screen_name) {
 		user_ensure_authenticated();
@@ -1548,7 +1472,6 @@ function twitter_favourites_page($query) {
 	}
 
 	$api_options = "";
-
 	$per_page = setting_fetch('dabr_perPage', 20);
 	$api_options = "&count={$per_page}";
 
@@ -1559,8 +1482,7 @@ function twitter_favourites_page($query) {
 
 	$api_options .= "&screen_name={$screen_name}";
 
-	$favorites_list = $cb->favorites_list($api_options);
-	twitter_api_status($favorites_list);
+	$favorites_list = execute_codebird("favorites_list",$api_options);
 	$tl = twitter_standard_timeline($favorites_list, 'favourites');
 
 	$content = "<h2>" . sprintf(_(FAVOURITES_OF), $screen_name) . "</h2>";
@@ -1572,15 +1494,13 @@ function twitter_mark_favourite_page($query) {
 	$id = (string) $query[1];
 	if (!is_numeric($id)) return;
 
-	$cb = get_codebird();
-
 	$api_options = array('id' => $id);
 
 	if ($query[0] == 'unfavourite') {
-		@twitter_api_status($cb->favorites_destroy($api_options));
+		execute_codebird("favorites_destroy",$api_options);
 	}
 	else {
-		@twitter_api_status($cb->favorites_create($api_options));
+		execute_codebird("favorites_create",$api_options);
 	}
 	twitter_refresh();
 }
@@ -1588,10 +1508,7 @@ function twitter_mark_favourite_page($query) {
 function twitter_home_page() {
 	user_ensure_authenticated();
 
-	$cb = get_codebird();
-
 	$api_options = "";
-
 	$per_page = setting_fetch('dabr_perPage', 20);
 	$api_options = "&count={$per_page}";
 
@@ -1606,11 +1523,10 @@ function twitter_home_page() {
 
 	$api_options .= "&screen_name={$screen_name}";
 
-	//echo "$api_options";
-	$home_timeline = $cb->statuses_homeTimeline($api_options);
-	twitter_api_status($home_timeline);
+	$home_timeline = execute_codebird("statuses_homeTimeline",$api_options);
+
 	$tl = twitter_standard_timeline($home_timeline, 'friends');
-	$content = theme('status_form');
+	$content =  theme('status_form');
 	$content .= theme('timeline', $tl);
 	theme('page', _(MENU_HOME), $content);
 }
@@ -1704,11 +1620,8 @@ function preg_match_one($pattern, $subject, $flags = null) {
 }
 
 function twitter_user_info($username = null) {
-	$cb = get_codebird();
-
 	$api_options = "screen_name={$username}";
-	$user_info = $cb->users_show($api_options);
-	twitter_api_status($user_info);
+	$user_info = execute_codebird("users_show",$api_options);
 	return $user_info;
 }
 
