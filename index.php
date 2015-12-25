@@ -8,7 +8,7 @@ setlocale(LC_ALL, $language);
 
 // Set the text domain as "messages"
 $domain = "messages";
-bindtextdomain($domain, "Locale");
+bindtextdomain($domain, "i/Locale");
 bind_textdomain_codeset($domain, 'UTF-8');
 textdomain($domain);
 
@@ -20,13 +20,13 @@ header('Pragma: no-cache');
 header('Content-Type: text/html; charset=utf-8');
 
 require 'config.php';
-require 'common/menu.php';
-require 'common/user.php';
-require 'common/theme.php';
-require 'common/twitter.php';
-require 'common/settings.php';
-require 'common/codebird.php';
-require 'common/css.php';
+require 'i/common/menu.php';
+require 'i/common/user.php';
+require 'i/common/theme.php';
+require 'i/common/twitter.php';
+require 'i/common/settings.php';
+require 'i/common/codebird.php';
+require 'i/common/css.php';
 
 //	Initial menu items to show even when not logged in.
 menu_register(array (

@@ -177,8 +177,8 @@ function theme_page($title, $content) {
 						<title>Dabr - ' . $title . '</title>
 						<base href="',BASE_URL,'" />
 						<!--[if IE]><link rel="shortcut icon" href="favicon.ico"><![endif]-->
-						<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-						<link rel="icon" href="images/favicon.png">
+						<link rel="apple-touch-icon" href="i/images/apple-touch-icon.png">
+						<link rel="icon" href="i/images/favicon.png">
 						<link href="widgets" rel="stylesheet">';
 
 	if ($title == _(SETTINGS_TITLE))
@@ -1040,6 +1040,15 @@ function theme_list_pagination($json) {
 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}' class='button'>"._(LINK_NEWER)."</a>";
 	}
 	if (count($links) > 0) return '<div class="bottom">'.implode(' ', $links).'</div>';
+}
+
+function theme_confirmation_message($message){
+	return "<p>
+				<span class='avatar'>
+					<img src='i/images/dabr.png' width='48' height='48' />
+				</span>
+				<span class='status shift'>{$message}</span>
+			</p>";
 }
 
 function theme_trends_page($locales, $trends) {

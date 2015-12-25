@@ -899,45 +899,20 @@ function twitter_confirmed_page($query)
 
 	switch ($action) {
 	   case '.block':
-			$content  = "<p>
-								<span class='avatar'>
-									<img src='images/dabr.png' width='48' height='48' />
-								</span>
-								<span class='status shift'>".sprintf(_(BLOCKED_MESSAGE),$target)."</span>
-							</p>";
+			$content = theme_confirmation_message(sprintf(_(BLOCKED_MESSAGE),$target));
          break;
 	   case '.unblock':
-         $content  = "<p>
-								<span class='avatar'>
-									<img src='images/dabr.png' width='48' height='48' />
-								</span>
-								<span class='status shift'>".sprintf(_(UNBLOCKED_MESSAGE),$target)."</span>
-							</p>";
+         $content = theme_confirmation_message(sprintf(_(UNBLOCKED_MESSAGE),$target));
          break;
 	   case '.spam':
-         $content = "<p>
-								<span class='avatar'>
-									<img src='images/dabr.png' width='48' height='48' />
-								</span>
-								<span class='status shift'>".sprintf(_(SPAMMER_MESSAGE),$target)."</span>
-							</p>";
+         $content = theme_confirmation_message(sprintf(_(SPAMMER_MESSAGE),$target));
          break;
 		case '.mute':
-				$content  = "<p>
-									<span class='avatar'>
-										<img src='images/dabr.png' width='48' height='48' />
-									</span>
-									<span class='status shift'>".sprintf(_(MUTED_MESSAGE),$target)."</span>
-								</p>";
-	         break;
+			$content = theme_confirmation_message(sprintf(_(MUTED_MESSAGE),$target));
+         break;
 		case '.unmute':
-				$content  = "<p>
-									<span class='avatar'>
-										<img src='images/dabr.png' width='48' height='48' />
-									</span>
-									<span class='status shift'>".sprintf(_(UNMUTED_MESSAGE),$target)."</span>
-								</p>";
-				break;
+			$content = theme_confirmation_message(sprintf(_(UNMUTED_MESSAGE),$target));
+			break;
 	}
  	theme ('Page', 'Confirmed', $content);
 }

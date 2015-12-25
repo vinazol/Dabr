@@ -181,7 +181,7 @@ function theme_login() {
 	$content = '<div class="tweet">
 					<p>
 						<a href="oauth">
-							<img src="images/sign-in-with-twitter-gray.png"
+							<img src="i/images/sign-in-with-twitter-gray.png"
 							     alt="'._(TWITTER_SIGN_IN).'"
 							     width="158"
 							     height="28"
