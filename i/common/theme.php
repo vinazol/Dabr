@@ -454,7 +454,7 @@ function theme_user_info($user) {
 		$out = "<div class='button-div'><a class='button' href='.unfollow/{$screen_name}'>"._(UNFOLLOW)."</a></div>";
 	}
 	$out .= "<div>" . _(INFO) . ": ";
-	
+
 	$out .= sprintf(ngettext("PROFILE_COUNT_TWEET %s", "PROFILE_COUNT_TWEETS %s", $user->statuses_count), number_format($user->statuses_count));
 
 	//	If the authenticated user is not following the protected user,
@@ -725,7 +725,7 @@ function theme_full_name($user) {
 	{
 		$name = "@<a href='{$user->screen_name}'>{$user->screen_name}</a>";
 	} else  {
-		$name = "<a href='{$user->screen_name}'>{$user->name}</a> (@{$user->screen_name})";
+		$name = "<a href='{$user->screen_name}'>{$user->name} (@{$user->screen_name})</a>";
 	}
 
 	//	Add the veified tick
