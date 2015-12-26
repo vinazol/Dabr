@@ -331,9 +331,9 @@ function twitter_trends_page($query) {
 	theme('page', _(TRENDS_TITLE), $content);
 }
 
-function js_counter($id='status')
+function js_counter($id='status',$length = 140)
 {
-	$length = 140;
+	$linkLength = 24;
 	$remaining = $id . "-remaining";
 	$remainingVar = $id . "Remaining";
 	$functionName = $id . "Count";
@@ -343,6 +343,11 @@ function js_counter($id='status')
 		twttr;
 		function {$functionName}() {
 			var {$remainingVar} = {$length} - twttr.txt.getTweetLength(document.getElementById(\"{$id}\").value);
+			if (document.getElementById(\"file\") != undefined) {
+				if (document.getElementById(\"file\").value != \"\") {
+					{$remainingVar} = {$remainingVar} - {$linkLength};
+				}
+			}
 			document.getElementById(\"{$remaining}\").innerHTML = {$remainingVar};
 			if({$remainingVar} < 0) {
 				var colour = \"#FF0000\";

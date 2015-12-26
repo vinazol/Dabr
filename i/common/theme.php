@@ -221,11 +221,13 @@ function theme_profile_form($user){
 				<form name='profile' action='account' method='post' enctype='multipart/form-data'>
 				    <hr />"._(PROFILE_NAME).":     <input name='name' maxlength='20' value='"                 . htmlspecialchars($user->name, ENT_QUOTES) ."' />
 				    <br />"._(PROFILE_AVATAR).":   <img src='".theme_get_avatar($user)."' /> <input type='file' name='image' />
-				    <br />"._(PROFILE_BIO).":      <textarea name='description' cols=40 rows=6 maxlength=160>". htmlspecialchars($user->description, ENT_QUOTES)."</textarea>
+				    <br />"._(PROFILE_BIO).":      <textarea name='description' cols=40 rows=6 id='bio'>". htmlspecialchars($user->description, ENT_QUOTES)."</textarea>
+					 <br /><span id='bio-remaining'>160</span>
 				    <br />"._(PROFILE_LINK).":     <input name='url' type='url' size=40 value='"              . htmlspecialchars($user->entities->url->urls[0]->expanded_url, ENT_QUOTES) ."' />
 				    <br />"._(PROFILE_LOCATION).": <input name='location' maxlength='30' value='"             . htmlspecialchars($user->location, ENT_QUOTES) ."' />
 				    <br /><input type='submit' value='Update Profile' />
 				</form>";
+	$out .= js_counter('bio',160);
 	return $out;
 }
 function theme_directs_menu() {
@@ -282,50 +284,50 @@ function theme_status_form($text = '', $in_reply_to_id = null) {
 		}
 
       $output = '
-        <form method="post" action="update" enctype="multipart/form-data">
+	      <form method="post" action="update" enctype="multipart/form-data">
             <fieldset>
-                <legend><span class="icons" id="twitterbird">'.$icon.'</span>'._(STATUS_BOX).'</legend>
-                <textarea id="status" name="status" rows="4" class="statusbox">'.$text.'</textarea>
-                <div>
-                    <input name="in_reply_to_id" value="'.$in_reply_to_id.'" type="hidden" />
-                    <input type="submit" value="'._(SEND_BUTTON).'" />
-                    <span id="status-remaining">140</span>
-                    <span id="geo" style="display: none;">
-                        <input onclick="goGeo()" type="checkbox" id="geoloc" name="location" />
-                        <label for="geoloc" id="lblGeo"></label>
-                    </span>
-                </div>
-                <span class="icons" style="float:right;">'.$camera.'</span>
-                <div class="fileinputs">
-					<input type="file" accept="image/*,video/mp4" name="image" class="file" />
-				</div>
+               <legend><span class="icons" id="twitterbird">'.$icon.'</span>'._(STATUS_BOX).'</legend>
+               <textarea id="status" name="status" rows="4" class="statusbox">'.$text.'</textarea>
+               <div>
+                  <input name="in_reply_to_id" value="'.$in_reply_to_id.'" type="hidden" />
+                  <input type="submit" value="'._(SEND_BUTTON).'" />
+                  <span id="status-remaining">140</span>
+                  <span id="geo" style="display: none;">
+                  	<input onclick="goGeo()" type="checkbox" id="geoloc" name="location" />
+                     <label for="geoloc" id="lblGeo"></label>
+                  </span>
+               </div>
+               <span class="icons" style="float:right;">'.$camera.'</span>
+               <div class="fileinputs">
+						<input type="file" accept="image/*,video/mp4" name="image" class="file" id="file" />
+					</div>
             </fieldset>
             <script type="text/javascript">
-                started = false;
-                chkbox = document.getElementById("geoloc");
-                if (navigator.geolocation) {
-                    geoStatus("'._(SHARE_MY_LOCATION).'");
-                    if ("'.$_COOKIE['geo'].'"=="Y") {
-                        chkbox.checked = true;
-                        goGeo();
-                    }
-                }
-                function goGeo(node) {
-                    if (started) return;
-                    started = true;
-                    geoStatus("'._(LOCATING).'");
-                    navigator.geolocation.getCurrentPosition(geoSuccess, geoStatus , { enableHighAccuracy: true });
-                }
-                function geoStatus(msg) {
-                    document.getElementById("geo").style.display = "inline";
-                    document.getElementById("lblGeo").innerHTML = msg;
-                }
-                function geoSuccess(position) {
-                    geoStatus("<a href=\'https://maps.google.co.uk/m?q=" + position.coords.latitude + "," + position.coords.longitude + "\' target=\'blank\'>'.
-						  					_(SHARE_MY_LOCATION).
+               started = false;
+               chkbox = document.getElementById("geoloc");
+               if (navigator.geolocation) {
+                  geoStatus("'._(SHARE_MY_LOCATION).'");
+                  if ("'.$_COOKIE['geo'].'"=="Y") {
+                     chkbox.checked = true;
+                     goGeo();
+                  }
+               }
+               function goGeo(node) {
+                  if (started) return;
+                  started = true;
+                  geoStatus("'._(LOCATING).'");
+                  navigator.geolocation.getCurrentPosition(geoSuccess, geoStatus , { enableHighAccuracy: true });
+               }
+               function geoStatus(msg) {
+                  document.getElementById("geo").style.display = "inline";
+                  document.getElementById("lblGeo").innerHTML = msg;
+               }
+               function geoSuccess(position) {
+                  geoStatus("<a href=\'https://maps.google.co.uk/m?q=" + position.coords.latitude + "," + position.coords.longitude + "\' target=\'blank\'>'.
+											_(SHARE_MY_LOCATION).
 										'</a>");
-                    chkbox.value = position.coords.latitude + "," + position.coords.longitude;
-                }
+                  chkbox.value = position.coords.latitude + "," + position.coords.longitude;
+               }
             </script>
         </form>';
         $output .= js_counter('status');
