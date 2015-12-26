@@ -469,7 +469,6 @@ function twitter_get_media($status) {
 }
 
 function twitter_parse_tags($input, $entities = false, $rel = false) {
-	var_export($entities);
 	$out = $input;
 
 	// Use the Entities to replace hyperlink URLs
