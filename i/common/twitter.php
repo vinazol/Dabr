@@ -1476,7 +1476,7 @@ function twitter_mark_favourite_page($query) {
 
 	$api_options = array('id' => $id);
 
-	if ($query[0] == 'unfavourite') {
+	if ($query[0] == '.unfavourite') {
 		execute_codebird("favorites_destroy",$api_options);
 	}
 	else {
