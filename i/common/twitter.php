@@ -1539,6 +1539,7 @@ function twitter_date($format, $timestamp = null) {
 }
 
 function twitter_standard_timeline($feed, $source) {
+
 	//	Remove the HTTP elements from the array
 	unset($feed->httpstatus);
 	if ($feed->rate){
@@ -1674,9 +1675,9 @@ function image_proxy($src, $size = "") {
 function twitter_rate_limit($rate) {
 	if ($rate){
 		global $rate_limit;
-		$ratelimit_time = $rate["reset"]- time();
+		$ratelimit_time = $rate->reset- time();
 		$ratelimit_time = floor($ratelimit_time / 60);
-		$rate_limit = $rate["remaining"] . "/" . $rate["limit"] . " reset in {$ratelimit_time} minutes";
+		$rate_limit = $rate->remaining . "/" . $rate->limit . " reset in {$ratelimit_time} minutes";
 	}
 }
 
