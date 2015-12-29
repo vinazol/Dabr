@@ -487,11 +487,12 @@ function theme_user_info($user) {
 	//	Blocking and Muting are not always returned. Here's the hacky way to get it.
 	if ($user->muting === null)
 	{
-		$friendship = friendship($user->screen_name);
-		$muting    = $friendship->relationship->source->muting;
-		$blocking  = $friendship->relationship->source->blocking;
-		$messaging = $friendship->relationship->source->can_dm;
-		$retweets  = $friendship->relationship->source->want_retweets;
+		//	Too many API calls. Slow and inefficient
+		// $friendship = friendship($user->screen_name);
+		$muting    = null; //$friendship->relationship->source->muting;
+		$blocking  = null; //$friendship->relationship->source->blocking;
+		$messaging = null; //$friendship->relationship->source->can_dm;
+		$retweets  = null; //$friendship->relationship->source->want_retweets;
 	} else {
 		$muting    = $user->muting;
 		$blocking  = $user->blocking;
