@@ -10,7 +10,7 @@ This is a fork of the [original Dabr code](https://code.google.com/p/dabr/) by o
 
 ## How to install
 
-Dabr is designed to be *as simple as possible* to install on your webserver.  If you can run PHP v5.4.0 on your server, you can run Dabr.
+Dabr is designed to be *as simple as possible* to install on your webserver.  If you can run PHP v5.5.0 on your server, you can run Dabr.
 
 1. [Download the code](https://github.com/edent/Dabr/archive/master.zip) from GitHub.
 2. Edit the file `config.sample.php` and rename it to `config.php`.
@@ -25,5 +25,6 @@ Found a bug? Got a suggestion?  Please create an issue on GitHub - or contact me
 
 - The Dabr code is [MIT License](http://opensource.org/licenses/mit-license.php)
 - The [CodeBird Twitter Library](https://github.com/jublonet/codebird-php/) is GPLv3.
-- The fonts were generated at [Fontello.com](http://fontello.com) and have various free licenses which can be found in `fonts/LICENSE.txt`
+- The fonts were generated at [Fontello.com](http://fontello.com) and have various free licenses which can be found in `i/fonts/LICENSE.txt`
 - Dabr icon is from [Iconfinder](https://www.iconfinder.com/iconsets/toys)
+- [twitter-text.js is Copyright 2011 Twitter, Inc. and Licensed under the Apache License, Version 2.0](https://github.com/twitter/twitter-text/blob/master/js/LICENSE)
