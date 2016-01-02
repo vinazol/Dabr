@@ -173,7 +173,7 @@ function theme_page($title, $content) {
             <html>
                <head>
 						<meta charset="utf-8" />
-						<meta name="viewport" content="width=device-width; initial-scale=1;" />
+						<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 						<title>Dabr - ' . $title . '</title>
 						<base href="',BASE_URL,'" />
 						<!--[if IE]><link rel="shortcut icon" href="favicon.ico"><![endif]-->
