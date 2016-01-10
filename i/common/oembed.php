@@ -73,6 +73,8 @@ function oembed_embed_thumbnails(&$feed)
 		$embedly_json = url_fetch($url);
 		$oembeds = json_decode($embedly_json);
 
+		$tumblr_js_once = 0;
+
 		if($oembeds->type != 'error')
 		{
 			//	Single statuses don't come back in an array
@@ -108,10 +110,19 @@ function oembed_embed_thumbnails(&$feed)
 					$html = $embedHTML;
 
 					//	Remove embedded Tweets
-
 					if (strstr($html,"//platform.twitter.com/widgets.js") != FALSE)
 					{
 						$html = "";
+					}
+
+					//	Stop Tumblr JavaScript duplication
+					if (strstr($html,"secure.assets.tumblr.com/post.js") != FALSE)
+					{
+						if ($tumblr_js_once > 0) {
+							// <script async src=\"https:\/\/secure.assets.tumblr.com\/post.js\"><\/script>
+							$html = str_replace('src="https://secure.assets.tumblr.com/post.js"', 'src=""', $html);
+						}
+						$tumblr_js_once++;
 					}
 
 					foreach ($matched_urls[$url] as $statusId)
