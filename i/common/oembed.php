@@ -120,7 +120,7 @@ function oembed_embed_thumbnails(&$feed)
 					{
 						if ($tumblr_js_once > 0) {
 							// <script async src=\"https:\/\/secure.assets.tumblr.com\/post.js\"><\/script>
-							$html = str_replace('src="https://secure.assets.tumblr.com/post.js"', 'src=""', $html);
+							$html = str_replace('src="https://secure.assets.tumblr.com/post.js"', '', $html);
 						}
 						$tumblr_js_once++;
 					}
