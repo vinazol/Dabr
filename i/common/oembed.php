@@ -1,4 +1,6 @@
 <?php
+//	Remove warning notices
+error_reporting(0);
 
 function url_fetch($url)
 {
