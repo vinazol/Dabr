@@ -6,8 +6,8 @@
 
 //	Base URL, must be point to your website, including a trailing slash
 //	eg "https://example.com/dabr/"
-$server_name = "https://example.com/";
-$folder_name = "dabr/";  //	If you're installing Dabr in your root directory, this should be set to ""
+$server_name = "http://dabr.mywebcommunity.org/";
+$folder_name = "";  //	If you're installing Dabr in your root directory, this should be set to ""
 define('SERVER_NAME', $server_name);
 define('FOLDER_NAME', $folder_name);
 define('BASE_URL', $server_name . $folder_name);
