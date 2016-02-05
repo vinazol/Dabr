@@ -13,8 +13,8 @@ define('FOLDER_NAME', $folder_name);
 define('BASE_URL', $server_name . $folder_name);
 
 //	OAuth consumer and secret keys. Available from https://apps.twitter.com/
-define('OAUTH_CONSUMER_KEY',    '');
-define('OAUTH_CONSUMER_SECRET', '');
+define('OAUTH_CONSUMER_KEY',    'KFQUK6Fb7BJNdt70w7GBNLTWf');
+define('OAUTH_CONSUMER_SECRET', '5oasmRNkKYLWEC6P94Z7m1q8hcK9pOlEkCK7R1om2rXjXeLUkO');
 
 //	Cookie encryption key. Max 52 characters
 define('ENCRYPTION_KEY', 'Example Key - Change Me!');
